@@ -9,3 +9,5 @@
  * - Source data should be loaded through loadData.js.
  * - Keep route-specific behavior out of this file.
  */
+export const prerender = true;
+export const ssr = false;
