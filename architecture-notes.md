@@ -34,6 +34,7 @@ src/
 │   │   │
 │   │   └── layout/
 │   │       ├── AppHeader.svelte
+│   │       ├── Credits.svelte
 │   │       ├── Footer.svelte
 │   │       └── PageShell.svelte
 │   │
