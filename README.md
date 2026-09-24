@@ -65,4 +65,6 @@ Components should consume shared calculator state and resolved estimate data rat
 
 The application uses Svelte 5 runes. New Svelte code should use current Svelte 5 patterns rather than legacy Svelte APIs.
 
+Keep feature branches short-lived and scoped to a single work package. Start new branches from the latest main. When work depends on another feature, merge the prerequisite into main before beginning dependent work rather than developing against another feature branch.
+
 See `architecture-notes.md` for detailed application architecture and implementation decisions.
