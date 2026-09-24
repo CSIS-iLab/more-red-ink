@@ -1,42 +1,68 @@
-# sv
+# More Red Ink
 
-Everything you need to build a Svelte project, powered by [`sv`](https://github.com/sveltejs/cli).
+Interactive tool for exploring estimates of China's industrial policy spending.
 
-## Creating a project
+## Development
 
-If you're seeing this, you've probably already done this step. Congrats!
+This project uses SvelteKit and Svelte 5.
 
-```sh
-# create a new project
-npx sv create my-app
+### Requirements
+
+- Node.js 20
+- npm
+
+### Getting started
+
+Clone the repository and install dependencies:
+
+```bash
+npm install
 ```
 
-To recreate this project with the same configuration:
+Start the local development server:
 
-```sh
-# recreate this project
-npx sv@0.17.1 create --template minimal --types jsdoc --add prettier eslint --install npm .
-```
-
-## Developing
-
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
-
-```sh
+```bash
 npm run dev
-
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
 ```
 
-## Building
+### Before opening a pull request
 
-To create a production version of your app:
+Run the following checks locally:
 
-```sh
+```bash
+npm run check
+npm run lint
 npm run build
 ```
 
-You can preview the production build with `npm run preview`.
+All three should pass before opening a pull request.
 
-> To deploy your app, you may need to install an [adapter](https://svelte.dev/docs/kit/adapters) for your target environment.
+### Branch workflow
+
+Development should happen on feature branches rather than directly on `main`.
+
+Create a branch from an up-to-date `main`:
+
+```bash
+git checkout main
+git pull
+git checkout -b <branch-name>
+```
+
+Push the branch to GitHub and open a pull request into `main`.
+
+The `main` branch is deployed to Netlify.
+
+## Project architecture
+
+The application keeps three types of data separate:
+
+1. **Source data** — loaded and normalized by `src/lib/data/loadData.js`
+2. **Calculator state** — the user's assumptions and chart settings
+3. **Calculated data** — resolved by `src/lib/data/calculateEstimate.js`
+
+Components should consume shared calculator state and resolved estimate data rather than interpreting raw spreadsheet fields themselves.
+
+The application uses Svelte 5 runes. New Svelte code should use current Svelte 5 patterns rather than legacy Svelte APIs.
+
+See `architecture-notes.md` for detailed application architecture and implementation decisions.
