@@ -10,11 +10,9 @@ technical specification.
 ```
 src/
 ├── lib/
+│   ├── assets/
+│   │   └── favicon.svg
 │   ├── components/
-│   │   ├── layout/
-│   │   │   ├── AppHeader.svelte
-│   │   │   └── PageShell.svelte
-│   │   │
 │   │   ├── assumptions/
 │   │   │   ├── ChoiceCard.svelte
 │   │   │   ├── ChoiceGroup.svelte
@@ -22,48 +20,54 @@ src/
 │   │   │   └── UserDrivenForm.svelte
 │   │   │
 │   │   ├── charts/
-│   │   │   ├── HistoricalSpendingChart.svelte
+│   │   │   ├── receipt/
+│   │   │   │   └── Receipt.svelte
 │   │   │   ├── CumulativeSpendingChart.svelte
-│   │   │   ├── YearSpecificChart.svelte
 │   │   │   ├── EconomySpecificChart.svelte
-│   │   │   └── receipt/
-│   │   │       └── Receipt.svelte
+│   │   │   ├── HistoricalSpendingChart.svelte
+│   │   │   └── YearSpecificChart.svelte
 │   │   │
-│   │   └── controls/
-│   │       ├── Select.svelte
-│   │       ├── Checkbox.svelte
-│   │       └── Button.svelte
+│   │   ├── controls/
+│   │   │   ├── Button.svelte
+│   │   │   ├── Checkbox.svelte
+│   │   │   └── Select.svelte
+│   │   │
+│   │   └── layout/
+│   │       ├── AppHeader.svelte
+│   │       ├── Footer.svelte
+│   │       └── PageShell.svelte
 │   │
 │   ├── data/
-│   │   ├── loadData.js
-│   │   └── calculateEstimate.js
-│   │
-│   ├── stores/
-│   │   └── calculatorState.js
+│   │   ├── calculateEstimate.js
+│   │   └── loadData.js
 │   │
 │   ├── sharing/
 │   │   ├── buildShareUrl.js
 │   │   └── parseShareUrl.js
 │   │
+│   ├── stores/
+│   │   └── calculatorState.js
+│   │
 │   └── utils/
 │       ├── assumptionOptions.js
-│       ├── spendingComponents.js
-│       └── formatters.js
+│       ├── formatters.js
+│       └── spendingComponents.js
 │
 ├── routes/
-│   ├── +layout.js
-│   ├── +layout.svelte
-│   ├── +page.svelte
 │   ├── fast-track/
+│   │   └── +page.svelte
+│   ├── share/
 │   │   └── +page.svelte
 │   ├── user-driven/
 │   │   └── +page.svelte
 │   ├── visualizer/
 │   │   └── +page.svelte
-│   └── share/
-│       └── +page.svelte
+│   ├── +layout.js
+│   ├── +layout.svelte
+│   └── +page.svelte
 │
-└── app.css
+├── app.d.ts
+└── app.html
 ```
 
 Do not add abstractions preemptively. If implementation later shows that
