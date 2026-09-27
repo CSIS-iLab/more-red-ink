@@ -62,10 +62,6 @@ const getInitialState = () => structuredClone(initialState);
 
 /**
  * Check whether a value is one of the configured options.
- *
- * @param {{ value: string }[]} options
- * @param {string | null} value
- * @returns {boolean}
  */
 const isValidOption = (options, value) => {
 	return options.some((option) => option.value === value);
@@ -73,9 +69,6 @@ const isValidOption = (options, value) => {
 
 /**
  * Determine whether the current state represents a complete estimate.
- *
- * @param {typeof initialState} state
- * @returns {boolean}
  */
 const isEstimateComplete = (state) => {
 	if (state.mode === 'fastTrack') {
@@ -84,10 +77,9 @@ const isEstimateComplete = (state) => {
 
 	if (state.mode === 'userDriven') {
 		return Object.keys(assumptionOptions).every((key) => {
-			const typedKey = /** @type {keyof typeof assumptionOptions} */ (key);
-			const value = state.userDrivenChoices[typedKey];
+			const value = state.userDrivenChoices[key];
 
-			return isValidOption(assumptionOptions[typedKey].options, value);
+			return isValidOption(assumptionOptions[key].options, value);
 		});
 	}
 
@@ -101,8 +93,6 @@ const createCalculatorState = () => {
 
 	/**
 	 * Persist the current calculator state for this browser session.
-	 *
-	 * @param {typeof initialState} state
 	 */
 	const persistState = (state) => {
 		if (typeof sessionStorage === 'undefined') return;
@@ -164,9 +154,6 @@ const createCalculatorState = () => {
 
 	/**
 	 * Update a top-level calculator state value.
-	 *
-	 * @param {'mode' | 'fastTrackChoice'} key
-	 * @param {string | null} value
 	 */
 	const updateValue = (key, value) => {
 		update((state) => ({
@@ -177,8 +164,6 @@ const createCalculatorState = () => {
 
 	/**
 	 * Update one or more User Driven assumption choices.
-	 *
-	 * @param {Partial<typeof initialState.userDrivenChoices>} choices
 	 */
 	const updateUserDrivenChoices = (choices) => {
 		update((state) => ({
@@ -192,9 +177,6 @@ const createCalculatorState = () => {
 
 	/**
 	 * Update display settings for one chart without affecting the others.
-	 *
-	 * @param {'historical' | 'cumulative' | 'yearSpecific' | 'economySpecific'} chart
-	 * @param {Record<string, string | boolean | null>} settings
 	 */
 	const updateChartSettings = (chart, settings) => {
 		update((state) => {
