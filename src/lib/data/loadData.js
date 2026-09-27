@@ -12,6 +12,11 @@
  * - It does not calculate an estimate.
  */
 
+import { csv } from 'd3-fetch';
+
+const DATA_URL =
+	'https://docs.google.com/spreadsheets/d/e/2PACX-1vRLonylYgcQ2GAFWBxA4ftew_2ugPbOFkAPNeIugaD8a2YcrOr7H9Vf-xWn5gceHmeFwdS8ccTQjkYH/pub?output=csv';
+
 const NUMERIC_FIELDS = new Set([
 	'year',
 	'direct_subsidies',
@@ -33,34 +38,6 @@ const NUMERIC_FIELDS = new Set([
 	'govt_procurement_central_goods'
 ]);
 
-function parseCsvLine(line) {
-	const values = [];
-	let currentValue = '';
-	let insideQuotes = false;
-
-	for (let i = 0; i < line.length; i += 1) {
-		const character = line[i];
-
-		if (character === '"') {
-			if (insideQuotes && line[i + 1] === '"') {
-				currentValue += '"';
-				i += 1;
-			} else {
-				insideQuotes = !insideQuotes;
-			}
-		} else if (character === ',' && !insideQuotes) {
-			values.push(currentValue);
-			currentValue = '';
-		} else {
-			currentValue += character;
-		}
-	}
-
-	values.push(currentValue);
-
-	return values;
-}
-
 function normalizeValue(field, value) {
 	const trimmedValue = value.trim();
 
@@ -75,18 +52,12 @@ function normalizeValue(field, value) {
 	return trimmedValue;
 }
 
-function parseCsv(csvText) {
-  const lines = csvText.trim().split(/\r?\n/);
-  const headers = parseCsvLine(lines[0]);
+function normalizeRow(row) {
+	return Object.fromEntries(
+		Object.entries(row).map(([field, value]) => [field, normalizeValue(field, value)])
+	);
+}
 
-  return lines.slice(1).map((line) => {
-    const values = parseCsvLine(line);
-
-    return Object.fromEntries(
-      headers.map((header, index) => [
-        header,
-        normalizeValue(header, values[index] ?? '')
-      ])
-    );
-  });
+export async function loadData() {
+	return csv(DATA_URL, normalizeRow);
 }
