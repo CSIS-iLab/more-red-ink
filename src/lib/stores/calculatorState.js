@@ -20,6 +20,8 @@
 import { writable } from 'svelte/store';
 import { assumptionOptions, fastTrackOptions } from '$lib/utils/assumptionOptions.js';
 
+const STORAGE_KEY = 'more-red-ink-calculator-state';
+
 const initialState = {
 	mode: null,
 
@@ -96,6 +98,23 @@ const createCalculatorState = () => {
 	const { subscribe, set, update } = writable(getInitialState());
 
 	let initialized = false;
+
+	/**
+	 * Persist the current calculator state for this browser session.
+	 *
+	 * @param {typeof initialState} state
+	 */
+	const persistState = (state) => {
+		if (typeof sessionStorage === 'undefined') return;
+
+		sessionStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+	};
+
+	subscribe((state) => {
+		if (initialized) {
+			persistState(state);
+		}
+	});
 
 	/**
 	 * Update a top-level calculator state value.
