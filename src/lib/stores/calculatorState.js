@@ -117,6 +117,52 @@ const createCalculatorState = () => {
 	});
 
 	/**
+	 * Restore persisted calculator state and complete initialization.
+	 */
+	const initialize = () => {
+		if (initialized) return;
+
+		if (typeof sessionStorage !== 'undefined') {
+			const savedState = sessionStorage.getItem(STORAGE_KEY);
+
+			if (savedState) {
+				try {
+					const parsedState = JSON.parse(savedState);
+
+					set({
+						...getInitialState(),
+						...parsedState,
+						userDrivenChoices: {
+							...getInitialState().userDrivenChoices,
+							...parsedState.userDrivenChoices
+						},
+						historical: {
+							...getInitialState().historical,
+							...parsedState.historical
+						},
+						cumulative: {
+							...getInitialState().cumulative,
+							...parsedState.cumulative
+						},
+						yearSpecific: {
+							...getInitialState().yearSpecific,
+							...parsedState.yearSpecific
+						},
+						economySpecific: {
+							...getInitialState().economySpecific,
+							...parsedState.economySpecific
+						}
+					});
+				} catch {
+					sessionStorage.removeItem(STORAGE_KEY);
+				}
+			}
+		}
+
+		initialized = true;
+	};
+
+	/**
 	 * Update a top-level calculator state value.
 	 *
 	 * @param {'mode' | 'fastTrackChoice'} key
@@ -187,10 +233,15 @@ const createCalculatorState = () => {
 	 */
 	const reset = () => {
 		set(getInitialState());
+
+		if (typeof sessionStorage !== 'undefined') {
+			sessionStorage.removeItem(STORAGE_KEY);
+		}
 	};
 
 	return {
 		subscribe,
+		initialize,
 		updateValue,
 		updateUserDrivenChoices,
 		updateChartSettings,
