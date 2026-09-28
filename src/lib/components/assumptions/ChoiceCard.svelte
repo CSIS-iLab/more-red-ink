@@ -44,29 +44,52 @@
 			border-color 0.2s ease;
 	}
 
+	input {
+		appearance: none;
+		flex: 0 0 auto;
+		width: 1.25rem;
+		height: 1.25rem;
+		margin: 0.125rem 0 0;
+		box-sizing: border-box;
+		border: 1px solid var(--color-radio-card-enabled-border);
+		border-radius: 50%;
+		background: transparent;
+		cursor: pointer;
+	}
+
+	/* Hover */
 	.choice-card:hover:not(.disabled) {
 		border-color: var(--color-radio-card-hover-border);
 		background: var(--color-radio-card-hover);
 	}
 
-	.choice-card:has(input:focus-visible) {
-		border-color: var(--color-radio-card-focus-border);
-		outline: 1px solid var(--color-radio-card-focus-border);
-		outline-offset: -1px;
+	.choice-card:hover:not(.disabled) input {
+		border-color: var(--color-radio-card-hover-border);
 	}
 
+	/* Selected / pressed */
 	.choice-card.checked {
-		border-color: var(--color-radio-card-pressed-border);
+		border: 2px solid var(--color-radio-card-pressed-border);
+		padding: calc(1rem - 1px);
 		background: var(--color-radio-card-pressed);
 	}
 
-	input {
-		flex: 0 0 auto;
-		width: 1.25rem;
-		height: 1.25rem;
-		margin: 0.125rem 0 0;
-		accent-color: var(--color-radio-card-pressed-border);
-		cursor: pointer;
+	.choice-card.checked input {
+		border: 0.3125rem solid var(--color-radio-card-pressed-border);
+	}
+
+	/* Focus */
+	.choice-card:has(input:focus-visible) {
+		outline: 2px solid var(--color-radio-card-focus-border);
+		outline-offset: 2px;
+	}
+
+	.choice-card:not(.checked):has(input:focus-visible) input {
+		border: 2px solid var(--color-radio-card-focus-border);
+	}
+
+	input:focus-visible {
+		outline: none;
 	}
 
 	.choice-card__content {
@@ -74,6 +97,7 @@
 		min-width: 0;
 	}
 
+	/* Disabled */
 	.disabled {
 		cursor: not-allowed;
 		opacity: 0.5;
