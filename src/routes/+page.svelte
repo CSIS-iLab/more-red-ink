@@ -36,7 +36,7 @@
 			</p>
 
 			<!-- TODO: Replace with final More Red Ink report URL when provided. -->
-			<Button href={resolve('/')} variant="primary" target="_blank" rel="noreferrer">
+			<Button href={resolve('/')} variant="secondary" target="_blank" rel="noreferrer">
 				Read the report
 				<img src="/icons/external-link.svg" alt="" />
 			</Button>
