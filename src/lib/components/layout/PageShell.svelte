@@ -23,7 +23,6 @@
 <style>
 	.page-shell {
 		width: 100%;
-		padding: 2rem;
 	}
 
 	@media (max-width: 640px) {

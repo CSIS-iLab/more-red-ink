@@ -1,45 +1,69 @@
+<script>
+	import CreditsLink from './CreditsLink.svelte';
+</script>
+
 <section class="credits">
-	<div class="container">
-		<div class="credits__main">
-			<div class="credits__col">
-				<h2>Research</h2>
+	<div class="credits-grid">
+		<div class="credits-col">
+			<p class="text-body-1-regular">Research</p>
 
-				<p>
-					<a href="https://www.csis.org/programs/chinese-business-and-economics">
-						Trustee Chair in Chinese Business and Economics
-					</a>
+			<a
+				class="text-body-2-regular"
+				href="https://www.csis.org/programs/chinese-business-and-economics"
+				target="_blank"
+				rel="noopener noreferrer"
+			>
+				Trustee Chair in Chinese Business and Economics
+			</a>
+
+			<p class="text-body-3-regular">
+				Written by:
+				<CreditsLink href="https://www.csis.org/people/scott-kennedy">
+					Scott Kennedy
+				</CreditsLink>
+				and
+				<CreditsLink href="https://www.csis.org/people/ryan-featherston">
+					Ryan Featherston
+				</CreditsLink>
+			</p>
+		</div>
+
+		<div class="credits-col">
+			<p class="text-body-1-regular">Story Production</p>
+
+			<a
+				class="text-body-2-regular"
+				href="https://www.csis.org/dracopoulos-ideas-lab"
+				target="_blank"
+				rel="noopener noreferrer"
+			>
+				Andreas C. Dracopoulos iDeas Lab
+			</a>
+
+			<div class="credits-list">
+				<p class="text-body-3-regular">
+					Data visualization by:
+					<CreditsLink href="https://www.csis.org/people/shannon-yeung">
+						Shannon Yeung
+					</CreditsLink>
 				</p>
 
-				<p>
-					<strong>Written by:</strong>
-					<a href="https://www.csis.org/people/scott-kennedy">Scott Kennedy</a>
+				<p class="text-body-3-regular">
+					Development by:
+					<CreditsLink href="https://www.csis.org/people/mariel-de-la-garza">
+						Mariel A. de la Garza
+					</CreditsLink>
 					and
-					<a href="https://www.csis.org/people/ryan-featherston">Ryan Featherston</a>
-				</p>
-			</div>
-
-			<div class="credits__col">
-				<h2>Story Production</h2>
-
-				<p>
-					<a href="https://www.csis.org/dracopoulos-ideas-lab">
-						Andreas C. Dracopoulos iDeas Lab
-					</a>
+					<CreditsLink href="https://www.csis.org/people/lindsay-allison">
+						Lindsay Allison
+					</CreditsLink>
 				</p>
 
-				<p>
-					<strong>Data visualization by:</strong>
-					<a href="https://www.csis.org/people/shannon-yeung">Shannon Yeung</a>
-					<br />
-
-					<strong>Development by:</strong>
-					<a href="https://www.csis.org/people/mariel-de-la-garza">Mariel A. de la Garza</a>
-					and
-					<a href="https://www.csis.org/people/lindsay-allison">Lindsay Allison</a>
-					<br />
-
-					<strong>Page design by:</strong>
-					<a href="https://www.csis.org/people/shannon-yeung">Shannon Yeung</a>
+				<p class="text-body-3-regular">
+					Page design by:
+					<CreditsLink href="https://www.csis.org/people/shannon-yeung">
+						Shannon Yeung
+					</CreditsLink>
 				</p>
 			</div>
 		</div>
@@ -48,74 +72,60 @@
 
 <style>
 	.credits {
-		width: 100%;
-		padding-top: 3rem;
-		padding-bottom: 3rem;
+		background: var(--color-sky-800);
+		color: var(--color-sky-50);
+		padding: 64px 24px;
 	}
 
-	.container {
-		max-width: 1290px;
-		margin: auto;
-	}
-
-	/* two columns on desktop */
-	.credits__main {
+	.credits-grid {
+		max-width: 1280px;
+		margin: 0 auto;
 		display: grid;
-		grid-template-columns: repeat(2, minmax(0, 1fr));
-		gap: 1rem 4rem;
+		grid-template-columns: 1fr 1fr;
+		gap: 64px;
 	}
 
-	.credits__col {
-		display: flex;
-		flex-direction: column;
-		align-items: flex-start;
-		gap: 1rem;
+	.credits-col {
+		display: grid;
+		gap: 20px;
+		align-content: start;
 	}
 
-	.credits__col h2 {
+	p {
 		margin: 0;
+		line-height: 1.2;
 	}
 
-	.credits__col p {
-		margin: 0;
+	.credits a {
+		display: inline-block;
+		width: fit-content;
+		color: var(--color-sky-50);
+		text-decoration: none;
+		border-bottom: 1px solid currentColor;
+		transition:
+			color 0.3s ease,
+			border-color 0.3s ease;
 	}
 
-	.credits__col a {
-		color: inherit;
-		text-decoration: underline;
-		text-underline-offset: 0.1em;
+	.credits a:hover,
+	.credits a:focus-visible {
+		color: var(--color-sky-300);
+		border-bottom-color: var(--color-sky-300);
 	}
 
-	/*-- --------------------------------------------------- --*/
-	/*--                    Media Queries                    --*/
-	/*-- --------------------------------------------------- --*/
-	@media screen and (max-width: 1280px) {
-		.container {
-			max-width: 1152px;
-			padding-left: 40px;
-			padding-right: 40px;
-		}
+	.credits a:focus-visible {
+		outline: 2px solid var(--color-sky-300);
+		outline-offset: 2px;
 	}
 
-	@media screen and (max-width: 1024px) {
-		.container {
-			max-width: 506px;
-		}
-	}
-
-	@media screen and (max-width: 640px) {
+	@media (max-width: 760px) {
 		.credits {
-			padding-top: 2rem;
-			padding-bottom: 2rem;
+			padding: 40px 18px;
 		}
 
-		.credits__main {
+		.credits-grid {
 			grid-template-columns: 1fr;
-			gap: 2rem;
-		}
-
-		.container {
-			max-width: 320px;
+			gap: 32px;
 		}
 	}
 </style>
