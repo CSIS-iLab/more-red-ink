@@ -28,21 +28,7 @@
 				Read the report
 				<img src="/icons/external-link.svg" alt="" />
 			</Button>
-			<div class="checkbox-test">
-				<Checkbox
-					label="Show spending components"
-					checked={testChecked}
-					onchange={(event) => {
-						testChecked = event.currentTarget.checked;
-					}}
-				/>
 
-				<p>Checked: {testChecked}</p>
-
-				<Checkbox label="Show spending components" checked />
-
-				<Checkbox label="Scale to 100%" disabled />
-			</div>
 			<section class="instructions">
 				<h2 class="text-body-1-regular">How to use this tool</h2>
 				<p class="text-body-2-regular">
