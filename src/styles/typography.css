@@ -1,7 +1,5 @@
 :root {
-	/* --------------------------------------------------- */
-	/* Font families                                       */
-	/* --------------------------------------------------- */
+	/* -------------------- font families ------------------- */
 
 	--font-hero: 'Google Sans Code', monospace;
 	--font-heading: 'Roboto', sans-serif;
@@ -10,4 +8,61 @@
 	--font-data: 'Roboto', sans-serif;
 	--font-label: 'Roboto', sans-serif;
 	--font-accent: 'Roboto Mono', monospace;
+
+	/* -------------------- font weights -------------------- */
+	--font-weight-light: 300;
+	--font-weight-regular: 400;
+	--font-weight-medium: 500;
+	--font-weight-semibold: 600;
+	--font-weight-bold: 700;
+
+	/* --------------------- font styles -------------------- */
+	--font-style-italic: italic;
+
+	/* ---------------------- typescale --------------------- */
+	--font-size-xxx-large: 60px;
+	--font-size-xx-large: 50px;
+	--font-size-x-large: 41px;
+	--font-size-large: 35px;
+	--font-size-medium: 29px;
+	--font-size-small: 24px;
+	--font-size-base: 20px;
+	--font-size-x-small: 18px;
+	--font-size-xx-small: 16px;
+	--font-size-xxx-small: 14px;
+
+	/*mobile <100px*/
+	@media (max-width: 1099px) {
+		:root {
+			--font-size-xxx-large: 54px;
+			--font-size-xx-large: 45px;
+			--font-size-x-large: 37px;
+			--font-size-large: 31px;
+			--font-size-medium: 26px;
+			--font-size-small: 22px;
+			--font-size-base: 18px;
+			--font-size-x-small: 16px;
+			--font-size-xx-small: 15px;
+			--font-size-xxx-small: 14px;
+		}
+	}
+
+	/* ------------------------ body ------------------------ */
+	.text-body-1-regular {
+		font-family: var(--font-body);
+		font-size: var(--font-size-small);
+		font-weight: var(--font-weight-semibold);
+	}
+
+	.text-body-2-regular {
+		font-family: var(--font-body);
+		font-size: var(--font-size-base);
+		font-weight: var(--font-weight-regular);
+	}
+
+	.text-body-3-regular {
+		font-family: var(--font-body);
+		font-size: var(--font-size-x-small);
+		font-weight: var(--font-weight-regular);
+	}
 }
