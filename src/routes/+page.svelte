@@ -1,22 +1,10 @@
-<!--
-  Home
-
-  Entry point for the calculator.
-
-  Responsibilities:
-  - Introduce the tool and its purpose.
-  - Allow the user to choose Fast Track or User Driven mode.
-  - Provide access to the accompanying report.
-
-  Implementation notes:
-  - Visiting this route should not create, change, or reset an estimate.
-  - Mode selection/navigation begins the appropriate calculator workflow.
--->
-
 <script>
 	import { resolve } from '$app/paths';
 	import Button from '$lib/components/controls/Button.svelte';
+	import Checkbox from '$lib/components/controls/Checkbox.svelte';
 	import Credits from '$lib/components/layout/Credits.svelte';
+
+	let testChecked = $state(false);
 </script>
 
 <svelte:head>
@@ -40,7 +28,21 @@
 				Read the report
 				<img src="/icons/external-link.svg" alt="" />
 			</Button>
+			<div class="checkbox-test">
+				<Checkbox
+					label="Show spending components"
+					checked={testChecked}
+					onchange={(event) => {
+						testChecked = event.currentTarget.checked;
+					}}
+				/>
 
+				<p>Checked: {testChecked}</p>
+
+				<Checkbox label="Show spending components" checked />
+
+				<Checkbox label="Scale to 100%" disabled />
+			</div>
 			<section class="instructions">
 				<h2 class="text-body-1-regular">How to use this tool</h2>
 				<p class="text-body-2-regular">
@@ -133,5 +135,12 @@
 		outline: 1px solid var(--color-white);
 		outline-offset: -2px;
 		box-shadow: 0 0 0 1px var(--color-neutral-600);
+	}
+	.checkbox-test {
+		display: flex;
+		flex-direction: column;
+		align-items: flex-start;
+		gap: 1rem;
+		margin: 2rem 0;
 	}
 </style>
