@@ -35,7 +35,7 @@
 
 			<a class="report-link text-label-large" href="/" target="_blank" rel="noreferrer">
 				Read the report
-				<span aria-hidden="true">↗</span>
+				<img src="/icons/external-link.svg" alt="" />
 			</a>
 
 			<section class="instructions">
@@ -97,11 +97,19 @@
 	.report-link {
 		display: inline-flex;
 		align-items: center;
+		justify-content: center;
 		gap: 0.5rem;
-		padding: 0.75rem 1rem;
+		min-height: 3rem;
+		padding: 0 1rem;
 		border: 1px solid currentColor;
 		border-radius: 0.25rem;
 		color: inherit;
 		text-decoration: none;
+	}
+
+	.report-link img {
+		width: 1.5rem;
+		height: 1.5rem;
+		flex-shrink: 0;
 	}
 </style>
