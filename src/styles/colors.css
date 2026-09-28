@@ -1,5 +1,5 @@
 :root {
-  /* ------------------ color primitives ------------------ */
+	/* ------------------ color primitives ------------------ */
 	/* Sky */
 	--color-sky-50: #f0f9ff;
 	--color-sky-100: #dff2fe;
@@ -44,6 +44,80 @@
 	--color-neutral-900: #171717;
 	--color-neutral-950: #0a0a0a;
 
-	/* --------------------- color roles -------------------- */
+	/* ------------------------------------------------------ */
+	/*                       Color Roles                      */
+	/* ------------------------------------------------------ */
+	/* ---------------- Dashboard Color Roles --------------- */
+
+	/* General */
+	--color-bg: var(--color-sky-50);
+	--color-surface-primary: var(--color-slate-300);
+
+	/* Text */
 	--color-text-primary: var(--color-slate-800);
+	--color-text-value: var(--color-white);
+	--color-text-active: var(--color-neutral-950);
+	--color-text-placeholder: var(--color-neutral-500);
+
+	/* Spending components */
+	--color-spending-direct-subsidies: #006ea9;
+	--color-spending-other-tax-incentives: #86cdfb;
+	--color-spending-rd-tax-incentives: #e4a839;
+	--color-spending-rd-support: #ba4896;
+	--color-spending-below-market-credit: #246c54;
+	--color-spending-state-investment-funds: #e98ca0;
+	--color-spending-gov-procurement: #58c2a2;
+	--color-spending-soe-net-payables: #d25342;
+	--color-spending-land: #7f7575;
+	--color-spending-debt-equity-swaps: #a69644;
+
+	/* Data visualization */
+	--color-data-viz-primary: #fffead;
+	--color-data-viz-secondary: #5f92ff;
+
+	/* Dropdown */
+	--color-dropdown-enabled: var(--color-white);
+	--color-dropdown-enabled-border: var(--color-slate-200);
+	--color-dropdown-hover: var(--color-slate-50);
+	--color-dropdown-focus-border: var(--color-slate-400);
+	--color-dropdown-pressed: var(--color-slate-100);
+	--color-dropdown-pressed-border: var(--color-slate-400);
+	--color-dropdown-error-border: var(--color-error);
+	--color-dropdown-icon: var(--color-neutral-500);
+
+	/* Menu */
+	--color-menu-enabled: var(--color-slate-100);
+	--color-menu-hover: var(--color-slate-200);
+	--color-menu-focus-border: var(--color-slate-300);
+	--color-menu-pressed: var(--color-slate-100);
+	--color-menu-pressed-border: var(--color-slate-300);
+	--color-menu-icon: var(--color-neutral-500);
+	--color-menu-divider: var(--color-slate-300);
+
+	/* Borders */
+	--color-border-light: var(--color-sky-400);
+	--color-border-dark: var(--color-sky-600);
+
+	/* CTA button */
+	--color-cta-text-primary: var(--color-white);
+	--color-cta-text-secondary: var(--color-slate-50);
+	--color-cta-enabled: var(--color-slate-800);
+	--color-cta-hover: var(--color-slate-700);
+	--color-cta-focus-border: var(--color-white);
+	--color-cta-pressed: var(--color-slate-600);
+
+	/* Radio card button */
+	--color-radio-card-text-primary: var(--color-slate-800);
+	--color-radio-card-text-secondary: var(--color-slate-600);
+	--color-radio-card-enabled: var(--color-sky-50);
+	--color-radio-card-enabled-border: var(--color-slate-600);
+	--color-radio-card-hover: var(--color-sky-100);
+	--color-radio-card-hover-border: var(--color-sky-500);
+	--color-radio-card-focus-border: var(--color-sky-400);
+	--color-radio-card-pressed: var(--color-sky-50);
+	--color-radio-card-pressed-border: var(--color-sky-600);
+
+	/* Disabled */
+	--color-disabled: var(--color-slate-200);
+	--color-disabled-text: var(--color-slate-400);
 }

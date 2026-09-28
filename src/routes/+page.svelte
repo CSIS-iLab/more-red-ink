@@ -52,15 +52,15 @@
 
 			<div class="mode-options">
 				<a class="mode-option" href="/fast-track">
-					<strong>Fast Track</strong>
-					<span>
+					<span class="text-heading-3">Fast Track</span>
+					<span class="text-body-3-regular">
 						Short description about the option and why the user might want to pick this.
 					</span>
 				</a>
 
 				<a class="mode-option" href="/user-driven">
-					<strong>User Driven</strong>
-					<span>
+					<span class="text-heading-3">User Driven</span>
+					<span class="text-body-3-regular">
 						Short description about the option and why the user might want to pick this.
 					</span>
 				</a>
@@ -111,5 +111,37 @@
 		width: 1.5rem;
 		height: 1.5rem;
 		flex-shrink: 0;
+	}
+
+	.mode-options {
+		display: grid;
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		gap: 1.5rem;
+	}
+
+	.mode-option {
+		display: flex;
+		flex-direction: column;
+		gap: 1rem;
+		padding: 1.5rem;
+		border-radius: 0.5rem;
+		background: var(--color-cta-enabled);
+		color: var(--color-cta-text-primary);
+		text-decoration: none;
+		transition: background-color 0.3s ease;
+	}
+
+	.mode-option:hover {
+		background: var(--color-cta-hover);
+	}
+
+	.mode-option:active {
+		background: var(--color-cta-pressed);
+	}
+
+	.mode-option:focus-visible {
+		outline: 1px solid var(--color-white);
+		outline-offset: -2px;
+		box-shadow: 0 0 0 1px var(--color-neutral-600);
 	}
 </style>
