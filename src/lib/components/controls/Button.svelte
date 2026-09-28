@@ -1,15 +1,70 @@
-<!--
-  Button
+<script>
+	let {
+		type = 'button',
+		variant = 'primary',
+		disabled = false,
+		onclick,
+		children,
+		...restProps
+	} = $props();
+</script>
 
-  Reusable application button.
+<button
+	{type}
+	{disabled}
+	{onclick}
+	class:primary={variant === 'primary'}
+	class:secondary={variant === 'secondary'}
+	class="text-label-large"
+	{...restProps}
+>
+	{@render children?.()}
+</button>
 
-  Responsibilities:
-  - Provide consistent button markup and styling.
-  - Support the common button states needed throughout the application.
-  - Preserve native button behavior and accessibility.
+<style>
+	button {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		gap: 0.5rem;
+		min-height: 3rem;
+		padding: 0 1rem;
+		border: 1px solid transparent;
+		border-radius: 0.25rem;
+		font: inherit;
+		cursor: pointer;
+		transition:
+			background-color 0.3s ease,
+			border-color 0.3s ease;
+	}
 
-  Implementation notes:
-  - Keep route- and feature-specific logic out of this component.
-  - Prefer native button semantics rather than recreating button behavior.
-  - Final variants and styling will follow the approved design.
--->
+	.primary {
+		background: var(--color-cta-enabled);
+		color: var(--color-cta-text-primary);
+	}
+
+	.primary:hover:not(:disabled) {
+		background: var(--color-cta-hover);
+	}
+
+	.primary:active:not(:disabled) {
+		background: var(--color-cta-pressed);
+	}
+
+	.secondary {
+		border-color: currentColor;
+		background: transparent;
+		color: inherit;
+	}
+
+	button:disabled {
+		cursor: not-allowed;
+		opacity: 0.5;
+	}
+
+	button:focus-visible {
+		outline: 1px solid var(--color-white);
+		outline-offset: -2px;
+		box-shadow: 0 0 0 1px var(--color-neutral-600);
+	}
+</style>
