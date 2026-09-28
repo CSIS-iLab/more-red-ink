@@ -81,5 +81,17 @@
 
 	.home {
 		flex: 1;
+		width: min(100% - 2rem, 40rem);
+		margin: 0 auto;
+		padding: 3rem 0 4rem;
+	}
+
+	.home h1 {
+		margin: 0 0 3rem;
+		text-align: center;
+	}
+
+	.home__content {
+		width: 100%;
 	}
 </style>
