@@ -34,20 +34,30 @@
 
 <svelte:head>
 	<link rel="icon" href={favicon} />
-  <!--load google fonts-->
+	<!--load google fonts-->
 	<link rel="preconnect" href="https://fonts.googleapis.com" />
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 	<link
 		href="https://fonts.googleapis.com/css2?family=Google+Sans+Code:ital,wght,MONO@0,300..800,1;1,300..800,1&family=Roboto+Mono:ital,wght@0,100..700;1,100..700&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap"
 		rel="stylesheet"
 	/>
-  <!--end load google fonts-->
+	<!--end load google fonts-->
 </svelte:head>
 
-<AppHeader {pageName} />
+<div class="app">
+	<AppHeader {pageName} />
 
-<PageShell>
-	{@render children()}
-</PageShell>
+	<PageShell>
+		{@render children()}
+	</PageShell>
 
-<Footer />
+	<Footer />
+</div>
+
+<style>
+	.app {
+		min-height: 100vh;
+		display: flex;
+		flex-direction: column;
+	}
+</style>
