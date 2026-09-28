@@ -12,13 +12,60 @@
   - Visiting this route should not create, change, or reset an estimate.
   - Mode selection/navigation begins the appropriate calculator workflow.
 -->
+
 <script>
-	import Credits from '$lib/components/layout/Credits.svelte';
+  import Credits from '$lib/components/layout/Credits.svelte';
 </script>
 
-<h1>Welcome to SvelteKit</h1>
-<p>Visit <a href="https://svelte.dev/docs/kit">svelte.dev/docs/kit</a> to read the documentation</p>
+<svelte:head>
+  <title>Home | More Red Ink Calculator</title>
+</svelte:head>
 
-<!-- existing Home content -->
+<div class="home">
+  <h1>More Red Ink<br />Calculator</h1>
+
+  <div class="home__content">
+    <p>
+      Short summary of the More Red Ink report and its relationship to this tool. Explain that
+      this tool will help the user calculate an intellectually defensible industrial policy
+      spending estimate, why the estimate is valuable and what the estimate can help the user
+      achieve...
+    </p>
+
+    <a class="report-link" href="/" target="_blank" rel="noreferrer">
+      Read the report
+      <span aria-hidden="true">↗</span>
+    </a>
+
+    <section class="instructions">
+      <h2>How to use this tool</h2>
+
+      <p>
+        Instructions for use and mention expected outcomes, e.g. “Use this tool to calculate an
+        industrial policy spending estimate for China and 7 other economies – Brazil, France,
+        Germany, Japan, South Korea, Taiwan, and the United States. You can make choices about the
+        assumptions that will go into the estimate and generate charts for comparison.”
+      </p>
+    </section>
+
+    <p class="mode-prompt">Choose a mode to start.</p>
+
+    <div class="mode-options">
+      <a class="mode-option" href="/fast-track">
+        <strong>Fast Track</strong>
+        <span>
+          Short description about the option and why the user might want to pick this.
+        </span>
+      </a>
+
+      <a class="mode-option" href="/user-driven">
+        <strong>User Driven</strong>
+        <span>
+          Short description about the option and why the user might want to pick this.
+        </span>
+      </a>
+    </div>
+  </div>
+</div>
 
 <Credits />
