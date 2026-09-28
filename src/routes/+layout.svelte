@@ -16,6 +16,7 @@
 	import { page } from '$app/state';
 	import favicon from '$lib/assets/favicon.svg';
 	import AppHeader from '$lib/components/layout/AppHeader.svelte';
+  import PageShell from '$lib/components/layout/PageShell.svelte';
 
 	let { children } = $props();
 
@@ -36,4 +37,6 @@
 
 <AppHeader {pageName} />
 
-{@render children()}
+<PageShell>
+	{@render children()}
+</PageShell>
