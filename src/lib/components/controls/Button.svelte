@@ -91,4 +91,14 @@
 		outline-offset: -2px;
 		box-shadow: 0 0 0 1px var(--color-neutral-600);
 	}
+
+	.action :global(img) {
+		width: 1.5rem;
+		height: 1.5rem;
+		flex-shrink: 0;
+	}
+
+	.primary :global(img) {
+		filter: brightness(0) invert(1);
+	}
 </style>
