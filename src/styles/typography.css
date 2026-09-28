@@ -85,9 +85,60 @@
 		font-weight: var(--font-weight-medium);
 	}
 
-  .text-heading-3 {
-    font-family: var(--font-heading);
-    font-size: var(--font-size-base);
-    font-weight: var(--font-weight-medium);
-  }
+	.text-heading-3 {
+		font-family: var(--font-heading);
+		font-size: var(--font-size-base);
+		font-weight: var(--font-weight-medium);
+	}
+
+	/* ------------------------ label ----------------------- */
+	/* -------------------- label -------------------- */
+
+	.text-label-large {
+		font-family: var(--font-label);
+		font-size: var(--font-size-base);
+		font-weight: var(--font-weight-medium);
+	}
+
+	.text-label-medium {
+		font-family: var(--font-label);
+		font-size: var(--font-size-x-small);
+		font-weight: var(--font-weight-medium);
+	}
+
+	.text-label-medium-italic {
+		font-family: var(--font-label);
+		font-size: var(--font-size-x-small);
+		font-weight: var(--font-weight-italic);
+	}
+
+	.text-label-small {
+		font-family: var(--font-label);
+		font-size: var(--font-size-xx-small);
+		font-weight: var(--font-weight-regular);
+	}
+
+	.text-label-small-medium {
+		font-family: var(--font-label);
+		font-size: var(--font-size-xx-small);
+		font-weight: var(--font-weight-medium);
+	}
+
+	.text-label-x-small {
+		font-family: var(--font-label);
+		font-size: var(--font-size-xxx-small);
+		font-weight: var(--font-weight-regular);
+	}
+
+	.text-label-x-small-italic {
+		font-family: var(--font-label);
+		font-size: var(--font-size-xxx-small);
+		font-weight: var(--font-weight-italic);
+	}
+
+	.text-label-x-small-emphasized {
+		font-family: var(--font-label);
+		font-size: var(--font-size-xxx-small);
+		font-weight: var(--font-weight-medium);
+	}
 }
