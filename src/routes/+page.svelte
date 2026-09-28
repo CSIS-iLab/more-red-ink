@@ -23,25 +23,24 @@
 
 <div class="home-page">
 	<div class="home">
-		<h1>More Red Ink<br />Calculator</h1>
+		<h1 class="text-heading-1">More Red Ink<br />Calculator</h1>
 
 		<div class="home__content">
-			<p>
+			<p class="text-body-2-regular">
 				Short summary of the More Red Ink report and its relationship to this tool. Explain that
 				this tool will help the user calculate an intellectually defensible industrial policy
 				spending estimate, why the estimate is valuable and what the estimate can help the user
 				achieve...
 			</p>
 
-			<a class="report-link" href="/" target="_blank" rel="noreferrer">
+			<a class="report-link text-label-large" href="/" target="_blank" rel="noreferrer">
 				Read the report
 				<span aria-hidden="true">↗</span>
 			</a>
 
 			<section class="instructions">
-				<h2>How to use this tool</h2>
-
-				<p>
+				<h2 class="text-body-1-regular">How to use this tool</h2>
+				<p class="text-body-2-regular">
 					Instructions for use and mention expected outcomes, e.g. “Use this tool to calculate an
 					industrial policy spending estimate for China and 7 other economies – Brazil, France,
 					Germany, Japan, South Korea, Taiwan, and the United States. You can make choices about the
@@ -49,7 +48,7 @@
 				</p>
 			</section>
 
-			<p class="mode-prompt">Choose a mode to start.</p>
+			<p class="text-body-2-regular">Choose a mode to start.</p>
 
 			<div class="mode-options">
 				<a class="mode-option" href="/fast-track">
@@ -93,5 +92,16 @@
 
 	.home__content {
 		width: 100%;
+	}
+
+	.report-link {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.5rem;
+		padding: 0.75rem 1rem;
+		border: 1px solid currentColor;
+		border-radius: 0.25rem;
+		color: inherit;
+		text-decoration: none;
 	}
 </style>
