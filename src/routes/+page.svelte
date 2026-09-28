@@ -2,6 +2,15 @@
 	import { resolve } from '$app/paths';
 	import Button from '$lib/components/controls/Button.svelte';
 	import Credits from '$lib/components/layout/Credits.svelte';
+	import Select from '$lib/components/controls/Select.svelte';
+
+	let testUnit = $state('gdp');
+
+	const testUnitOptions = [
+		{ value: 'gdp', label: '% of GDP' },
+		{ value: 'usd-market', label: 'US$ @ market exchange rates' },
+		{ value: 'usd-ppp', label: 'US$ @ PPP exchange rates' }
+	];
 </script>
 
 <svelte:head>
@@ -26,6 +35,26 @@
 				<img src="/icons/external-link.svg" alt="" />
 			</Button>
 
+			<div class="select-test">
+				<Select
+					label="Unit"
+					options={testUnitOptions}
+					value={testUnit}
+					onchange={(value) => {
+						testUnit = value;
+					}}
+				/>
+
+				<p>Selected: {testUnit}</p>
+
+				<Select
+					label="Unit"
+					options={testUnitOptions}
+					value={testUnit}
+					disabled
+					helper="Unit is not applicable when “Scaled to 100%” is selected"
+				/>
+			</div>
 			<section class="instructions">
 				<h2 class="text-body-1-regular">How to use this tool</h2>
 				<p class="text-body-2-regular">
@@ -118,5 +147,13 @@
 		outline: 1px solid var(--color-white);
 		outline-offset: -2px;
 		box-shadow: 0 0 0 1px var(--color-neutral-600);
+	}
+
+	.select-test {
+		display: flex;
+		flex-direction: column;
+		align-items: flex-start;
+		gap: 1rem;
+		margin: 2rem 0;
 	}
 </style>
