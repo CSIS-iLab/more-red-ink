@@ -14,58 +14,72 @@
 -->
 
 <script>
-  import Credits from '$lib/components/layout/Credits.svelte';
+	import Credits from '$lib/components/layout/Credits.svelte';
 </script>
 
 <svelte:head>
-  <title>Home | More Red Ink Calculator</title>
+	<title>Home | More Red Ink Calculator</title>
 </svelte:head>
 
-<div class="home">
-  <h1>More Red Ink<br />Calculator</h1>
+<div class="home-page">
+	<div class="home">
+		<h1>More Red Ink<br />Calculator</h1>
 
-  <div class="home__content">
-    <p>
-      Short summary of the More Red Ink report and its relationship to this tool. Explain that
-      this tool will help the user calculate an intellectually defensible industrial policy
-      spending estimate, why the estimate is valuable and what the estimate can help the user
-      achieve...
-    </p>
+		<div class="home__content">
+			<p>
+				Short summary of the More Red Ink report and its relationship to this tool. Explain that
+				this tool will help the user calculate an intellectually defensible industrial policy
+				spending estimate, why the estimate is valuable and what the estimate can help the user
+				achieve...
+			</p>
 
-    <a class="report-link" href="/" target="_blank" rel="noreferrer">
-      Read the report
-      <span aria-hidden="true">↗</span>
-    </a>
+			<a class="report-link" href="/" target="_blank" rel="noreferrer">
+				Read the report
+				<span aria-hidden="true">↗</span>
+			</a>
 
-    <section class="instructions">
-      <h2>How to use this tool</h2>
+			<section class="instructions">
+				<h2>How to use this tool</h2>
 
-      <p>
-        Instructions for use and mention expected outcomes, e.g. “Use this tool to calculate an
-        industrial policy spending estimate for China and 7 other economies – Brazil, France,
-        Germany, Japan, South Korea, Taiwan, and the United States. You can make choices about the
-        assumptions that will go into the estimate and generate charts for comparison.”
-      </p>
-    </section>
+				<p>
+					Instructions for use and mention expected outcomes, e.g. “Use this tool to calculate an
+					industrial policy spending estimate for China and 7 other economies – Brazil, France,
+					Germany, Japan, South Korea, Taiwan, and the United States. You can make choices about the
+					assumptions that will go into the estimate and generate charts for comparison.”
+				</p>
+			</section>
 
-    <p class="mode-prompt">Choose a mode to start.</p>
+			<p class="mode-prompt">Choose a mode to start.</p>
 
-    <div class="mode-options">
-      <a class="mode-option" href="/fast-track">
-        <strong>Fast Track</strong>
-        <span>
-          Short description about the option and why the user might want to pick this.
-        </span>
-      </a>
+			<div class="mode-options">
+				<a class="mode-option" href="/fast-track">
+					<strong>Fast Track</strong>
+					<span>
+						Short description about the option and why the user might want to pick this.
+					</span>
+				</a>
 
-      <a class="mode-option" href="/user-driven">
-        <strong>User Driven</strong>
-        <span>
-          Short description about the option and why the user might want to pick this.
-        </span>
-      </a>
-    </div>
-  </div>
+				<a class="mode-option" href="/user-driven">
+					<strong>User Driven</strong>
+					<span>
+						Short description about the option and why the user might want to pick this.
+					</span>
+				</a>
+			</div>
+		</div>
+	</div>
+
+	<Credits />
 </div>
 
-<Credits />
+<style>
+	.home-page {
+		flex: 1;
+		display: flex;
+		flex-direction: column;
+	}
+
+	.home {
+		flex: 1;
+	}
+</style>
