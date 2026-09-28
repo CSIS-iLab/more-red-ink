@@ -1,10 +1,7 @@
 <script>
 	import { resolve } from '$app/paths';
 	import Button from '$lib/components/controls/Button.svelte';
-	import Checkbox from '$lib/components/controls/Checkbox.svelte';
 	import Credits from '$lib/components/layout/Credits.svelte';
-
-	let testChecked = $state(false);
 </script>
 
 <svelte:head>
@@ -121,12 +118,5 @@
 		outline: 1px solid var(--color-white);
 		outline-offset: -2px;
 		box-shadow: 0 0 0 1px var(--color-neutral-600);
-	}
-	.checkbox-test {
-		display: flex;
-		flex-direction: column;
-		align-items: flex-start;
-		gap: 1rem;
-		margin: 2rem 0;
 	}
 </style>
