@@ -43,7 +43,6 @@
 <div
 	class="select"
 	class:disabled
-	onkeydown={handleKeydown}
 	onfocusout={handleBlur}
 >
 	{#if label}
@@ -58,6 +57,7 @@
 			aria-expanded={isOpen}
 			aria-haspopup="listbox"
 			onclick={toggleOpen}
+      onkeydown={handleKeydown}
 			{...restProps}
 		>
 			<span>{displayValue}</span>
@@ -80,6 +80,7 @@
 						role="option"
 						aria-selected={option.value === value}
 						onclick={() => selectOption(option)}
+            onkeydown={handleKeydown}
 					>
 						{option.label}
 					</button>
