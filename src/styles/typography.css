@@ -1,0 +1,13 @@
+:root {
+	/* --------------------------------------------------- */
+	/* Font families                                       */
+	/* --------------------------------------------------- */
+
+	--font-hero: 'Google Sans Code', monospace;
+	--font-heading: 'Roboto', sans-serif;
+	--font-body: 'Roboto', sans-serif;
+	--font-metadata: 'Roboto Mono', monospace;
+	--font-data: 'Roboto', sans-serif;
+	--font-label: 'Roboto', sans-serif;
+	--font-accent: 'Roboto Mono', monospace;
+}

@@ -1,7 +1,17 @@
+@import './styles/colors.css';
+@import './styles/typography.css';
+
+/* --------------------------------------------------- */
+/* Global styles                                       */
+/* --------------------------------------------------- */
+
 html,
 body {
 	margin: 0;
 	padding: 0;
+	background-color: var(--color-sky-50);
+	color: var(--color-text-primary);
+	font-family: var(--font-body);
 }
 
 body {

@@ -1,0 +1,49 @@
+:root {
+  /* ------------------ color primitives ------------------ */
+	/* Sky */
+	--color-sky-50: #f0f9ff;
+	--color-sky-100: #dff2fe;
+	--color-sky-200: #b8e6fe;
+	--color-sky-300: #74d4ff;
+	--color-sky-400: #08beff;
+	--color-sky-500: #00a6f4;
+	--color-sky-600: #0084d1;
+	--color-sky-700: #0069a8;
+	--color-sky-800: #00598a;
+	--color-sky-900: #024a70;
+	--color-sky-950: #052f4a;
+
+	/* Slate */
+	--color-slate-50: #f8fafc;
+	--color-slate-100: #f1f5f9;
+	--color-slate-200: #e2e8f0;
+	--color-slate-300: #cad5e2;
+	--color-slate-400: #90a1b9;
+	--color-slate-500: #62748e;
+	--color-slate-600: #45556c;
+	--color-slate-700: #314158;
+	--color-slate-800: #1d293d;
+	--color-slate-900: #0f172b;
+	--color-slate-950: #020618;
+
+	/* Pure */
+	--color-white: #ffffff;
+	--color-black: #000000;
+	--color-error: #ff3c00;
+
+	/* Neutral */
+	--color-neutral-50: #fafafa;
+	--color-neutral-100: #f5f5f5;
+	--color-neutral-200: #e5e5e5;
+	--color-neutral-300: #d4d4d4;
+	--color-neutral-400: #a3a3a3;
+	--color-neutral-500: #737373;
+	--color-neutral-600: #525252;
+	--color-neutral-700: #404040;
+	--color-neutral-800: #262626;
+	--color-neutral-900: #171717;
+	--color-neutral-950: #0a0a0a;
+
+	/* --------------------- color roles -------------------- */
+	--color-text-primary: var(--color-slate-800);
+}
