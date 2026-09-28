@@ -15,6 +15,7 @@
 
 <script>
 	import { resolve } from '$app/paths';
+	import Button from '$lib/components/controls/Button.svelte';
 	import Credits from '$lib/components/layout/Credits.svelte';
 </script>
 
@@ -35,10 +36,10 @@
 			</p>
 
 			<!-- TODO: Replace with final More Red Ink report URL when provided. -->
-			<a class="report-link text-label-large" href={resolve('/')} target="_blank" rel="noreferrer">
+			<Button href={resolve('/')} variant="primary" target="_blank" rel="noreferrer">
 				Read the report
 				<img src="/icons/external-link.svg" alt="" />
-			</a>
+			</Button>
 
 			<section class="instructions">
 				<h2 class="text-body-1-regular">How to use this tool</h2>
@@ -98,25 +99,6 @@
 
 	.instructions {
 		margin-top: 3rem;
-	}
-
-	.report-link {
-		display: inline-flex;
-		align-items: center;
-		justify-content: center;
-		gap: 0.5rem;
-		min-height: 3rem;
-		padding: 0 1rem;
-		border: 1px solid currentColor;
-		border-radius: 0.25rem;
-		color: inherit;
-		text-decoration: none;
-	}
-
-	.report-link img {
-		width: 1.5rem;
-		height: 1.5rem;
-		flex-shrink: 0;
 	}
 
 	.mode-options {

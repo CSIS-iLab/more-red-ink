@@ -1,5 +1,6 @@
 <script>
 	let {
+		href,
 		type = 'button',
 		variant = 'primary',
 		disabled = false,
@@ -9,20 +10,37 @@
 	} = $props();
 </script>
 
-<button
-	{type}
-	{disabled}
-	{onclick}
-	class:primary={variant === 'primary'}
-	class:secondary={variant === 'secondary'}
-	class="text-label-large"
-	{...restProps}
->
-	{@render children?.()}
-</button>
+{#if href}
+	<!-- eslint-disable svelte/no-navigation-without-resolve -->
+	<a
+		{href}
+		{onclick}
+		aria-disabled={disabled || undefined}
+		class:primary={variant === 'primary'}
+		class:secondary={variant === 'secondary'}
+		class:disabled
+		class="action text-label-large"
+		{...restProps}
+	>
+		{@render children?.()}
+	</a>
+	<!-- eslint-enable svelte/no-navigation-without-resolve -->
+{:else}
+	<button
+		{type}
+		{disabled}
+		{onclick}
+		class:primary={variant === 'primary'}
+		class:secondary={variant === 'secondary'}
+		class="action text-label-large"
+		{...restProps}
+	>
+		{@render children?.()}
+	</button>
+{/if}
 
 <style>
-	button {
+	.action {
 		display: inline-flex;
 		align-items: center;
 		justify-content: center;
@@ -32,6 +50,7 @@
 		border: 1px solid transparent;
 		border-radius: 0.25rem;
 		font: inherit;
+		text-decoration: none;
 		cursor: pointer;
 		transition:
 			background-color 0.3s ease,
@@ -43,11 +62,11 @@
 		color: var(--color-cta-text-primary);
 	}
 
-	.primary:hover:not(:disabled) {
+	.primary:hover:not(:disabled, .disabled) {
 		background: var(--color-cta-hover);
 	}
 
-	.primary:active:not(:disabled) {
+	.primary:active:not(:disabled, .disabled) {
 		background: var(--color-cta-pressed);
 	}
 
@@ -57,12 +76,17 @@
 		color: inherit;
 	}
 
-	button:disabled {
+	.action:disabled,
+	.action.disabled {
 		cursor: not-allowed;
 		opacity: 0.5;
 	}
 
-	button:focus-visible {
+	a.disabled {
+		pointer-events: none;
+	}
+
+	.action:focus-visible {
 		outline: 1px solid var(--color-white);
 		outline-offset: -2px;
 		box-shadow: 0 0 0 1px var(--color-neutral-600);
