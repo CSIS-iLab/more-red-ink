@@ -14,6 +14,7 @@
 -->
 
 <script>
+	import { resolve } from '$app/paths';
 	import Credits from '$lib/components/layout/Credits.svelte';
 </script>
 
@@ -33,7 +34,8 @@
 				achieve...
 			</p>
 
-			<a class="report-link text-label-large" href="/" target="_blank" rel="noreferrer">
+			<!-- TODO: Replace with final More Red Ink report URL when provided. -->
+			<a class="report-link text-label-large" href={resolve('/')} target="_blank" rel="noreferrer">
 				Read the report
 				<img src="/icons/external-link.svg" alt="" />
 			</a>
@@ -51,14 +53,14 @@
 			<p class="text-body-2-regular">Choose a mode to start.</p>
 
 			<div class="mode-options">
-				<a class="mode-option" href="/fast-track">
+				<a class="mode-option" href={resolve('/fast-track')}>
 					<span class="text-heading-3">Fast Track</span>
 					<span class="text-body-3-regular">
 						Short description about the option and why the user might want to pick this.
 					</span>
 				</a>
 
-				<a class="mode-option" href="/user-driven">
+				<a class="mode-option" href={resolve('/user-driven')}>
 					<span class="text-heading-3">User Driven</span>
 					<span class="text-body-3-regular">
 						Short description about the option and why the user might want to pick this.
@@ -94,6 +96,10 @@
 		width: 100%;
 	}
 
+	.instructions {
+		margin-top: 3rem;
+	}
+
 	.report-link {
 		display: inline-flex;
 		align-items: center;
@@ -117,12 +123,14 @@
 		display: grid;
 		grid-template-columns: repeat(2, minmax(0, 1fr));
 		gap: 1.5rem;
+		margin-top: 3rem;
 	}
 
 	.mode-option {
 		display: flex;
 		flex-direction: column;
 		gap: 1rem;
+		min-height: 9.75rem;
 		padding: 1.5rem;
 		border-radius: 0.5rem;
 		background: var(--color-cta-enabled);
