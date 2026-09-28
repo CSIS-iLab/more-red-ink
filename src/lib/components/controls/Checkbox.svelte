@@ -1,16 +1,49 @@
-<!--
-  Checkbox
+<script>
+	let { label, checked = false, disabled = false, onchange, ...restProps } = $props();
+</script>
 
-  Reusable checkbox control.
+<label class="checkbox" class:disabled>
+	<input type="checkbox" {checked} {disabled} {onchange} {...restProps} />
 
-  Responsibilities:
-  - Provide consistent checkbox markup and styling.
-  - Associate the checkbox with its visible label.
-  - Support checked and disabled states.
+	<span class="text-body-2-regular">{label}</span>
+</label>
 
-  Implementation notes:
-  - Keep chart- and assumption-specific logic out of this component.
-  - The parent component owns the value and determines when the control
-    should be enabled or disabled.
-  - Preserve native checkbox semantics and accessibility.
--->
+<style>
+	.checkbox {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.75rem;
+		cursor: pointer;
+	}
+
+	input {
+		appearance: none;
+		width: 15px;
+		height: 15px;
+		margin: 0;
+		flex-shrink: 0;
+		border: 1px solid var(--color-neutral-500);
+		border-radius: 1px;
+		background: var(--color-white);
+		cursor: pointer;
+	}
+
+	input:checked {
+		border: 0;
+		background: url('/icons/check.svg') center / 15px 15px no-repeat;
+	}
+
+	input:focus-visible {
+		outline: 2px solid currentColor;
+		outline-offset: 2px;
+	}
+
+	.checkbox.disabled {
+		cursor: not-allowed;
+		opacity: 0.5;
+	}
+
+	.checkbox.disabled input {
+		cursor: not-allowed;
+	}
+</style>

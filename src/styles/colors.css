@@ -114,7 +114,7 @@
 	--color-radio-card-hover: var(--color-sky-100);
 	--color-radio-card-hover-border: var(--color-sky-500);
 	--color-radio-card-focus-border: var(--color-sky-400);
-	--color-radio-card-pressed: var(--color-sky-50);
+	--color-radio-card-pressed: var(--color-sky-100);
 	--color-radio-card-pressed-border: var(--color-sky-600);
 
 	/* Disabled */

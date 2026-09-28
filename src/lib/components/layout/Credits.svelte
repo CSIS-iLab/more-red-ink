@@ -18,9 +18,7 @@
 
 			<p class="text-body-3-regular">
 				Written by:
-				<CreditsLink href="https://www.csis.org/people/scott-kennedy">
-					Scott Kennedy
-				</CreditsLink>
+				<CreditsLink href="https://www.csis.org/people/scott-kennedy">Scott Kennedy</CreditsLink>
 				and
 				<CreditsLink href="https://www.csis.org/people/ryan-featherston">
 					Ryan Featherston
@@ -43,9 +41,7 @@
 			<div class="credits-list">
 				<p class="text-body-3-regular">
 					Data visualization by:
-					<CreditsLink href="https://www.csis.org/people/shannon-yeung">
-						Shannon Yeung
-					</CreditsLink>
+					<CreditsLink href="https://www.csis.org/people/shannon-yeung">Shannon Yeung</CreditsLink>
 				</p>
 
 				<p class="text-body-3-regular">
@@ -61,9 +57,7 @@
 
 				<p class="text-body-3-regular">
 					Page design by:
-					<CreditsLink href="https://www.csis.org/people/shannon-yeung">
-						Shannon Yeung
-					</CreditsLink>
+					<CreditsLink href="https://www.csis.org/people/shannon-yeung">Shannon Yeung</CreditsLink>
 				</p>
 			</div>
 		</div>
@@ -97,20 +91,17 @@
 	}
 
 	.credits a {
-		display: inline-block;
-		width: fit-content;
 		color: var(--color-sky-50);
-		text-decoration: none;
-		border-bottom: 1px solid currentColor;
-		transition:
-			color 0.3s ease,
-			border-color 0.3s ease;
+		text-decoration-line: underline;
+		text-decoration-thickness: 1px;
+		text-underline-offset: 0.15em;
+		text-decoration-skip-ink: auto;
+		transition: color 0.3s ease;
 	}
 
 	.credits a:hover,
 	.credits a:focus-visible {
 		color: var(--color-sky-300);
-		border-bottom-color: var(--color-sky-300);
 	}
 
 	.credits a:focus-visible {
