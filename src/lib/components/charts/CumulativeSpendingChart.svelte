@@ -4,7 +4,7 @@
 	import ChartContainer from './ChartContainer.svelte';
 	import Checkbox from '$lib/components/controls/Checkbox.svelte';
 	import Select from '$lib/components/controls/Select.svelte';
-	import { CHART_YEARS, UNIT_OPTIONS, getUnitOption } from '$lib/utils/chartOptions.js';
+	import { CHART_YEARS, COMPONENT_COLORS, UNIT_OPTIONS, getUnitOption } from '$lib/utils/chartOptions.js';
 	import { formatChartAxisValue, formatChartValue } from '$lib/utils/formatters.js';
 	import { spendingComponents } from '$lib/utils/spendingComponents.js';
 
@@ -46,6 +46,7 @@
 	let componentSeries = $derived(
 		componentEntries.map(([key, metadata]) => ({
 			name: metadata.label,
+      color: COMPONENT_COLORS[key],
 			data: cumulativeData.map((row) => row[key])
 		}))
 	);

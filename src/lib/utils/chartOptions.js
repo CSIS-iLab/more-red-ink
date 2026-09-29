@@ -1,3 +1,16 @@
+export const COMPONENT_COLORS = {
+	directSubsidies: '#006EA9',
+	otherTaxIncentives: '#86CDFB',
+	rdTaxIncentives: '#E4A839',
+	rdSupport: '#BA4896',
+	belowMarketCredit: '#246C54',
+	stateInvestmentFunds: '#E98CA0',
+	governmentProcurement: '#58C2A2',
+	soeNetPayables: '#D25342',
+	land: '#7F7575',
+	debtEquitySwaps: '#A69644'
+};
+
 export const CHART_YEARS = [2019, 2020, 2021, 2022, 2023, 2024];
 
 export const UNIT_OPTIONS = [
