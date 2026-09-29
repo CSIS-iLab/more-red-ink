@@ -9,7 +9,7 @@ export const UNIT_OPTIONS = [
 	{
 		value: 'usd_market',
 		label: 'USD (Market Exchange Rates)',
-		subtitle: 'USD, millions'
+		subtitle: 'US$ (Market Exchange Rates)'
 	},
 	{
 		value: 'usd_ppp',

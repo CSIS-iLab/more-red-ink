@@ -50,7 +50,8 @@
 		const chart = Highcharts.chart(chartElement, {
 			chart: {
 				type: 'column',
-				backgroundColor: 'transparent'
+				backgroundColor: 'transparent',
+				marginTop: 100
 			},
 
 			credits: {
