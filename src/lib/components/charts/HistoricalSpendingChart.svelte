@@ -4,10 +4,7 @@
 	import ChartContainer from './ChartContainer.svelte';
 	import Select from '$lib/components/controls/Select.svelte';
 	import { CHART_YEARS, UNIT_OPTIONS, getUnitOption } from '$lib/utils/chartOptions.js';
-  import {
-	formatChartAxisValue,
-	formatChartValue
-} from '$lib/utils/formatters.js';
+	import { formatChartAxisValue, formatChartValue } from '$lib/utils/formatters.js';
 
 	let { data = [], unit = 'pct_gdp', onUnitChange = () => {} } = $props();
 
@@ -74,9 +71,9 @@
 
 			subtitle: {
 				text: getUnitOption(unit)?.subtitle ?? '',
-				align: 'left'
+				align: 'left',
+				className: 'text-heading-3'
 			},
-
 			xAxis: {
 				categories: CHART_YEARS,
 				title: {

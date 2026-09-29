@@ -67,7 +67,8 @@
 
 			subtitle: {
 				text: getUnitOption(unit)?.subtitle ?? '',
-				align: 'left'
+				align: 'left',
+        				className: 'text-heading-3'
 			},
 
 			xAxis: {
