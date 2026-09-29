@@ -60,7 +60,7 @@
 			},
 
 			title: {
-				text: 'Annual Industrial Policy Spending by Country, 2019 - 2024',
+				text: 'Annual Industrial Policy Spending by Economy, 2019 - 2024',
 				align: 'left',
 				style: {
 					fontFamily: 'Roboto, sans-serif',

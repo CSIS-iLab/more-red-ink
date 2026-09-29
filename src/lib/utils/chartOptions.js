@@ -26,8 +26,8 @@ export const UNIT_OPTIONS = [
 	},
 	{
 		value: 'usd_ppp',
-		label: 'USD (PPP)',
-		subtitle: 'USD, millions (purchasing power parity)'
+		label: 'US$ (PPP)',
+		subtitle: 'US$, millions (purchasing power parity)'
 	}
 ];
 
