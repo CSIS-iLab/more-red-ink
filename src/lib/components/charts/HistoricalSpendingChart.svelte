@@ -73,7 +73,21 @@
 			return `${Highcharts.numberFormat(percentage, percentage % 1 === 0 ? 0 : 1)}%`;
 		}
 
-		return `$${Highcharts.numberFormat(value, 0)} million`;
+		return `$${Highcharts.numberFormat(value / 1000, 1)}B`;
+	}
+
+	function formatAxisValue(value) {
+		if (selectedUnit === 'pct_gdp') {
+			const percentage = value * 100;
+
+			return `${Highcharts.numberFormat(percentage, percentage % 1 === 0 ? 0 : 1)}%`;
+		}
+
+		if (Math.abs(value) >= 1000) {
+			return `$${Highcharts.numberFormat(value / 1000, 0)}B`;
+		}
+
+		return `$${Highcharts.numberFormat(value, 0)}B`;
 	}
 
 	$effect(() => {
@@ -116,11 +130,11 @@
 			yAxis: {
 				min: 0,
 				title: {
-					text: null
+					text: selectedUnit === 'pct_gdp' ? null : ''
 				},
 				labels: {
 					formatter() {
-						return formatValue(this.value);
+						return formatAxisValue(this.value);
 					}
 				}
 			},
@@ -148,6 +162,7 @@
 
 			plotOptions: {
 				spline: {
+					legendSymbol: 'rectangle',
 					marker: {
 						enabled: false,
 						symbol: 'circle',
