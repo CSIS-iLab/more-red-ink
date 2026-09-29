@@ -2,6 +2,7 @@
 	import Highcharts from 'highcharts';
 
 	import ChartContainer from './ChartContainer.svelte';
+	import Checkbox from '$lib/components/controls/Checkbox.svelte';
 	import Select from '$lib/components/controls/Select.svelte';
 	import { CHART_YEARS, UNIT_OPTIONS, getUnitOption } from '$lib/utils/chartOptions.js';
 	import { formatChartAxisValue, formatChartValue } from '$lib/utils/formatters.js';
@@ -32,6 +33,10 @@
 
 	function handleUnitChange(value) {
 		onUnitChange(value);
+	}
+
+	function handleComponentsChange(event) {
+		showComponents = event.currentTarget.checked;
 	}
 
 	$effect(() => {
@@ -99,7 +104,7 @@
 					pointPadding: 0.05,
 					groupPadding: 0.1,
 					dataLabels: {
-						enabled: true,
+						enabled: !showComponents,
 						inside: false,
 						crop: false,
 						overflow: 'allow',
@@ -132,6 +137,16 @@
 	{#snippet controls()}
 		<div class="cumulative-spending-chart__controls">
 			<Select label="Unit" options={UNIT_OPTIONS} value={unit} onchange={handleUnitChange} />
+
+			<div class="cumulative-spending-chart__options">
+				<span class="text-body-2-regular">Options</span>
+
+				<Checkbox
+					label="Show spending components"
+					checked={showComponents}
+					onchange={handleComponentsChange}
+				/>
+			</div>
 		</div>
 	{/snippet}
 
@@ -143,5 +158,17 @@
 		width: 100%;
 		max-width: 822px;
 		height: 677px;
+	}
+
+	.cumulative-spending-chart__controls {
+		display: flex;
+		flex-direction: column;
+		gap: 1.5rem;
+	}
+
+	.cumulative-spending-chart__options {
+		display: grid;
+		grid-template-columns: 140px 1fr;
+		align-items: center;
 	}
 </style>

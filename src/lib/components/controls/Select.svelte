@@ -42,7 +42,7 @@
 
 <div class="select" class:disabled onfocusout={handleBlur}>
 	{#if label}
-		<span class="select__label body-2-regular">{label}</span>
+		<span class="select__label text-body-2-regular">{label}</span>
 	{/if}
 
 	<div class="select__control">
