@@ -20,13 +20,17 @@
 	</div>
 
 	<div class="chart-container__actions">
-		<Button variant="primary">Share chart</Button>
+		<Button variant="primary">
+			Share chart
+			<img src="/icons/external-link.svg" alt="" aria-hidden="true" />
+		</Button>
 	</div>
 </section>
 
 <style>
 	.chart-container {
 		width: 100%;
+		max-width: 872px;
 		padding: 1.5rem;
 		border: 1px solid var(--color-neutral-300);
 		border-radius: 0.5rem;
@@ -49,11 +53,13 @@
 
 	.chart-container__content {
 		min-width: 0;
+    padding: 25px;
+		border: 1px solid var(--color-slate-200);
 	}
 
 	.chart-container__actions {
 		display: flex;
-		justify-content: flex-end;
+		justify-content: flex-start;
 		margin-top: 2rem;
 	}
 </style>

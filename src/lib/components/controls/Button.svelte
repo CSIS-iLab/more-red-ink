@@ -46,7 +46,7 @@
 		justify-content: center;
 		gap: 0.5rem;
 		min-height: 3rem;
-		padding: 0 1rem;
+		padding: 0 1.25rem;
 		border: 1px solid transparent;
 		border-radius: 0.25rem;
 		font: inherit;
