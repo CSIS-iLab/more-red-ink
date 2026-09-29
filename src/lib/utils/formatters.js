@@ -11,24 +11,34 @@
  * - Do not perform methodology calculations or mutate application state.
  */
 
-import Highcharts from 'highcharts';
+function formatNumber(value, decimals) {
+	return new Intl.NumberFormat('en-US', {
+		minimumFractionDigits: decimals,
+		maximumFractionDigits: decimals
+	}).format(value);
+}
+
+function getPercentage(value) {
+	return Math.round(value * 1000) / 10;
+}
 
 export function formatChartValue(value, unit) {
 	if (unit === 'pct_gdp') {
-		const percentage = value * 100;
+		const percentage = getPercentage(value);
+		const decimals = Number.isInteger(percentage) ? 0 : 1;
 
-		return `${Highcharts.numberFormat(percentage, percentage % 1 === 0 ? 0 : 1)}%`;
+		return `${formatNumber(percentage, decimals)}%`;
 	}
 
-	return `$${Highcharts.numberFormat(value, 1)}M`;
+	return `$${formatNumber(value, 1)}M`;
 }
 
 export function formatChartAxisValue(value, unit) {
 	if (unit === 'pct_gdp') {
-		const percentage = value * 100;
+		const percentage = getPercentage(value);
 
-		return `${Highcharts.numberFormat(percentage, percentage % 1 === 0 ? 0 : 1)}%`;
+		return `${formatNumber(percentage, 1)}%`;
 	}
 
-	return `$${Highcharts.numberFormat(value, 0)}M`;
+	return `$${formatNumber(value, 0)}M`;
 }

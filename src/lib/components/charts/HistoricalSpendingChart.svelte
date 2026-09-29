@@ -8,7 +8,6 @@
 	formatChartAxisValue,
 	formatChartValue
 } from '$lib/utils/formatters.js';
-	import { isUint16Array } from 'node:util/types';
 
 	let { data = [], unit = 'pct_gdp', onUnitChange = () => {} } = $props();
 
@@ -92,7 +91,7 @@
 				},
 				labels: {
 					formatter() {
-						return formatChartAxisValue(this.value, isUint16Array);
+						return formatChartAxisValue(this.value, unit);
 					}
 				}
 			},
