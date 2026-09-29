@@ -6,11 +6,13 @@
 	import Select from '$lib/components/controls/Select.svelte';
 	import { CHART_YEARS, UNIT_OPTIONS, getUnitOption } from '$lib/utils/chartOptions.js';
 	import { formatChartAxisValue, formatChartValue } from '$lib/utils/formatters.js';
+	import { spendingComponents } from '$lib/utils/spendingComponents.js';
 
 	let { data = [], unit = 'pct_gdp', onUnitChange = () => {} } = $props();
 
 	let chartElement;
 	let showComponents = $state(false);
+	const componentEntries = Object.entries(spendingComponents);
 
 	let filteredData = $derived(
 		data.filter((row) => row.unit === unit && CHART_YEARS.includes(row.year))
@@ -20,16 +22,33 @@
 		const totals = {};
 
 		for (const row of filteredData) {
-			totals[row.country] = (totals[row.country] ?? 0) + (row.total ?? 0);
+			if (!totals[row.country]) {
+				totals[row.country] = {
+					country: row.country,
+					total: 0
+				};
+
+				for (const [key] of componentEntries) {
+					totals[row.country][key] = 0;
+				}
+			}
+
+			totals[row.country].total += row.total ?? 0;
+
+			for (const [key] of componentEntries) {
+				totals[row.country][key] += row[key] ?? 0;
+			}
 		}
 
-		return Object.entries(totals)
-			.map(([country, total]) => ({
-				country,
-				total
-			}))
-			.sort((a, b) => a.total - b.total);
+		return Object.values(totals).sort((a, b) => a.total - b.total);
 	});
+
+	let componentSeries = $derived(
+		componentEntries.map(([key, metadata]) => ({
+			name: metadata.label,
+			data: cumulativeData.map((row) => row[key])
+		}))
+	);
 
 	function handleUnitChange(value) {
 		onUnitChange(value);
@@ -68,7 +87,7 @@
 			subtitle: {
 				text: getUnitOption(unit)?.subtitle ?? '',
 				align: 'left',
-        				className: 'text-heading-3'
+				className: 'text-heading-3'
 			},
 
 			xAxis: {
@@ -89,18 +108,18 @@
 					}
 				}
 			},
-
 			tooltip: {
 				enabled: showComponents,
 				formatter() {
-					return `<strong>${this.key}</strong><br>${formatChartValue(this.y, unit)}`;
+					return `<strong>${this.key}</strong><br>${this.series.name}: ${formatChartValue(this.y, unit)}`;
 				}
 			},
 			legend: {
-				enabled: false
+				enabled: showComponents
 			},
 			plotOptions: {
 				column: {
+					stacking: showComponents ? 'normal' : undefined,
 					borderRadius: 0,
 					pointPadding: 0.05,
 					groupPadding: 0.1,
@@ -119,13 +138,15 @@
 					}
 				}
 			},
-			series: [
-				{
-					name: 'Total spending',
-					color: '#325573',
-					data: cumulativeData.map((row) => row.total)
-				}
-			]
+			series: showComponents
+				? componentSeries
+				: [
+						{
+							name: 'Total spending',
+							color: '#325573',
+							data: cumulativeData.map((row) => row.total)
+						}
+					]
 		});
 
 		return () => {
