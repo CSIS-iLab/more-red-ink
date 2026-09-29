@@ -74,7 +74,7 @@
 {:else}
 	<HistoricalSpendingChart
 		data={resolvedData}
-		{historicalUnit}
+		unit={historicalUnit}
 		onUnitChange={(value) => {
 			historicalUnit = value;
 		}}

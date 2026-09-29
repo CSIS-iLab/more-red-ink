@@ -8,8 +8,8 @@ export const UNIT_OPTIONS = [
 	},
 	{
 		value: 'usd_market',
-		label: 'USD (Market Exchange Rates)',
-		subtitle: 'US$ (Market Exchange Rates)'
+		label: 'US$ (Market Exchange Rates)',
+		subtitle: 'US$, millions'
 	},
 	{
 		value: 'usd_ppp',

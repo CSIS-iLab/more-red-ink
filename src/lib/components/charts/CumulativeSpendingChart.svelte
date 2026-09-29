@@ -39,7 +39,17 @@
 			return `${Highcharts.numberFormat(percentage, percentage % 1 === 0 ? 0 : 1)}%`;
 		}
 
-		return `$${Highcharts.numberFormat(value / 1000, 1)}B`;
+		return `$${Highcharts.numberFormat(value, 1)}M`;
+	}
+
+	function formatAxisValue(value) {
+		if (unit === 'pct_gdp') {
+			const percentage = value * 100;
+
+			return `${Highcharts.numberFormat(percentage, percentage % 1 === 0 ? 0 : 1)}%`;
+		}
+
+		return `$${Highcharts.numberFormat(value, 0)}M`;
 	}
 
 	$effect(() => {
@@ -87,7 +97,7 @@
 				},
 				labels: {
 					formatter() {
-						return formatValue(this.value);
+						return formatAxisValue(this.value);
 					}
 				}
 			},
