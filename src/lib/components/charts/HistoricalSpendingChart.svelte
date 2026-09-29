@@ -98,7 +98,8 @@
 		const chart = Highcharts.chart(chartElement, {
 			chart: {
 				type: 'spline',
-				backgroundColor: 'transparent'
+				backgroundColor: 'transparent',
+        marginTop: 100
 			},
 
 			credits: {
@@ -107,7 +108,12 @@
 
 			title: {
 				text: 'Annual Industrial Policy Spending by Country, 2019 - 2024',
-				align: 'left'
+				align: 'left',
+				style: {
+					fontFamily: 'Roboto, sans-serif',
+					fontSize: '25.1px',
+					fontWeight: '500'
+				}
 			},
 
 			subtitle: {
@@ -203,6 +209,7 @@
 <style>
 	.historical-spending-chart__chart {
 		width: 100%;
-		min-height: 24rem;
+		max-width: 822px;
+		height: 677px;
 	}
 </style>
