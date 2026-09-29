@@ -201,10 +201,6 @@
 </ChartContainer>
 
 <style>
-	.historical-spending-chart__controls {
-		max-width: 18rem;
-	}
-
 	.historical-spending-chart__chart {
 		width: 100%;
 		min-height: 24rem;

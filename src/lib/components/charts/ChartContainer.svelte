@@ -5,7 +5,7 @@
 </script>
 
 <section class="chart-container">
-	<h2 class="chart-container__title text-heading-5">{title}</h2>
+	<h3 class="chart-container__title text-heading-3">{title}</h3>
 
 	{#if controls}
 		<div class="chart-container__controls">

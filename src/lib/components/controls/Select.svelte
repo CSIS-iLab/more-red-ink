@@ -40,13 +40,9 @@
 	}
 </script>
 
-<div
-	class="select"
-	class:disabled
-	onfocusout={handleBlur}
->
+<div class="select" class:disabled onfocusout={handleBlur}>
 	{#if label}
-		<span class="select__label text-label-large">{label}</span>
+		<span class="select__label body-2-regular">{label}</span>
 	{/if}
 
 	<div class="select__control">
@@ -57,7 +53,7 @@
 			aria-expanded={isOpen}
 			aria-haspopup="listbox"
 			onclick={toggleOpen}
-      onkeydown={handleKeydown}
+			onkeydown={handleKeydown}
 			{...restProps}
 		>
 			<span>{displayValue}</span>
@@ -80,7 +76,7 @@
 						role="option"
 						aria-selected={option.value === value}
 						onclick={() => selectOption(option)}
-            onkeydown={handleKeydown}
+						onkeydown={handleKeydown}
 					>
 						{option.label}
 					</button>
@@ -97,29 +93,27 @@
 <style>
 	.select {
 		display: flex;
-		flex-direction: column;
-		gap: 0.25rem;
+		align-items: center;
+		gap: 24px;
 	}
 
+	.select__label {
+		flex: 0 0 120px;
+	}
 	.select__control {
 		position: relative;
 	}
 
 	.select__trigger {
-		width: 100%;
-		min-width: 12rem;
-		height: 2.5rem;
+		width: 380px;
+		height: 48px;
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
 		gap: 1rem;
-		padding: 0 0.75rem;
-		border: 1px solid transparent;
-		background: var(--color-white);
-		color: inherit;
-		font: inherit;
-		text-align: left;
-		cursor: pointer;
+		padding: 0 1rem;
+		border: 1px solid var(--color-slate-200);
+    background: transparent;
 	}
 
 	.select__trigger:hover:not(:disabled) {
