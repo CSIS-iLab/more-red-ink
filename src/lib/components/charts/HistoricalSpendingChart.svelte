@@ -1,26 +1,10 @@
-<!--
-  HistoricalSpendingChart
-
-  Historical spending visualization.
-
-  Responsibilities:
-  - Render the historical spending chart from the resolved estimate.
-  - Allow the user to select the displayed unit.
-  - Configure the Highcharts visualization for this view.
-
-  Implementation notes:
-  - Receive resolved estimate data rather than raw source data.
-  - Chart-specific filtering and presentation logic belongs here.
-  - Do not resolve methodology-specific spreadsheet fields here.
--->
-
 <script>
 	import Highcharts from 'highcharts';
 
 	import ChartContainer from './ChartContainer.svelte';
 	import Select from '$lib/components/controls/Select.svelte';
 
-	let { data = [] } = $props();
+	let { data = [], unit = 'pct_gdp', onUnitChange = () => {} } = $props();
 
 	const HISTORICAL_YEARS = [2019, 2020, 2021, 2022, 2023, 2024];
 
@@ -41,11 +25,10 @@
 		Brazil: '#5abe81'
 	};
 
-	let selectedUnit = $state('pct_gdp');
 	let chartElement;
 
 	let filteredData = $derived(
-		data.filter((row) => row.unit === selectedUnit && HISTORICAL_YEARS.includes(row.year))
+		data.filter((row) => row.unit === unit && HISTORICAL_YEARS.includes(row.year))
 	);
 
 	let countries = $derived([...new Set(filteredData.map((row) => row.country))]);
@@ -63,11 +46,11 @@
 	);
 
 	function handleUnitChange(value) {
-		selectedUnit = value;
+		onUnitChange(value);
 	}
 
 	function formatValue(value) {
-		if (selectedUnit === 'pct_gdp') {
+		if (unit === 'pct_gdp') {
 			const percentage = value * 100;
 
 			return `${Highcharts.numberFormat(percentage, percentage % 1 === 0 ? 0 : 1)}%`;
@@ -77,7 +60,7 @@
 	}
 
 	function formatAxisValue(value) {
-		if (selectedUnit === 'pct_gdp') {
+		if (unit === 'pct_gdp') {
 			const percentage = value * 100;
 
 			return `${Highcharts.numberFormat(percentage, percentage % 1 === 0 ? 0 : 1)}%`;
@@ -118,9 +101,9 @@
 
 			subtitle: {
 				text:
-					selectedUnit === 'pct_gdp'
+					unit === 'pct_gdp'
 						? 'As a percentage of GDP'
-						: selectedUnit === 'usd_market'
+						: unit === 'usd_market'
 							? 'USD, market exchange rate'
 							: 'USD, purchasing power parity',
 				align: 'left'
@@ -136,7 +119,7 @@
 			yAxis: {
 				min: 0,
 				title: {
-					text: selectedUnit === 'pct_gdp' ? null : ''
+					text: unit === 'pct_gdp' ? null : ''
 				},
 				labels: {
 					formatter() {
@@ -197,7 +180,7 @@
 			<Select
 				label="Unit"
 				options={UNIT_OPTIONS}
-				value={selectedUnit}
+				value={unit}
 				onchange={handleUnitChange}
 			/>
 		</div>
