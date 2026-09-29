@@ -9,6 +9,7 @@
 	let { data = [], unit = 'pct_gdp', onUnitChange = () => {} } = $props();
 
 	let chartElement;
+	let showComponents = $state(false);
 
 	let filteredData = $derived(
 		data.filter((row) => row.unit === unit && CHART_YEARS.includes(row.year))
@@ -84,6 +85,7 @@
 			},
 
 			tooltip: {
+				enabled: showComponents,
 				formatter() {
 					return `<strong>${this.key}</strong><br>${formatChartValue(this.y, unit)}`;
 				}
