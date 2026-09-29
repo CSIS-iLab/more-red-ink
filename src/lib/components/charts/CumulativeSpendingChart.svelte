@@ -4,7 +4,12 @@
 	import ChartContainer from './ChartContainer.svelte';
 	import Checkbox from '$lib/components/controls/Checkbox.svelte';
 	import Select from '$lib/components/controls/Select.svelte';
-	import { CHART_YEARS, COMPONENT_COLORS, UNIT_OPTIONS, getUnitOption } from '$lib/utils/chartOptions.js';
+	import {
+		CHART_YEARS,
+		COMPONENT_COLORS,
+		UNIT_OPTIONS,
+		getUnitOption
+	} from '$lib/utils/chartOptions.js';
 	import { formatChartAxisValue, formatChartValue } from '$lib/utils/formatters.js';
 	import { spendingComponents } from '$lib/utils/spendingComponents.js';
 
@@ -46,7 +51,7 @@
 	let componentSeries = $derived(
 		componentEntries.map(([key, metadata]) => ({
 			name: metadata.label,
-      color: COMPONENT_COLORS[key],
+			color: COMPONENT_COLORS[key],
 			data: cumulativeData.map((row) => row[key])
 		}))
 	);
@@ -111,8 +116,26 @@
 			},
 			tooltip: {
 				enabled: showComponents,
+				shared: true,
+				useHTML: true,
 				formatter() {
-					return `<strong>${this.key}</strong><br>${this.series.name}: ${formatChartValue(this.y, unit)}`;
+					const country = cumulativeData[this.x]?.country ?? '';
+
+					const rows = (this.points ?? []).map(
+						(point) => `
+			<div style="margin-top: 4px;">
+				<span style="color: ${point.color}">●</span>
+				${point.series.name}:
+				<strong>${formatChartValue(point.y, unit)}</strong>
+			</div>
+		`
+					);
+
+					return `
+		<div>
+<strong style="font-size: 16px;">${country}</strong>			${rows.join('')}
+		</div>
+	`;
 				}
 			},
 			legend: {
