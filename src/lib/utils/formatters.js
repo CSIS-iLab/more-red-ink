@@ -24,10 +24,9 @@ function getPercentage(value) {
 
 export function formatChartValue(value, unit) {
 	if (unit === 'pct_gdp') {
-		const percentage = getPercentage(value);
-		const decimals = Number.isInteger(percentage) ? 0 : 1;
+		const percentage = value * 100;
 
-		return `${formatNumber(percentage, decimals)}%`;
+		return `${formatNumber(percentage, 2)}%`;
 	}
 
 	return `$${formatNumber(value, 1)}M`;
