@@ -48,7 +48,7 @@
 	<div class="select__control">
 		<button
 			type="button"
-			class="select__trigger"
+			class="select__trigger text-body-2-regular"
 			{disabled}
 			aria-expanded={isOpen}
 			aria-haspopup="listbox"
@@ -70,7 +70,7 @@
 				{#each options as option (option.value)}
 					<button
 						type="button"
-						class="select__option"
+						class="select__option text-body-2-regular"
 						class:selected={option.value === value}
 						disabled={option.disabled ?? false}
 						role="option"
