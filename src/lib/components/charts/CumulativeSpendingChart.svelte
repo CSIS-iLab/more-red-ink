@@ -4,6 +4,7 @@
 	import ChartContainer from './ChartContainer.svelte';
 	import Select from '$lib/components/controls/Select.svelte';
 	import { CHART_YEARS, UNIT_OPTIONS, getUnitOption } from '$lib/utils/chartOptions.js';
+	import { formatChartAxisValue, formatChartValue } from '$lib/utils/formatters.js';
 
 	let { data = [], unit = 'pct_gdp', onUnitChange = () => {} } = $props();
 
@@ -30,26 +31,6 @@
 
 	function handleUnitChange(value) {
 		onUnitChange(value);
-	}
-
-	function formatValue(value) {
-		if (unit === 'pct_gdp') {
-			const percentage = value * 100;
-
-			return `${Highcharts.numberFormat(percentage, percentage % 1 === 0 ? 0 : 1)}%`;
-		}
-
-		return `$${Highcharts.numberFormat(value, 1)}M`;
-	}
-
-	function formatAxisValue(value) {
-		if (unit === 'pct_gdp') {
-			const percentage = value * 100;
-
-			return `${Highcharts.numberFormat(percentage, percentage % 1 === 0 ? 0 : 1)}%`;
-		}
-
-		return `$${Highcharts.numberFormat(value, 0)}M`;
 	}
 
 	$effect(() => {
@@ -97,14 +78,14 @@
 				},
 				labels: {
 					formatter() {
-						return formatAxisValue(this.value);
+						return formatChartAxisValue(this.value);
 					}
 				}
 			},
 
 			tooltip: {
 				formatter() {
-					return `<strong>${this.key}</strong><br>${formatValue(this.y)}`;
+					return `<strong>${this.key}</strong><br>${formatChartValue(this.y)}`;
 				}
 			},
 
