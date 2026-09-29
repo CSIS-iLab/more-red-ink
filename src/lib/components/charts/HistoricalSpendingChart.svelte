@@ -3,11 +3,9 @@
 
 	import ChartContainer from './ChartContainer.svelte';
 	import Select from '$lib/components/controls/Select.svelte';
-	import { UNIT_OPTIONS, getUnitOption } from '$lib/utils/unitOptions.js';
+	import { CHART_YEARS, UNIT_OPTIONS, getUnitOption } from '$lib/utils/chartOptions.js';
 
 	let { data = [], unit = 'pct_gdp', onUnitChange = () => {} } = $props();
-
-	const HISTORICAL_YEARS = [2019, 2020, 2021, 2022, 2023, 2024];
 
 	const COUNTRY_COLORS = {
 		China: '#c3453d',
@@ -23,7 +21,7 @@
 	let chartElement;
 
 	let filteredData = $derived(
-		data.filter((row) => row.unit === unit && HISTORICAL_YEARS.includes(row.year))
+		data.filter((row) => row.unit === unit && CHART_YEARS.includes(row.year))
 	);
 
 	let countries = $derived([...new Set(filteredData.map((row) => row.country))]);
@@ -32,7 +30,7 @@
 		countries.map((country) => ({
 			name: country,
 			color: COUNTRY_COLORS[country],
-			data: HISTORICAL_YEARS.map((year) => {
+			data: CHART_YEARS.map((year) => {
 				const row = filteredData.find((row) => row.country === country && row.year === year);
 
 				return row?.total ?? null;
@@ -100,7 +98,7 @@
 			},
 
 			xAxis: {
-				categories: HISTORICAL_YEARS,
+				categories: CHART_YEARS,
 				title: {
 					text: null
 				}
@@ -122,7 +120,7 @@
 				shared: true,
 				useHTML: true,
 				formatter() {
-					const year = HISTORICAL_YEARS[this.x];
+					const year = CHART_YEARS[this.x];
 					const lines = [`<strong>${year}</strong>`];
 
 					for (const point of this.points ?? []) {

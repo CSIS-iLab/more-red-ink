@@ -1,3 +1,5 @@
+export const CHART_YEARS = [2019, 2020, 2021, 2022, 2023, 2024];
+
 export const UNIT_OPTIONS = [
 	{
 		value: 'pct_gdp',

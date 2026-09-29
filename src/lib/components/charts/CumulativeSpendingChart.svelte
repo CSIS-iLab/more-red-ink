@@ -1,17 +1,134 @@
-<!--
-  CumulativeSpendingChart
+<script>
+	import Highcharts from 'highcharts';
 
-  Cumulative spending visualization.
+	import ChartContainer from './ChartContainer.svelte';
+	import Select from '$lib/components/controls/Select.svelte';
+	import { CHART_YEARS, UNIT_OPTIONS, getUnitOption } from '$lib/utils/chartOptions.js';
 
-  Responsibilities:
-  - Render cumulative spending from the resolved estimate.
-  - Manage this chart's unit and component display controls.
-  - Support component and 100%-scaled views where applicable.
-  - Configure the Highcharts visualization for this view.
+	let { data = [], unit = 'pct_gdp', onUnitChange = () => {} } = $props();
 
-  Implementation notes:
-  - Receive resolved estimate data rather than raw source data.
-  - This chart's display settings are independent from other charts.
-  - Chart-specific aggregation and presentation logic belongs here.
-  - Do not resolve methodology-specific spreadsheet fields here.
--->
+	let chartElement;
+
+	let filteredData = $derived(
+		data.filter((row) => row.unit === unit && CHART_YEARS.includes(row.year))
+	);
+
+	let cumulativeData = $derived.by(() => {
+		const totals = {};
+
+		for (const row of filteredData) {
+			totals[row.country] = (totals[row.country] ?? 0) + (row.total ?? 0);
+		}
+
+		return Object.entries(totals)
+			.map(([country, total]) => ({
+				country,
+				total
+			}))
+			.sort((a, b) => a.total - b.total);
+	});
+
+	function handleUnitChange(value) {
+		onUnitChange(value);
+	}
+
+	function formatValue(value) {
+		if (unit === 'pct_gdp') {
+			const percentage = value * 100;
+
+			return `${Highcharts.numberFormat(percentage, percentage % 1 === 0 ? 0 : 1)}%`;
+		}
+
+		return `$${Highcharts.numberFormat(value / 1000, 1)}B`;
+	}
+
+	$effect(() => {
+		if (!chartElement) {
+			return;
+		}
+
+		const chart = Highcharts.chart(chartElement, {
+			chart: {
+				type: 'column',
+				backgroundColor: 'transparent'
+			},
+
+			credits: {
+				enabled: false
+			},
+
+			title: {
+				text: 'Cumulative Industrial Policy Spending by Country, 2019 - 2024',
+				align: 'left',
+				style: {
+					fontFamily: 'Roboto, sans-serif',
+					fontSize: '25.1px',
+					fontWeight: '500'
+				}
+			},
+
+			subtitle: {
+				text: getUnitOption(unit)?.subtitle ?? '',
+				align: 'left'
+			},
+
+			xAxis: {
+				categories: cumulativeData.map((row) => row.country),
+				title: {
+					text: null
+				}
+			},
+
+			yAxis: {
+				min: 0,
+				title: {
+					text: null
+				},
+				labels: {
+					formatter() {
+						return formatValue(this.value);
+					}
+				}
+			},
+
+			tooltip: {
+				formatter() {
+					return `<strong>${this.key}</strong><br>${formatValue(this.y)}`;
+				}
+			},
+
+			legend: {
+				enabled: false
+			},
+
+			series: [
+				{
+					name: 'Total spending',
+					data: cumulativeData.map((row) => row.total)
+				}
+			]
+		});
+
+		return () => {
+			chart.destroy();
+		};
+	});
+</script>
+
+<ChartContainer title="Chart 2: Cumulative Spending, 2019-2024">
+	{#snippet controls()}
+		<div class="cumulative-spending-chart__controls">
+			<Select label="Unit" options={UNIT_OPTIONS} value={unit} onchange={handleUnitChange} />
+		</div>
+	{/snippet}
+
+	<div class="cumulative-spending-chart__chart" bind:this={chartElement}></div>
+</ChartContainer>
+
+<style>
+	.cumulative-spending-chart__chart {
+		width: 100%;
+		max-width: 822px;
+		height: 677px;
+	}
+</style>
