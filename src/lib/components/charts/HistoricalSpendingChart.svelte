@@ -99,7 +99,7 @@
 			chart: {
 				type: 'spline',
 				backgroundColor: 'transparent',
-        marginTop: 100
+				marginTop: 100
 			},
 
 			credits: {

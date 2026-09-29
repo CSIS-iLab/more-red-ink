@@ -53,7 +53,7 @@
 
 	.chart-container__content {
 		min-width: 0;
-    padding: 25px;
+		padding: 25px;
 		border: 1px solid var(--color-slate-200);
 	}
 

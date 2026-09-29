@@ -113,7 +113,7 @@
 		gap: 1rem;
 		padding: 0 1rem;
 		border: 1px solid var(--color-slate-200);
-    background: transparent;
+		background: transparent;
 	}
 
 	.select__trigger:hover:not(:disabled) {
