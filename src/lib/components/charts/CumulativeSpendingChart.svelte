@@ -88,14 +88,20 @@
 					return `<strong>${this.key}</strong><br>${formatChartValue(this.y)}`;
 				}
 			},
-
 			legend: {
 				enabled: false
 			},
-
+			plotOptions: {
+				column: {
+					borderRadius: 0,
+					pointPadding: 0.05,
+					groupPadding: 0.1
+				}
+			},
 			series: [
 				{
 					name: 'Total spending',
+					color: '#325573',
 					data: cumulativeData.map((row) => row.total)
 				}
 			]
