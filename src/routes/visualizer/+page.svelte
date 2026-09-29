@@ -13,4 +13,45 @@
   - Call calculateEstimate() once for the current assumptions.
   - Pass the same resolved estimate to each chart component.
   - Do not have individual charts independently calculate the estimate.
+
+  TEMPORARY:
+  - Issue #13 test harness for HistoricalSpendingChart.
+  - Uses the real source data and calculation layer.
+  - Replace with calculator-state integration in Issue #17.
 -->
+
+<script>
+	import { onMount } from 'svelte';
+
+	import HistoricalSpendingChart from '$lib/components/charts/HistoricalSpendingChart.svelte';
+	import { calculateEstimate } from '$lib/data/calculateEstimate.js';
+	import { loadData } from '$lib/data/loadData.js';
+
+	let resolvedData = $state([]);
+	let loading = $state(true);
+	let error = $state(null);
+
+	onMount(async () => {
+		try {
+			const sourceData = await loadData();
+
+			resolvedData = calculateEstimate(sourceData, {
+				mode: 'fastTrack',
+				fastTrackChoice: 'minimum'
+			});
+		} catch (err) {
+			console.error(err);
+			error = 'Unable to load chart data.';
+		} finally {
+			loading = false;
+		}
+	});
+</script>
+
+{#if loading}
+	<p>Loading chart…</p>
+{:else if error}
+	<p>{error}</p>
+{:else}
+	<HistoricalSpendingChart data={resolvedData} />
+{/if}
