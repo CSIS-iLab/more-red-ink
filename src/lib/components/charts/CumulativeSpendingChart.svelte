@@ -78,14 +78,14 @@
 				},
 				labels: {
 					formatter() {
-						return formatChartAxisValue(this.value);
+						return formatChartAxisValue(this.value, unit);
 					}
 				}
 			},
 
 			tooltip: {
 				formatter() {
-					return `<strong>${this.key}</strong><br>${formatChartValue(this.y)}`;
+					return `<strong>${this.key}</strong><br>${formatChartValue(this.y, unit)}`;
 				}
 			},
 			legend: {
