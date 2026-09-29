@@ -95,7 +95,20 @@
 				column: {
 					borderRadius: 0,
 					pointPadding: 0.05,
-					groupPadding: 0.1
+					groupPadding: 0.1,
+					dataLabels: {
+						enabled: true,
+						inside: false,
+						crop: false,
+						overflow: 'allow',
+						formatter() {
+							return formatChartValue(this.y, unit);
+						},
+						style: {
+							fontWeight: '600',
+							textOutline: 'none'
+						}
+					}
 				}
 			},
 			series: [
