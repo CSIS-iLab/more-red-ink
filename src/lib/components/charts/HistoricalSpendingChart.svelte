@@ -3,16 +3,11 @@
 
 	import ChartContainer from './ChartContainer.svelte';
 	import Select from '$lib/components/controls/Select.svelte';
+	import { UNIT_OPTIONS, getUnitOption } from '$lib/utils/unitOptions.js';
 
 	let { data = [], unit = 'pct_gdp', onUnitChange = () => {} } = $props();
 
 	const HISTORICAL_YEARS = [2019, 2020, 2021, 2022, 2023, 2024];
-
-	const UNIT_OPTIONS = [
-		{ value: 'pct_gdp', label: '% of GDP' },
-		{ value: 'usd_market', label: 'USD (market exchange rate)' },
-		{ value: 'usd_ppp', label: 'USD (PPP)' }
-	];
 
 	const COUNTRY_COLORS = {
 		China: '#c3453d',
@@ -100,12 +95,7 @@
 			},
 
 			subtitle: {
-				text:
-					unit === 'pct_gdp'
-						? 'As a percentage of GDP'
-						: unit === 'usd_market'
-							? 'USD, market exchange rate'
-							: 'USD, purchasing power parity',
+				text: getUnitOption(unit)?.subtitle ?? '',
 				align: 'left'
 			},
 
@@ -177,12 +167,7 @@
 <ChartContainer title="Chart 1: Historical Spending, 2019-2024">
 	{#snippet controls()}
 		<div class="historical-spending-chart__controls">
-			<Select
-				label="Unit"
-				options={UNIT_OPTIONS}
-				value={unit}
-				onchange={handleUnitChange}
-			/>
+			<Select label="Unit" options={UNIT_OPTIONS} value={unit} onchange={handleUnitChange} />
 		</div>
 	{/snippet}
 
