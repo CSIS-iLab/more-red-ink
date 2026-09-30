@@ -54,24 +54,24 @@
 		{/each}
 	</div>
 
-	<div class="fast-track-form__choices">
-		<ChoiceGroup
-			name="fastTrackChoice"
-			label={fastTrackOptions.label}
-			description={fastTrackOptions.description}
-			options={fastTrackOptions.options}
-			value={$calculatorState.fastTrackChoice}
-			onchange={handleChoiceChange}
-		/>
-
-		{#if showError}
-			<ErrorMessage>Complete your assumptions to view the Visualizer.</ErrorMessage>
-		{/if}
-	</div>
+	<!-- Fast Track has a single question, so it is invalid exactly when the estimate is incomplete. -->
+	<ChoiceGroup
+		name="fastTrackChoice"
+		label={fastTrackOptions.label}
+		description={fastTrackOptions.description}
+		options={fastTrackOptions.options}
+		value={$calculatorState.fastTrackChoice}
+		invalid={showError}
+		onchange={handleChoiceChange}
+	/>
 
 	<div class="fast-track-form__actions">
 		<!-- aria-disabled (not disabled) keeps the button clickable so it can explain what's missing. -->
 		<Button aria-disabled={!isComplete || undefined} onclick={handleNext}>Next: Visualizer</Button>
+
+		{#if showError}
+			<ErrorMessage>Complete your assumptions to view the Visualizer.</ErrorMessage>
+		{/if}
 	</div>
 </div>
 
@@ -101,14 +101,10 @@
 		line-height: 1.5;
 	}
 
-	.fast-track-form__choices {
-		display: flex;
-		flex-direction: column;
-		gap: 1rem;
-	}
-
 	.fast-track-form__actions {
 		display: flex;
-		justify-content: center;
+		flex-direction: column;
+		align-items: center;
+		gap: 0.75rem;
 	}
 </style>

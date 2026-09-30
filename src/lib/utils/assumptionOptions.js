@@ -34,6 +34,30 @@ export const assumptionsIntro = {
 };
 
 /**
+ * Sections that group the User Driven assumptions.
+ *
+ * Each assumption is placed in the section whose `chinaOnly` value
+ * matches its own `chinaOnly` flag.
+ */
+export const assumptionSections = [
+	{
+		key: 'chinaOnly',
+		chinaOnly: true,
+		label: 'Variables for China Only',
+		// TODO: Replace with final program copy.
+		description:
+			'Short description about why China has different variables and how they should be considered in the grand scheme of the industrial-policy...'
+	},
+	{
+		key: 'allEconomies',
+		chinaOnly: false,
+		label: 'Variables for Other Economies',
+		// TODO: Replace with final program copy.
+		description: 'Short description about variables that apply to all 8 economies.'
+	}
+];
+
+/**
  * Selectable assumptions used by the calculator.
  *
  * Each assumption defines its user-facing metadata, whether it is
@@ -156,7 +180,7 @@ export const assumptionOptions = {
 export const alwaysIncluded = {
 	label: 'Always Included: R&D Tax Incentives and R&D Support',
 	description:
-		'Two forms of support, R&D tax incentives and R&D support are core parts of industry policy for all sample economies and data form them is largely provided by the OECD. We therefore always include these and offer no choices for estimation.'
+		'R&D tax incentives and other kinds of R&D support are core parts of industry policy for all of the economies, with most data provided by the OECD. The Calculator always includes these and offers no alternative options for estimation.'
 };
 
 /**

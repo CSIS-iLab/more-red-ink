@@ -1,5 +1,6 @@
 <script>
 	import ChoiceCard from './ChoiceCard.svelte';
+	import ErrorMessage from '$lib/components/controls/ErrorMessage.svelte';
 
 	let {
 		name,
@@ -8,23 +9,25 @@
 		options = [],
 		value = '',
 		disabled = false,
+		invalid = false,
+		errorMessage = 'Input is required.',
 		onchange = () => {},
 		...restProps
 	} = $props();
 
 	const descriptionId = $derived(`${name}-description`);
+	const errorId = $derived(`${name}-error`);
+
+	let describedBy = $derived(
+		[description && descriptionId, invalid && errorId].filter(Boolean).join(' ') || undefined
+	);
 
 	function handleChange(newValue) {
 		onchange(newValue);
 	}
 </script>
 
-<fieldset
-	class="choice-group"
-	{disabled}
-	aria-describedby={description ? descriptionId : undefined}
-	{...restProps}
->
+<fieldset class="choice-group" {disabled} aria-describedby={describedBy} {...restProps}>
 	{#if label}
 		<legend class="choice-group__label text-body-1-regular" class:has-description={description}>
 			{label}
@@ -44,6 +47,7 @@
 				value={option.value}
 				checked={value === option.value}
 				disabled={disabled || option.disabled}
+				{invalid}
 				onchange={handleChange}
 			>
 				<div class="choice-group__title text-label-large">
@@ -58,6 +62,12 @@
 			</ChoiceCard>
 		{/each}
 	</div>
+
+	{#if invalid}
+		<div class="choice-group__error">
+			<ErrorMessage id={errorId} live={false}>{errorMessage}</ErrorMessage>
+		</div>
+	{/if}
 </fieldset>
 
 <style>
@@ -88,6 +98,10 @@
 	.choice-group__options {
 		display: grid;
 		gap: 1rem;
+	}
+
+	.choice-group__error {
+		margin-top: 0.75rem;
 	}
 
 	.choice-group__title {
