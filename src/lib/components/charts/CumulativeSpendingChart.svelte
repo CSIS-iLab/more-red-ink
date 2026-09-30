@@ -13,10 +13,15 @@
 	import { formatChartAxisValue, formatChartValue } from '$lib/utils/formatters.js';
 	import { spendingComponents } from '$lib/utils/spendingComponents.js';
 
-	let { data = [], unit = 'pct_gdp', onUnitChange = () => {} } = $props();
+	let {
+		data = [],
+		unit = 'pct_gdp',
+		showComponents = false,
+		onUnitChange = () => {},
+		onShowComponentsChange = () => {}
+	} = $props();
 
 	let chartElement;
-	let showComponents = $state(false);
 	const componentEntries = Object.entries(spendingComponents);
 
 	let filteredData = $derived(
@@ -61,7 +66,7 @@
 	}
 
 	function handleComponentsChange(event) {
-		showComponents = event.currentTarget.checked;
+		onShowComponentsChange(event.currentTarget.checked);
 	}
 
 	$effect(() => {
