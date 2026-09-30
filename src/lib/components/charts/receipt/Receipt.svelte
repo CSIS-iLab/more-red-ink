@@ -163,9 +163,9 @@
 		<table class="receipt__table">
 			<thead>
 				<tr>
-					<th scope="col">Spending Component</th>
-					<th scope="col">Assumption for China</th>
-					<th scope="col">Assumption for Other Economies</th>
+					<th scope="col" class="text-label-x-small">Spending Component</th>
+					<th scope="col" class="text-label-x-small">Assumption for China</th>
+					<th scope="col" class="text-label-x-small">Assumption for Other Economies</th>
 				</tr>
 			</thead>
 
@@ -230,8 +230,9 @@
 	}
 
 	.receipt__table thead th {
-		font-weight: 600;
+    padding: 6px;
 		vertical-align: bottom;
+		color: var(--color-neutral-600);
 	}
 
 	.receipt__table thead th:first-child {
