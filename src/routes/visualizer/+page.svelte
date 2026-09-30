@@ -139,7 +139,7 @@
 
 	.visualizer__summary {
 		min-width: 0;
-		background-color: #eef8ff;
+		background-color: var(--color-bg);
 	}
 
 	.visualizer__summary-inner {
