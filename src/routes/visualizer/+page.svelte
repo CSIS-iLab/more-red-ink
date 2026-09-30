@@ -5,6 +5,7 @@
 	import CumulativeSpendingChart from '$lib/components/charts/CumulativeSpendingChart.svelte';
 	import YearSpecificChart from '$lib/components/charts/YearSpecificChart.svelte';
 	import EconomySpecificChart from '$lib/components/charts/EconomySpecificChart.svelte';
+	import Receipt from '$lib/components/charts/receipt/Receipt.svelte';
 	import { calculateEstimate } from '$lib/data/calculateEstimate.js';
 	import { loadData } from '$lib/data/loadData.js';
 
@@ -26,16 +27,24 @@
 	let loading = $state(true);
 	let error = $state(null);
 
-	// TEMPORARY: Load and resolve a Fast Track Minimum estimate so the Visualizer
-	// can be reviewed with real data. Replace with calculator-state integration in #17.
+	// TEMPORARY: User Driven assumptions for reviewing the Visualizer with real data.
+	// Replace with calculator-state integration in #17.
+	const testAssumptions = {
+		mode: 'userDriven',
+		userDrivenChoices: {
+			chinaEstimationApproach: 'industryBased',
+			belowMarketCredit: 'flow',
+			stateInvestmentFunds: 'oneHundredPercent',
+			procurementCoverage: 'totalGoods',
+			chinaOther: 'includeAll'
+		}
+	};
+
 	onMount(async () => {
 		try {
 			const sourceData = await loadData();
 
-			resolvedData = calculateEstimate(sourceData, {
-				mode: 'fastTrack',
-				fastTrackChoice: 'minimum'
-			});
+			resolvedData = calculateEstimate(sourceData, testAssumptions);
 		} catch (err) {
 			console.error(err);
 			error = 'Unable to load chart data.';
@@ -48,14 +57,9 @@
 <div class="visualizer">
 	<aside class="visualizer__summary">
 		<div class="visualizer__summary-inner">
-			<!-- TEMPORARY: Receipt.svelte will replace this placeholder in #11. -->
-			<div class="visualizer__receipt-placeholder">
-				<h2>Understanding Industrial Policy Spending</h2>
-
-				<p>
-					The estimate summary and assumptions used to calculate this estimate will appear here.
-				</p>
-			</div>
+			<!-- TEMPORARY: Preview Receipt with hardcoded User Driven assumptions.
+			Replace with calculator-state values during Visualizer integration in #17. -->
+			<Receipt mode={testAssumptions.mode} assumptions={testAssumptions.userDrivenChoices} />
 
 			<!-- TEMPORARY: Reset/navigation behavior will be implemented during Visualizer integration. -->
 			<button class="visualizer__new-estimate" type="button" disabled>
@@ -149,17 +153,6 @@
 		flex-direction: column;
 		gap: 2rem;
 		padding: 2.5rem;
-	}
-
-	.visualizer__receipt-placeholder {
-		display: flex;
-		flex-direction: column;
-		gap: 1rem;
-	}
-
-	.visualizer__receipt-placeholder h2,
-	.visualizer__receipt-placeholder p {
-		margin: 0;
 	}
 
 	.visualizer__new-estimate {
