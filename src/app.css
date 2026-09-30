@@ -12,6 +12,7 @@ body {
 	background-color: var(--color-sky-50);
 	color: var(--color-text-primary);
 	font-family: var(--font-body);
+  box-sizing: border-box;
 }
 
 body {

@@ -95,6 +95,7 @@
 		display: flex;
 		align-items: center;
 		gap: 24px;
+    width: 100%;
 	}
 
 	.select__label {
