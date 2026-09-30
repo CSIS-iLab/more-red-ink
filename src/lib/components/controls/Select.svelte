@@ -208,4 +208,25 @@
 	.select__helper {
 		margin: 0;
 	}
+
+	@media (max-width: 600px) {
+		.select {
+			flex-direction: column;
+			align-items: stretch;
+			gap: 8px;
+		}
+
+		.select__label {
+			flex: none;
+		}
+
+		.select__control,
+		.select__trigger {
+			width: 100%;
+		}
+
+		.select__trigger {
+			box-sizing: border-box;
+		}
+	}
 </style>
