@@ -183,7 +183,7 @@
 		align-items: center;
 		gap: 2rem;
 		padding: 2rem;
-		background-color: #d7e3f0;
+		background-color: var(--color-surface-primary);
 	}
 
 	.visualizer__status {
