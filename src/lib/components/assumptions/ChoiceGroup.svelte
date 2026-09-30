@@ -4,6 +4,7 @@
 	let {
 		name,
 		label,
+		description,
 		options = [],
 		value = '',
 		disabled = false,
@@ -11,16 +12,29 @@
 		...restProps
 	} = $props();
 
+	const descriptionId = $derived(`${name}-description`);
+
 	function handleChange(newValue) {
 		onchange(newValue);
 	}
 </script>
 
-<fieldset class="choice-group" {disabled} {...restProps}>
+<fieldset
+	class="choice-group"
+	{disabled}
+	aria-describedby={description ? descriptionId : undefined}
+	{...restProps}
+>
 	{#if label}
-		<legend class="choice-group__label text-body-1-regular">
+		<legend class="choice-group__label text-body-1-regular" class:has-description={description}>
 			{label}
 		</legend>
+	{/if}
+
+	{#if description}
+		<p id={descriptionId} class="choice-group__intro text-body-2-regular">
+			{description}
+		</p>
 	{/if}
 
 	<div class="choice-group__options">
@@ -58,6 +72,17 @@
 		margin-bottom: 1rem;
 		padding: 0;
 		color: var(--color-radio-card-text-primary);
+		line-height: 1.2;
+	}
+
+	.choice-group__label.has-description {
+		margin-bottom: 0.5rem;
+	}
+
+	.choice-group__intro {
+		margin: 0 0 1.5rem;
+		color: var(--color-text-primary);
+		line-height: 1.5;
 	}
 
 	.choice-group__options {

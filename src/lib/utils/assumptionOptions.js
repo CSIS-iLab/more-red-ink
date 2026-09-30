@@ -13,6 +13,27 @@
  */
 
 /**
+ * Introductory content shown at the top of the Fast Track and
+ * User Driven assumption forms.
+ *
+ * Both forms share a label. Descriptions are keyed by calculator mode
+ * and listed as paragraphs.
+ */
+export const assumptionsIntro = {
+	label: 'Choose Assumptions',
+	// TODO: Replace with final program copy.
+	descriptions: {
+		fastTrack: [
+			'Context for what makes up an industrial policy spending estimate and how the assumptions were curated. Highlight that enabling fair comparison between countries was a key objective...'
+		],
+		userDriven: [
+			'Context for what makes up an industrial policy spending estimate and how the assumptions were curated. Highlight that enabling fair comparison between countries was a key objective...',
+			'Introduce two decision scopes: assumptions that apply to China only and assumption that apply to all 8 economies...'
+		]
+	}
+};
+
+/**
  * Selectable assumptions used by the calculator.
  *
  * Each assumption defines its user-facing metadata, whether it is

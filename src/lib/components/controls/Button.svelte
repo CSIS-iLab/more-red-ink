@@ -62,11 +62,11 @@
 		color: var(--color-cta-text-primary);
 	}
 
-	.primary:hover:not(:disabled, .disabled) {
+	.primary:hover:not(:disabled, .disabled, [aria-disabled='true']) {
 		background: var(--color-cta-hover);
 	}
 
-	.primary:active:not(:disabled, .disabled) {
+	.primary:active:not(:disabled, .disabled, [aria-disabled='true']) {
 		background: var(--color-cta-pressed);
 	}
 
@@ -77,7 +77,8 @@
 	}
 
 	.action:disabled,
-	.action.disabled {
+	.action.disabled,
+	.action[aria-disabled='true'] {
 		cursor: not-allowed;
 		opacity: 0.5;
 	}
