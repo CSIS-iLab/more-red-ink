@@ -230,7 +230,7 @@
 	}
 
 	.receipt__table thead th {
-    padding: 6px;
+		padding: 6px;
 		vertical-align: bottom;
 		color: var(--color-neutral-600);
 	}
