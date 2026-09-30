@@ -101,5 +101,18 @@
 		.app-header__titles {
 			gap: 16px;
 		}
+
+		.app-header__app-name {
+			font-size: var(--font-size-xx-small);
+		}
+
+		.app-header__page-name {
+			font-size: var(--font-size-small);
+		}
+
+		.app-header__brand svg {
+			width: 60px;
+			height: auto;
+		}
 	}
 </style>
