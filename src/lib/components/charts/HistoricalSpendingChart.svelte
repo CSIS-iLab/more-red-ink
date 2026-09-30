@@ -3,16 +3,10 @@
 
 	import ChartContainer from './ChartContainer.svelte';
 	import Select from '$lib/components/controls/Select.svelte';
+	import { CHART_YEARS, UNIT_OPTIONS, getUnitOption } from '$lib/utils/chartOptions.js';
+	import { formatChartAxisValue, formatChartValue } from '$lib/utils/formatters.js';
 
 	let { data = [], unit = 'pct_gdp', onUnitChange = () => {} } = $props();
-
-	const HISTORICAL_YEARS = [2019, 2020, 2021, 2022, 2023, 2024];
-
-	const UNIT_OPTIONS = [
-		{ value: 'pct_gdp', label: '% of GDP' },
-		{ value: 'usd_market', label: 'USD (market exchange rate)' },
-		{ value: 'usd_ppp', label: 'USD (PPP)' }
-	];
 
 	const COUNTRY_COLORS = {
 		China: '#c3453d',
@@ -28,7 +22,7 @@
 	let chartElement;
 
 	let filteredData = $derived(
-		data.filter((row) => row.unit === unit && HISTORICAL_YEARS.includes(row.year))
+		data.filter((row) => row.unit === unit && CHART_YEARS.includes(row.year))
 	);
 
 	let countries = $derived([...new Set(filteredData.map((row) => row.country))]);
@@ -37,7 +31,7 @@
 		countries.map((country) => ({
 			name: country,
 			color: COUNTRY_COLORS[country],
-			data: HISTORICAL_YEARS.map((year) => {
+			data: CHART_YEARS.map((year) => {
 				const row = filteredData.find((row) => row.country === country && row.year === year);
 
 				return row?.total ?? null;
@@ -47,30 +41,6 @@
 
 	function handleUnitChange(value) {
 		onUnitChange(value);
-	}
-
-	function formatValue(value) {
-		if (unit === 'pct_gdp') {
-			const percentage = value * 100;
-
-			return `${Highcharts.numberFormat(percentage, percentage % 1 === 0 ? 0 : 1)}%`;
-		}
-
-		return `$${Highcharts.numberFormat(value / 1000, 1)}B`;
-	}
-
-	function formatAxisValue(value) {
-		if (unit === 'pct_gdp') {
-			const percentage = value * 100;
-
-			return `${Highcharts.numberFormat(percentage, percentage % 1 === 0 ? 0 : 1)}%`;
-		}
-
-		if (Math.abs(value) >= 1000) {
-			return `$${Highcharts.numberFormat(value / 1000, 0)}B`;
-		}
-
-		return `$${Highcharts.numberFormat(value, 0)}B`;
 	}
 
 	$effect(() => {
@@ -90,7 +60,7 @@
 			},
 
 			title: {
-				text: 'Annual Industrial Policy Spending by Country, 2019 - 2024',
+				text: 'Annual Industrial Policy Spending by Economy, 2019 - 2024',
 				align: 'left',
 				style: {
 					fontFamily: 'Roboto, sans-serif',
@@ -100,17 +70,12 @@
 			},
 
 			subtitle: {
-				text:
-					unit === 'pct_gdp'
-						? 'As a percentage of GDP'
-						: unit === 'usd_market'
-							? 'USD, market exchange rate'
-							: 'USD, purchasing power parity',
-				align: 'left'
+				text: getUnitOption(unit)?.subtitle ?? '',
+				align: 'left',
+				className: 'text-heading-3'
 			},
-
 			xAxis: {
-				categories: HISTORICAL_YEARS,
+				categories: CHART_YEARS,
 				title: {
 					text: null
 				}
@@ -119,11 +84,11 @@
 			yAxis: {
 				min: 0,
 				title: {
-					text: unit === 'pct_gdp' ? null : ''
+					text: null
 				},
 				labels: {
 					formatter() {
-						return formatAxisValue(this.value);
+						return formatChartAxisValue(this.value, unit);
 					}
 				}
 			},
@@ -132,12 +97,12 @@
 				shared: true,
 				useHTML: true,
 				formatter() {
-					const year = HISTORICAL_YEARS[this.x];
+					const year = CHART_YEARS[this.x];
 					const lines = [`<strong>${year}</strong>`];
 
 					for (const point of this.points ?? []) {
 						lines.push(
-							`<span style="color: ${point.color}"><strong>${point.series.name}:</strong> ${formatValue(point.y)}</span>`
+							`<span style="color: ${point.color}"><strong>${point.series.name}:</strong> ${formatChartValue(point.y, unit)}</span>`
 						);
 					}
 
@@ -177,12 +142,7 @@
 <ChartContainer title="Chart 1: Historical Spending, 2019-2024">
 	{#snippet controls()}
 		<div class="historical-spending-chart__controls">
-			<Select
-				label="Unit"
-				options={UNIT_OPTIONS}
-				value={unit}
-				onchange={handleUnitChange}
-			/>
+			<Select label="Unit" options={UNIT_OPTIONS} value={unit} onchange={handleUnitChange} />
 		</div>
 	{/snippet}
 

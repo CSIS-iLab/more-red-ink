@@ -42,13 +42,13 @@
 
 <div class="select" class:disabled onfocusout={handleBlur}>
 	{#if label}
-		<span class="select__label body-2-regular">{label}</span>
+		<span class="select__label text-body-2-regular">{label}</span>
 	{/if}
 
 	<div class="select__control">
 		<button
 			type="button"
-			class="select__trigger"
+			class="select__trigger text-body-2-regular"
 			{disabled}
 			aria-expanded={isOpen}
 			aria-haspopup="listbox"
@@ -70,7 +70,7 @@
 				{#each options as option (option.value)}
 					<button
 						type="button"
-						class="select__option"
+						class="select__option text-body-2-regular"
 						class:selected={option.value === value}
 						disabled={option.disabled ?? false}
 						role="option"
@@ -95,6 +95,7 @@
 		display: flex;
 		align-items: center;
 		gap: 24px;
+    width: 100%;
 	}
 
 	.select__label {
@@ -207,5 +208,26 @@
 
 	.select__helper {
 		margin: 0;
+	}
+
+	@media (max-width: 600px) {
+		.select {
+			flex-direction: column;
+			align-items: stretch;
+			gap: 8px;
+		}
+
+		.select__label {
+			flex: none;
+		}
+
+		.select__control,
+		.select__trigger {
+			width: 100%;
+		}
+
+		.select__trigger {
+			box-sizing: border-box;
+		}
 	}
 </style>
