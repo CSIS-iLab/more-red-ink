@@ -89,7 +89,7 @@
 			chart: {
 				type: 'column',
 				backgroundColor: 'transparent',
-				marginTop: 100
+				marginTop: 120
 			},
 
 			credits: {
