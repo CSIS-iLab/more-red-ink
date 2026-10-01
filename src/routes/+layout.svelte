@@ -2,7 +2,7 @@
 	import { onMount } from 'svelte';
 	import '../app.css';
 	import { page } from '$app/state';
-  import { loadData } from '$lib/data/loadData.js';
+	import { loadData } from '$lib/data/loadData.js';
 	import favicon from '$lib/assets/favicon.svg';
 	import AppHeader from '$lib/components/layout/AppHeader.svelte';
 	import Footer from '$lib/components/layout/Footer.svelte';
