@@ -217,6 +217,7 @@
 	title="Chart 3: Year-Specific Spending"
 	controls={frozen ? undefined : chartControls}
 	share={frozen ? undefined : share}
+  frozen={frozen}
 >
 	{#snippet chartControls()}
 		<div class="year-specific-chart__controls">

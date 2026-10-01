@@ -190,6 +190,7 @@
 	title="Chart 2: Cumulative Spending, 2019-2024"
 	controls={frozen ? undefined : chartControls}
 	share={frozen ? undefined : share}
+  frozen={frozen}
 >
 	{#snippet chartControls()}
 		<div class="cumulative-spending-chart__controls">
