@@ -36,24 +36,24 @@ const initialState = {
 	},
 
 	historical: {
-		unit: null
+		unit: 'pct_gdp'
 	},
 
 	cumulative: {
-		unit: null,
+		unit: 'pct_gdp',
 		showComponents: false
 	},
 
 	yearSpecific: {
-		year: null,
-		unit: null,
-		showComponents: false,
+		year: 2019,
+		unit: 'pct_gdp',
+		showComponents: true,
 		scaleTo100: false
 	},
 
 	economySpecific: {
-		economy: null,
-		unit: null,
+		economy: 'China',
+		unit: 'pct_gdp',
 		showComponents: false
 	}
 };

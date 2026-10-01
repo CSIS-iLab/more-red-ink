@@ -12,20 +12,6 @@
 	import { loadData } from '$lib/data/loadData.js';
 	import { calculatorState } from '$lib/stores/calculatorState.js';
 
-	let historicalUnit = $state('pct_gdp');
-
-	let cumulativeUnit = $state('pct_gdp');
-	let cumulativeShowComponents = $state(false);
-
-	let yearSpecificYear = $state(2019);
-	let yearSpecificUnit = $state('pct_gdp');
-	let yearSpecificShowComponents = $state(true);
-	let yearSpecificScaleTo100 = $state(false);
-
-	let economySpecificEconomy = $state('China');
-	let economySpecificUnit = $state('pct_gdp');
-	let economySpecificShowComponents = $state(true);
-
 	let resolvedData = $state([]);
 	let loading = $state(true);
 	let error = $state(null);
@@ -85,57 +71,57 @@
 		{:else}
 			<HistoricalSpendingChart
 				data={resolvedData}
-				unit={historicalUnit}
+				unit={$calculatorState.historical.unit}
 				onUnitChange={(value) => {
-					historicalUnit = value;
+					calculatorState.updateChartSettings('historical', { unit: value });
 				}}
 			/>
 
 			<CumulativeSpendingChart
 				data={resolvedData}
-				unit={cumulativeUnit}
-				showComponents={cumulativeShowComponents}
+				unit={$calculatorState.cumulative.unit}
+				showComponents={$calculatorState.cumulative.showComponents}
 				onUnitChange={(value) => {
-					cumulativeUnit = value;
+					calculatorState.updateChartSettings('cumulative', { unit: value });
 				}}
 				onShowComponentsChange={(value) => {
-					cumulativeShowComponents = value;
+					calculatorState.updateChartSettings('cumulative', { showComponents: value });
 				}}
 			/>
 
 			<YearSpecificChart
 				data={resolvedData}
-				year={yearSpecificYear}
-				unit={yearSpecificUnit}
-				showComponents={yearSpecificShowComponents}
-				scaleTo100={yearSpecificScaleTo100}
+				year={$calculatorState.yearSpecific.year}
+				unit={$calculatorState.yearSpecific.unit}
+				showComponents={$calculatorState.yearSpecific.showComponents}
+				scaleTo100={$calculatorState.yearSpecific.scaleTo100}
 				onYearChange={(value) => {
-					yearSpecificYear = value;
+					calculatorState.updateChartSettings('yearSpecific', { year: value });
 				}}
 				onUnitChange={(value) => {
-					yearSpecificUnit = value;
+					calculatorState.updateChartSettings('yearSpecific', { unit: value });
 				}}
 				onShowComponentsChange={(value) => {
-					yearSpecificShowComponents = value;
+					calculatorState.updateChartSettings('yearSpecific', { showComponents: value });
 				}}
 				onScaleTo100Change={(value) => {
-					yearSpecificScaleTo100 = value;
+					calculatorState.updateChartSettings('yearSpecific', { scaleTo100: value });
 				}}
 			/>
 
 			<EconomySpecificChart
 				data={resolvedData}
-				economy={economySpecificEconomy}
-				unit={economySpecificUnit}
-				showComponents={economySpecificShowComponents}
+				economy={$calculatorState.economySpecific.economy}
+				unit={$calculatorState.economySpecific.unit}
+				showComponents={$calculatorState.economySpecific.showComponents}
 				onEconomyChange={(value) => {
-					economySpecificEconomy = value;
+					calculatorState.updateChartSettings('economySpecific', { economy: value });
 				}}
 				onUnitChange={(value) => {
-					economySpecificUnit = value;
+					calculatorState.updateChartSettings('economySpecific', { unit: value });
 				}}
 				onShowComponentsChange={(value) => {
-					economySpecificShowComponents = value;
+					calculatorState.updateChartSettings('economySpecific', { showComponents: value });
 				}}
 			/>
 		{/if}
