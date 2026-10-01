@@ -53,12 +53,13 @@
 	{:else if error}
 		<p>{error}</p>
 	{:else if payload?.chartType === 'historical'}
-		<HistoricalSpendingChart data={resolvedData} unit={payload.displaySettings.unit} />
+		<HistoricalSpendingChart data={resolvedData} unit={payload.displaySettings.unit} frozen />
 	{:else if payload?.chartType === 'cumulative'}
 		<CumulativeSpendingChart
 			data={resolvedData}
 			unit={payload.displaySettings.unit}
 			showComponents={payload.displaySettings.showComponents}
+			frozen
 		/>
 	{:else if payload?.chartType === 'yearSpecific'}
 		<YearSpecificChart
@@ -67,6 +68,7 @@
 			unit={payload.displaySettings.unit}
 			showComponents={payload.displaySettings.showComponents}
 			scaleTo100={payload.displaySettings.scaleTo100}
+			frozen
 		/>
 	{:else if payload?.chartType === 'economySpecific'}
 		<EconomySpecificChart
@@ -74,6 +76,7 @@
 			economy={payload.displaySettings.economy}
 			unit={payload.displaySettings.unit}
 			showComponents={payload.displaySettings.showComponents}
+			frozen
 		/>
 	{:else}
 		<p>Unable to load shared chart.</p>

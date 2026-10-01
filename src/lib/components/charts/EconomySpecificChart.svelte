@@ -21,7 +21,8 @@
 		onEconomyChange = () => {},
 		onUnitChange = () => {},
 		onShowComponentsChange = () => {},
-		share = () => {}
+		share = () => {},
+		frozen = false
 	} = $props();
 
 	let chartElement;
@@ -193,8 +194,12 @@
 	});
 </script>
 
-<ChartContainer title="Chart 4: Economy-Specific Spending, 2019-2024" {share}>
-	{#snippet controls()}
+<ChartContainer
+	title="Chart 4: Economy-Specific Spending, 2019-2024"
+	controls={frozen ? undefined : chartControls}
+	share={frozen ? undefined : share}
+>
+	{#snippet chartControls()}
 		<div class="economy-specific-chart__controls">
 			<Select
 				label="Economy"

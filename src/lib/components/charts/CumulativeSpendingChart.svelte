@@ -19,7 +19,8 @@
 		showComponents = false,
 		onUnitChange = () => {},
 		onShowComponentsChange = () => {},
-		share = () => {}
+		share = () => {},
+		frozen = false
 	} = $props();
 
 	let chartElement;
@@ -185,8 +186,12 @@
 	});
 </script>
 
-<ChartContainer title="Chart 2: Cumulative Spending, 2019-2024" {share}>
-	{#snippet controls()}
+<ChartContainer
+	title="Chart 2: Cumulative Spending, 2019-2024"
+	controls={frozen ? undefined : chartControls}
+	share={frozen ? undefined : share}
+>
+	{#snippet chartControls()}
 		<div class="cumulative-spending-chart__controls">
 			<Select label="Unit" options={UNIT_OPTIONS} value={unit} onchange={handleUnitChange} />
 
