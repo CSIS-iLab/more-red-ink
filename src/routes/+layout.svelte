@@ -1,19 +1,8 @@
-<!--
-	Root application layout.
-
-	Responsibilities:
-	- Wrap all application routes in the shared site structure.
-	- Render shared application-level UI such as the header, credits,
-	  and footer.
-	- Provide the child route content.
-
-	Implementation notes:
-	- Keep route-specific application logic in the individual route pages.
--->
-
 <script>
+	import { onMount } from 'svelte';
 	import '../app.css';
 	import { page } from '$app/state';
+  import { loadData } from '$lib/data/loadData';
 	import favicon from '$lib/assets/favicon.svg';
 	import AppHeader from '$lib/components/layout/AppHeader.svelte';
 	import Footer from '$lib/components/layout/Footer.svelte';
@@ -30,6 +19,12 @@
 	};
 
 	let pageName = $derived(pageNames[page.url.pathname] ?? '');
+
+	onMount(() => {
+		loadData().catch((error) => {
+			console.error('Unable to preload source data.', error);
+		});
+	});
 </script>
 
 <svelte:head>
