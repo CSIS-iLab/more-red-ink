@@ -1,16 +1,81 @@
-<!--
-  Share
+<script>
+	import { onMount } from 'svelte';
 
-  Reconstructs and displays a shared estimate.
+	import HistoricalSpendingChart from '$lib/components/charts/HistoricalSpendingChart.svelte';
+	import { calculateEstimate } from '$lib/data/calculateEstimate.js';
+	import { loadData } from '$lib/data/loadData.js';
+	import CumulativeSpendingChart from '$lib/components/charts/CumulativeSpendingChart.svelte';
+	import YearSpecificChart from '$lib/components/charts/YearSpecificChart.svelte';
+	import EconomySpecificChart from '$lib/components/charts/EconomySpecificChart.svelte';
 
-  Responsibilities:
-  - Read and validate the shared calculator configuration from the URL.
-  - Reconstruct the corresponding estimate.
-  - Display the shared receipt and visualization.
-  - Allow the user to copy the share link or start a new estimate.
+	let payload = $state(null);
+	let resolvedData = $state([]);
+	let loading = $state(true);
+	let error = $state(null);
 
-  Implementation notes:
-  - Use parseShareUrl.js for URL parsing and validation.
-  - Recalculate the estimate from the shared assumptions and source data.
-  - Do not encode or trust calculated results from the URL.
--->
+	onMount(async () => {
+		try {
+			const storedPayload = sessionStorage.getItem('sharePayload');
+
+			if (!storedPayload) {
+				error = 'Unable to load shared chart.';
+				return;
+			}
+
+			payload = JSON.parse(storedPayload);
+
+			const sourceData = await loadData();
+
+			const estimateState =
+				payload.mode === 'fastTrack'
+					? {
+							mode: payload.mode,
+							fastTrackChoice: payload.assumptions
+						}
+					: {
+							mode: payload.mode,
+							userDrivenChoices: payload.assumptions
+						};
+
+			resolvedData = calculateEstimate(sourceData, estimateState);
+		} catch (err) {
+			console.error(err);
+			error = 'Unable to load shared chart.';
+		} finally {
+			loading = false;
+		}
+	});
+</script>
+
+<main class="share-page">
+	{#if loading}
+		<p>Loading shared chart…</p>
+	{:else if error}
+		<p>{error}</p>
+	{:else if payload?.chartType === 'historical'}
+		<HistoricalSpendingChart data={resolvedData} unit={payload.displaySettings.unit} />
+	{:else if payload?.chartType === 'cumulative'}
+		<CumulativeSpendingChart
+			data={resolvedData}
+			unit={payload.displaySettings.unit}
+			showComponents={payload.displaySettings.showComponents}
+		/>
+	{:else if payload?.chartType === 'yearSpecific'}
+		<YearSpecificChart
+			data={resolvedData}
+			year={payload.displaySettings.year}
+			unit={payload.displaySettings.unit}
+			showComponents={payload.displaySettings.showComponents}
+			scaleTo100={payload.displaySettings.scaleTo100}
+		/>
+	{:else if payload?.chartType === 'economySpecific'}
+		<EconomySpecificChart
+			data={resolvedData}
+			economy={payload.displaySettings.economy}
+			unit={payload.displaySettings.unit}
+			showComponents={payload.displaySettings.showComponents}
+		/>
+	{:else}
+		<p>Unable to load shared chart.</p>
+	{/if}
+</main>
