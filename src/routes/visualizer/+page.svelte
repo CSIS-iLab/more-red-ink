@@ -1,5 +1,7 @@
 <script>
 	import { onMount } from 'svelte';
+	import { goto } from '$app/navigation';
+	import { resolve } from '$app/paths';
 
 	import HistoricalSpendingChart from '$lib/components/charts/HistoricalSpendingChart.svelte';
 	import CumulativeSpendingChart from '$lib/components/charts/CumulativeSpendingChart.svelte';
@@ -8,43 +10,33 @@
 	import Receipt from '$lib/components/charts/receipt/Receipt.svelte';
 	import { calculateEstimate } from '$lib/data/calculateEstimate.js';
 	import { loadData } from '$lib/data/loadData.js';
-
-	let historicalUnit = $state('pct_gdp');
-
-	let cumulativeUnit = $state('pct_gdp');
-	let cumulativeShowComponents = $state(false);
-
-	let yearSpecificYear = $state(2019);
-	let yearSpecificUnit = $state('pct_gdp');
-	let yearSpecificShowComponents = $state(true);
-	let yearSpecificScaleTo100 = $state(false);
-
-	let economySpecificEconomy = $state('China');
-	let economySpecificUnit = $state('pct_gdp');
-	let economySpecificShowComponents = $state(true);
+	import { calculatorState } from '$lib/stores/calculatorState.js';
 
 	let resolvedData = $state([]);
 	let loading = $state(true);
 	let error = $state(null);
 
-	// TEMPORARY: User Driven assumptions for reviewing the Visualizer with real data.
-	// Replace with calculator-state integration in #17.
-	const testAssumptions = {
-		mode: 'userDriven',
-		userDrivenChoices: {
-			chinaEstimationApproach: 'industryBased',
-			belowMarketCredit: 'flow',
-			stateInvestmentFunds: 'oneHundredPercent',
-			procurementCoverage: 'totalGoods',
-			chinaOther: 'includeAll'
-		}
-	};
-
 	onMount(async () => {
+		calculatorState.initialize();
+
+		const state = $calculatorState;
+
+		if (!state.mode) {
+			await goto(resolve('/'));
+			return;
+		}
+
+		if (!calculatorState.isEstimateComplete(state)) {
+			const path = state.mode === 'fastTrack' ? '/fast-track' : '/user-driven';
+
+			await goto(resolve(`${path}?incomplete=true`));
+			return;
+		}
+
 		try {
 			const sourceData = await loadData();
 
-			resolvedData = calculateEstimate(sourceData, testAssumptions);
+			resolvedData = calculateEstimate(sourceData, state);
 		} catch (err) {
 			console.error(err);
 			error = 'Unable to load chart data.';
@@ -52,17 +44,24 @@
 			loading = false;
 		}
 	});
+
+	const handleNewEstimate = async () => {
+		calculatorState.reset();
+		await goto(resolve('/'));
+	};
 </script>
 
 <div class="visualizer">
 	<aside class="visualizer__summary">
 		<div class="visualizer__summary-inner">
-			<!-- TEMPORARY: Preview Receipt with hardcoded User Driven assumptions.
-			Replace with calculator-state values during Visualizer integration in #17. -->
-			<Receipt mode={testAssumptions.mode} assumptions={testAssumptions.userDrivenChoices} />
+			<Receipt
+				mode={$calculatorState.mode}
+				assumptions={$calculatorState.mode === 'fastTrack'
+					? $calculatorState.fastTrackChoice
+					: $calculatorState.userDrivenChoices}
+			/>
 
-			<!-- TEMPORARY: Reset/navigation behavior will be implemented during Visualizer integration. -->
-			<button class="visualizer__new-estimate" type="button" disabled>
+			<button class="visualizer__new-estimate" type="button" onclick={handleNewEstimate}>
 				Create a new estimate
 			</button>
 		</div>
@@ -76,57 +75,57 @@
 		{:else}
 			<HistoricalSpendingChart
 				data={resolvedData}
-				unit={historicalUnit}
+				unit={$calculatorState.historical.unit}
 				onUnitChange={(value) => {
-					historicalUnit = value;
+					calculatorState.updateChartSettings('historical', { unit: value });
 				}}
 			/>
 
 			<CumulativeSpendingChart
 				data={resolvedData}
-				unit={cumulativeUnit}
-				showComponents={cumulativeShowComponents}
+				unit={$calculatorState.cumulative.unit}
+				showComponents={$calculatorState.cumulative.showComponents}
 				onUnitChange={(value) => {
-					cumulativeUnit = value;
+					calculatorState.updateChartSettings('cumulative', { unit: value });
 				}}
 				onShowComponentsChange={(value) => {
-					cumulativeShowComponents = value;
+					calculatorState.updateChartSettings('cumulative', { showComponents: value });
 				}}
 			/>
 
 			<YearSpecificChart
 				data={resolvedData}
-				year={yearSpecificYear}
-				unit={yearSpecificUnit}
-				showComponents={yearSpecificShowComponents}
-				scaleTo100={yearSpecificScaleTo100}
+				year={$calculatorState.yearSpecific.year}
+				unit={$calculatorState.yearSpecific.unit}
+				showComponents={$calculatorState.yearSpecific.showComponents}
+				scaleTo100={$calculatorState.yearSpecific.scaleTo100}
 				onYearChange={(value) => {
-					yearSpecificYear = value;
+					calculatorState.updateChartSettings('yearSpecific', { year: value });
 				}}
 				onUnitChange={(value) => {
-					yearSpecificUnit = value;
+					calculatorState.updateChartSettings('yearSpecific', { unit: value });
 				}}
 				onShowComponentsChange={(value) => {
-					yearSpecificShowComponents = value;
+					calculatorState.updateChartSettings('yearSpecific', { showComponents: value });
 				}}
 				onScaleTo100Change={(value) => {
-					yearSpecificScaleTo100 = value;
+					calculatorState.updateChartSettings('yearSpecific', { scaleTo100: value });
 				}}
 			/>
 
 			<EconomySpecificChart
 				data={resolvedData}
-				economy={economySpecificEconomy}
-				unit={economySpecificUnit}
-				showComponents={economySpecificShowComponents}
+				economy={$calculatorState.economySpecific.economy}
+				unit={$calculatorState.economySpecific.unit}
+				showComponents={$calculatorState.economySpecific.showComponents}
 				onEconomyChange={(value) => {
-					economySpecificEconomy = value;
+					calculatorState.updateChartSettings('economySpecific', { economy: value });
 				}}
 				onUnitChange={(value) => {
-					economySpecificUnit = value;
+					calculatorState.updateChartSettings('economySpecific', { unit: value });
 				}}
 				onShowComponentsChange={(value) => {
-					economySpecificShowComponents = value;
+					calculatorState.updateChartSettings('economySpecific', { showComponents: value });
 				}}
 			/>
 		{/if}
@@ -136,7 +135,7 @@
 <style>
 	.visualizer {
 		display: grid;
-		grid-template-columns: minmax(300px, 34%) minmax(0, 1fr);
+		grid-template-columns: 392px minmax(0, 1fr);
 		align-items: stretch;
 		width: 100%;
 	}
@@ -162,11 +161,6 @@
 		border-radius: 3px;
 		background: transparent;
 		font: inherit;
-	}
-
-	.visualizer__new-estimate:disabled {
-		cursor: not-allowed;
-		opacity: 0.55;
 	}
 
 	.visualizer__charts {

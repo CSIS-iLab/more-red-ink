@@ -58,6 +58,15 @@ function normalizeRow(row) {
 	);
 }
 
-export async function loadData() {
-	return csv(DATA_URL, normalizeRow);
+let dataPromise;
+
+export function loadData() {
+	if (!dataPromise) {
+		dataPromise = csv(DATA_URL, normalizeRow).catch((error) => {
+			dataPromise = undefined;
+			throw error;
+		});
+	}
+
+	return dataPromise;
 }

@@ -151,9 +151,9 @@
 
 <section class="receipt">
 	<div class="receipt__intro">
-		<h2>Understanding Industrial Policy Spending</h2>
+		<h2 class="text-heading-3">Understanding Industrial Policy Spending</h2>
 
-		<p>
+		<p class="text-label-small">
 			The assumptions below were used to calculate the industrial policy spending estimate
 			represented in the charts.
 		</p>
@@ -199,13 +199,11 @@
 
 	.receipt__intro h2 {
 		margin: 0 0 0.75rem;
-		font-size: 2rem;
 		line-height: 1.15;
 	}
 
 	.receipt__intro p {
 		margin: 0;
-		font-size: 1rem;
 		line-height: 1.45;
 	}
 
