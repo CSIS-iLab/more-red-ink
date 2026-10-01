@@ -1,8 +1,9 @@
 <script>
-	let { children, ...restProps } = $props();
+	// live: announce the message to screen readers as soon as it appears.
+	let { live = true, children, ...restProps } = $props();
 </script>
 
-<p class="error-message text-label-small" role="alert" {...restProps}>
+<p class="error-message text-label-small" role={live ? 'alert' : undefined} {...restProps}>
 	<span class="error-message__icon" aria-hidden="true"></span>
 	<span>{@render children?.()}</span>
 </p>

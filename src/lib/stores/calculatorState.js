@@ -68,6 +68,15 @@ const isValidOption = (options, value) => {
 };
 
 /**
+ * Check whether a single User Driven choice has a valid value.
+ */
+const isChoiceValid = (key, value) => {
+	const assumption = assumptionOptions[key];
+
+	return Boolean(assumption) && isValidOption(assumption.options, value);
+};
+
+/**
  * Determine whether the current state represents a complete estimate.
  */
 const isEstimateComplete = (state) => {
@@ -76,11 +85,9 @@ const isEstimateComplete = (state) => {
 	}
 
 	if (state.mode === 'userDriven') {
-		return Object.keys(assumptionOptions).every((key) => {
-			const value = state.userDrivenChoices[key];
-
-			return isValidOption(assumptionOptions[key].options, value);
-		});
+		return Object.keys(assumptionOptions).every((key) =>
+			isChoiceValid(key, state.userDrivenChoices[key])
+		);
 	}
 
 	return false;
@@ -150,6 +157,27 @@ const createCalculatorState = () => {
 		}
 
 		initialized = true;
+	};
+
+	/**
+	 * Enter a calculator mode ('fastTrack' or 'userDriven').
+	 *
+	 * Entering the mode that is already active keeps the current estimate.
+	 * Entering a different mode, or starting with no active mode, begins a
+	 * new estimate with no assumption choices. Chart display settings are
+	 * always preserved.
+	 */
+	const startMode = (mode) => {
+		update((state) => {
+			if (state.mode === mode) return state;
+
+			return {
+				...state,
+				mode,
+				fastTrackChoice: null,
+				userDrivenChoices: getInitialState().userDrivenChoices
+			};
+		});
 	};
 
 	/**
@@ -224,10 +252,12 @@ const createCalculatorState = () => {
 	return {
 		subscribe,
 		initialize,
+		startMode,
 		updateValue,
 		updateUserDrivenChoices,
 		updateChartSettings,
 		reset,
+		isChoiceValid,
 		isEstimateComplete,
 
 		get initialized() {

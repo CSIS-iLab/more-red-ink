@@ -15,29 +15,13 @@
 -->
 
 <script>
-	import { get } from 'svelte/store';
 	import { page } from '$app/state';
 	import { resolve } from '$app/paths';
 	import FastTrackForm from '$lib/components/assumptions/FastTrackForm.svelte';
 	import { calculatorState } from '$lib/stores/calculatorState.js';
-	import { assumptionOptions } from '$lib/utils/assumptionOptions.js';
 
 	calculatorState.initialize();
-
-	// Entering Fast Track from another mode (or no mode) starts a new
-	// Fast Track estimate. Chart display settings are left untouched.
-	const { mode } = get(calculatorState);
-
-	if (mode !== 'fastTrack') {
-		if (mode === 'userDriven') {
-			calculatorState.updateUserDrivenChoices(
-				Object.fromEntries(Object.keys(assumptionOptions).map((key) => [key, null]))
-			);
-		}
-
-		calculatorState.updateValue('fastTrackChoice', null);
-		calculatorState.updateValue('mode', 'fastTrack');
-	}
+	calculatorState.startMode('fastTrack');
 
 	let showIncompleteMessage = $derived(page.url.searchParams.get('incomplete') === 'true');
 </script>

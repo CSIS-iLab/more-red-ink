@@ -4,13 +4,14 @@
 		value,
 		checked = false,
 		disabled = false,
+		invalid = false,
 		onchange = () => {},
 		children,
 		...restProps
 	} = $props();
 </script>
 
-<label class="choice-card" class:checked class:disabled>
+<label class="choice-card" class:checked class:disabled class:invalid>
 	<input
 		type="radio"
 		{name}
@@ -65,6 +66,12 @@
 
 	.choice-card:hover:not(.disabled) input {
 		border-color: var(--color-radio-card-hover-border);
+	}
+
+	/* Error */
+	.choice-card.invalid {
+		border-color: var(--color-radio-card-error-border);
+		background: var(--color-radio-card-error);
 	}
 
 	/* Selected / pressed */
