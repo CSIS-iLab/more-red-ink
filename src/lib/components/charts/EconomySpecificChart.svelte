@@ -20,7 +20,8 @@
 		showComponents = true,
 		onEconomyChange = () => {},
 		onUnitChange = () => {},
-		onShowComponentsChange = () => {}
+		onShowComponentsChange = () => {},
+		share = () => {}
 	} = $props();
 
 	let chartElement;
@@ -39,10 +40,7 @@
 	let filteredData = $derived(
 		data
 			.filter(
-				(row) =>
-					row.country === economy &&
-					row.unit === unit &&
-					CHART_YEARS.includes(row.year)
+				(row) => row.country === economy && row.unit === unit && CHART_YEARS.includes(row.year)
 			)
 			.sort((a, b) => a.year - b.year)
 	);
@@ -195,7 +193,7 @@
 	});
 </script>
 
-<ChartContainer title="Chart 4: Economy-Specific Spending, 2019-2024">
+<ChartContainer title="Chart 4: Economy-Specific Spending, 2019-2024" {share}>
 	{#snippet controls()}
 		<div class="economy-specific-chart__controls">
 			<Select
@@ -205,12 +203,7 @@
 				onchange={handleEconomyChange}
 			/>
 
-			<Select
-				label="Unit"
-				options={UNIT_OPTIONS}
-				value={unit}
-				onchange={handleUnitChange}
-			/>
+			<Select label="Unit" options={UNIT_OPTIONS} value={unit} onchange={handleUnitChange} />
 
 			<div class="economy-specific-chart__options">
 				<span class="text-body-2-regular">Options</span>

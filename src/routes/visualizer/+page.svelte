@@ -16,6 +16,10 @@
 	let loading = $state(true);
 	let error = $state(null);
 
+	const handleShare = (chartType) => {
+		console.log('Share chart:', chartType);
+	};
+
 	onMount(async () => {
 		calculatorState.initialize();
 
@@ -79,6 +83,7 @@
 				onUnitChange={(value) => {
 					calculatorState.updateChartSettings('historical', { unit: value });
 				}}
+				share={() => handleShare('historical')}
 			/>
 
 			<CumulativeSpendingChart
@@ -91,6 +96,7 @@
 				onShowComponentsChange={(value) => {
 					calculatorState.updateChartSettings('cumulative', { showComponents: value });
 				}}
+				share={() => handleShare('cumulative')}
 			/>
 
 			<YearSpecificChart
@@ -111,6 +117,7 @@
 				onScaleTo100Change={(value) => {
 					calculatorState.updateChartSettings('yearSpecific', { scaleTo100: value });
 				}}
+				share={() => handleShare('yearSpecific')}
 			/>
 
 			<EconomySpecificChart
@@ -127,6 +134,7 @@
 				onShowComponentsChange={(value) => {
 					calculatorState.updateChartSettings('economySpecific', { showComponents: value });
 				}}
+				share={() => handleShare('economySpecific')}
 			/>
 		{/if}
 	</main>

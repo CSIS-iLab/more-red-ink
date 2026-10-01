@@ -6,7 +6,7 @@
 	import { CHART_YEARS, UNIT_OPTIONS, getUnitOption } from '$lib/utils/chartOptions.js';
 	import { formatChartAxisValue, formatChartValue } from '$lib/utils/formatters.js';
 
-	let { data = [], unit = 'pct_gdp', onUnitChange = () => {} } = $props();
+	let { data = [], unit = 'pct_gdp', onUnitChange = () => {}, share = () => {} } = $props();
 
 	const COUNTRY_COLORS = {
 		China: '#c3453d',
@@ -139,7 +139,7 @@
 	});
 </script>
 
-<ChartContainer title="Chart 1: Historical Spending, 2019-2024">
+<ChartContainer title="Chart 1: Historical Spending, 2019-2024" {share}>
 	{#snippet controls()}
 		<div class="historical-spending-chart__controls">
 			<Select label="Unit" options={UNIT_OPTIONS} value={unit} onchange={handleUnitChange} />

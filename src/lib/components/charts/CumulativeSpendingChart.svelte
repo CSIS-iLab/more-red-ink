@@ -18,7 +18,8 @@
 		unit = 'pct_gdp',
 		showComponents = false,
 		onUnitChange = () => {},
-		onShowComponentsChange = () => {}
+		onShowComponentsChange = () => {},
+		share = () => {}
 	} = $props();
 
 	let chartElement;
@@ -184,7 +185,7 @@
 	});
 </script>
 
-<ChartContainer title="Chart 2: Cumulative Spending, 2019-2024">
+<ChartContainer title="Chart 2: Cumulative Spending, 2019-2024" {share}>
 	{#snippet controls()}
 		<div class="cumulative-spending-chart__controls">
 			<Select label="Unit" options={UNIT_OPTIONS} value={unit} onchange={handleUnitChange} />

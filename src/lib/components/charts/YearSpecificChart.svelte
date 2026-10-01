@@ -22,7 +22,8 @@
 		onYearChange = () => {},
 		onUnitChange = () => {},
 		onShowComponentsChange = () => {},
-		onScaleTo100Change = () => {}
+		onScaleTo100Change = () => {},
+    share = () => {}
 	} = $props();
 
 	let chartElement;
@@ -211,7 +212,7 @@
 	});
 </script>
 
-<ChartContainer title="Chart 3: Year-Specific Spending">
+<ChartContainer title="Chart 3: Year-Specific Spending" {share}>
 	{#snippet controls()}
 		<div class="year-specific-chart__controls">
 			<Select label="Year" options={yearOptions} value={year} onchange={handleYearChange} />

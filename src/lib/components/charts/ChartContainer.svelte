@@ -1,7 +1,7 @@
 <script>
 	import Button from '$lib/components/controls/Button.svelte';
 
-	let { title, controls, children } = $props();
+	let { title, controls, children, share = () => {} } = $props();
 </script>
 
 <section class="chart-container">
@@ -20,7 +20,7 @@
 	</div>
 
 	<div class="chart-container__actions">
-		<Button variant="primary">
+		<Button variant="primary" onclick={share}>
 			Share chart
 			<img src="/icons/external-link.svg" alt="" aria-hidden="true" />
 		</Button>
