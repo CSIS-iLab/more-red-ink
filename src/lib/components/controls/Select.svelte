@@ -106,7 +106,7 @@
 		position: relative;
 		flex: 1 1 380px;
 		min-width: 0;
-    max-width: 380px;
+		max-width: 380px;
 	}
 
 	.select__trigger {
@@ -225,12 +225,14 @@
 			flex: none;
 		}
 
-		.select__control,
-		.select__trigger {
+		.select__control {
+			flex: none;
 			width: 100%;
+			max-width: 380px;
 		}
 
 		.select__trigger {
+			width: 100%;
 			box-sizing: border-box;
 		}
 	}
