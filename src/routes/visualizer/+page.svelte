@@ -1,5 +1,7 @@
 <script>
 	import { onMount } from 'svelte';
+	import { goto } from '$app/navigation';
+	import { resolve } from '$app/paths';
 
 	import HistoricalSpendingChart from '$lib/components/charts/HistoricalSpendingChart.svelte';
 	import CumulativeSpendingChart from '$lib/components/charts/CumulativeSpendingChart.svelte';
@@ -8,6 +10,7 @@
 	import Receipt from '$lib/components/charts/receipt/Receipt.svelte';
 	import { calculateEstimate } from '$lib/data/calculateEstimate.js';
 	import { loadData } from '$lib/data/loadData.js';
+	import { calculatorState } from '$lib/stores/calculatorState.js';
 
 	let historicalUnit = $state('pct_gdp');
 
@@ -27,24 +30,27 @@
 	let loading = $state(true);
 	let error = $state(null);
 
-	// TEMPORARY: User Driven assumptions for reviewing the Visualizer with real data.
-	// Replace with calculator-state integration in #17.
-	const testAssumptions = {
-		mode: 'userDriven',
-		userDrivenChoices: {
-			chinaEstimationApproach: 'industryBased',
-			belowMarketCredit: 'flow',
-			stateInvestmentFunds: 'oneHundredPercent',
-			procurementCoverage: 'totalGoods',
-			chinaOther: 'includeAll'
-		}
-	};
-
 	onMount(async () => {
+		calculatorState.initialize();
+
+		const state = $calculatorState;
+
+		if (!state.mode) {
+			await goto(resolve('/'));
+			return;
+		}
+
+		if (!calculatorState.isEstimateComplete(state)) {
+			const path = state.mode === 'fastTrack' ? '/fast-track' : '/user-driven';
+
+			await goto(resolve(`${path}?incomplete=true`));
+			return;
+		}
+
 		try {
 			const sourceData = await loadData();
 
-			resolvedData = calculateEstimate(sourceData, testAssumptions);
+			resolvedData = calculateEstimate(sourceData, state);
 		} catch (err) {
 			console.error(err);
 			error = 'Unable to load chart data.';
@@ -57,9 +63,12 @@
 <div class="visualizer">
 	<aside class="visualizer__summary">
 		<div class="visualizer__summary-inner">
-			<!-- TEMPORARY: Preview Receipt with hardcoded User Driven assumptions.
-			Replace with calculator-state values during Visualizer integration in #17. -->
-			<Receipt mode={testAssumptions.mode} assumptions={testAssumptions.userDrivenChoices} />
+			<Receipt
+				mode={$calculatorState.mode}
+				assumptions={$calculatorState.mode === 'fastTrack'
+					? $calculatorState.fastTrackChoice
+					: $calculatorState.userDrivenChoices}
+			/>
 
 			<!-- TEMPORARY: Reset/navigation behavior will be implemented during Visualizer integration. -->
 			<button class="visualizer__new-estimate" type="button" disabled>
