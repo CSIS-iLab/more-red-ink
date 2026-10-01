@@ -16,8 +16,20 @@
 	let loading = $state(true);
 	let error = $state(null);
 
-	const handleShare = (chartType) => {
-		console.log('Share chart:', chartType);
+	const handleShare = async (chartType) => {
+		const state = $calculatorState;
+
+		const payload = {
+			mode: state.mode,
+			assumptions:
+				state.mode === 'fastTrack' ? state.fastTrackChoice : { ...state.userDrivenChoices },
+			chartType,
+			displaySettings: { ...state[chartType] }
+		};
+
+		sessionStorage.setItem('sharePayload', JSON.stringify(payload));
+
+		await goto(resolve('/share'));
 	};
 
 	onMount(async () => {
