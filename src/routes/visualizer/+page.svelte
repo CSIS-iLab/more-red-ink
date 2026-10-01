@@ -44,6 +44,11 @@
 			loading = false;
 		}
 	});
+
+	const handleNewEstimate = async () => {
+		calculatorState.reset();
+		await goto(resolve('/'));
+	};
 </script>
 
 <div class="visualizer">
@@ -56,8 +61,7 @@
 					: $calculatorState.userDrivenChoices}
 			/>
 
-			<!-- TEMPORARY: Reset/navigation behavior will be implemented during Visualizer integration. -->
-			<button class="visualizer__new-estimate" type="button" disabled>
+			<button class="visualizer__new-estimate" type="button" onclick={handleNewEstimate}>
 				Create a new estimate
 			</button>
 		</div>
@@ -157,11 +161,6 @@
 		border-radius: 3px;
 		background: transparent;
 		font: inherit;
-	}
-
-	.visualizer__new-estimate:disabled {
-		cursor: not-allowed;
-		opacity: 0.55;
 	}
 
 	.visualizer__charts {
