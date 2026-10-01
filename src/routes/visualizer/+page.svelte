@@ -135,7 +135,7 @@
 <style>
 	.visualizer {
 		display: grid;
-		grid-template-columns: minmax(300px, 34%) minmax(0, 1fr);
+		grid-template-columns: 392px minmax(0, 1fr);
 		align-items: stretch;
 		width: 100%;
 	}

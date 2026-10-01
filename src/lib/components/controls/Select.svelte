@@ -95,7 +95,8 @@
 		display: flex;
 		align-items: center;
 		gap: 24px;
-    width: 100%;
+		width: 100%;
+		min-width: 0;
 	}
 
 	.select__label {
@@ -103,10 +104,13 @@
 	}
 	.select__control {
 		position: relative;
+		flex: 1 1 380px;
+		min-width: 0;
+    max-width: 380px;
 	}
 
 	.select__trigger {
-		width: 380px;
+		width: 100%;
 		height: 48px;
 		display: flex;
 		align-items: center;
