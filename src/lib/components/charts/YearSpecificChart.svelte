@@ -24,7 +24,8 @@
 		onShowComponentsChange = () => {},
 		onScaleTo100Change = () => {},
 		share = () => {},
-		frozen = false
+		frozen = false,
+		showLegend = true
 	} = $props();
 
 	let chartElement;
@@ -171,7 +172,7 @@
 			},
 
 			legend: {
-				enabled: showComponents
+				enabled: showLegend && showComponents
 			},
 
 			plotOptions: {
@@ -217,7 +218,7 @@
 	title="Chart 3: Year-Specific Spending"
 	controls={frozen ? undefined : chartControls}
 	share={frozen ? undefined : share}
-  frozen={frozen}
+	{frozen}
 >
 	{#snippet chartControls()}
 		<div class="year-specific-chart__controls">

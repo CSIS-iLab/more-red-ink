@@ -149,7 +149,7 @@
 	title="Chart 1: Historical Spending, 2019-2024"
 	controls={frozen ? undefined : chartControls}
 	share={frozen ? undefined : share}
-  frozen = {frozen}
+	{frozen}
 >
 	{#snippet chartControls()}
 		<div class="historical-spending-chart__controls">

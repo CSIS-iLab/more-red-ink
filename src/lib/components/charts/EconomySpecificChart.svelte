@@ -22,7 +22,8 @@
 		onUnitChange = () => {},
 		onShowComponentsChange = () => {},
 		share = () => {},
-		frozen = false
+		frozen = false,
+		showLegend = true
 	} = $props();
 
 	let chartElement;
@@ -148,7 +149,7 @@
 			},
 
 			legend: {
-				enabled: showComponents
+				enabled: showLegend && showComponents
 			},
 
 			plotOptions: {
@@ -198,7 +199,7 @@
 	title="Chart 4: Economy-Specific Spending, 2019-2024"
 	controls={frozen ? undefined : chartControls}
 	share={frozen ? undefined : share}
-  frozen={frozen}
+	{frozen}
 >
 	{#snippet chartControls()}
 		<div class="economy-specific-chart__controls">
