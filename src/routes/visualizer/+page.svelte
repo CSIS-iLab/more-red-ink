@@ -16,6 +16,22 @@
 	let loading = $state(true);
 	let error = $state(null);
 
+	const handleShare = async (chartType) => {
+		const state = $calculatorState;
+
+		const payload = {
+			mode: state.mode,
+			assumptions:
+				state.mode === 'fastTrack' ? state.fastTrackChoice : { ...state.userDrivenChoices },
+			chartType,
+			displaySettings: { ...state[chartType] }
+		};
+
+		sessionStorage.setItem('sharePayload', JSON.stringify(payload));
+
+		await goto(resolve('/share'));
+	};
+
 	onMount(async () => {
 		calculatorState.initialize();
 
@@ -79,6 +95,7 @@
 				onUnitChange={(value) => {
 					calculatorState.updateChartSettings('historical', { unit: value });
 				}}
+				share={() => handleShare('historical')}
 			/>
 
 			<CumulativeSpendingChart
@@ -91,6 +108,7 @@
 				onShowComponentsChange={(value) => {
 					calculatorState.updateChartSettings('cumulative', { showComponents: value });
 				}}
+				share={() => handleShare('cumulative')}
 			/>
 
 			<YearSpecificChart
@@ -111,6 +129,7 @@
 				onScaleTo100Change={(value) => {
 					calculatorState.updateChartSettings('yearSpecific', { scaleTo100: value });
 				}}
+				share={() => handleShare('yearSpecific')}
 			/>
 
 			<EconomySpecificChart
@@ -127,6 +146,7 @@
 				onShowComponentsChange={(value) => {
 					calculatorState.updateChartSettings('economySpecific', { showComponents: value });
 				}}
+				share={() => handleShare('economySpecific')}
 			/>
 		{/if}
 	</main>

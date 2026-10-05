@@ -1,16 +1,303 @@
-<!--
-  Share
+<script>
+	import { onMount } from 'svelte';
+	import { goto } from '$app/navigation';
+	import { resolve } from '$app/paths';
 
-  Reconstructs and displays a shared estimate.
+	import HistoricalSpendingChart from '$lib/components/charts/HistoricalSpendingChart.svelte';
+	import { calculateEstimate } from '$lib/data/calculateEstimate.js';
+	import { loadData } from '$lib/data/loadData.js';
+	import CumulativeSpendingChart from '$lib/components/charts/CumulativeSpendingChart.svelte';
+	import YearSpecificChart from '$lib/components/charts/YearSpecificChart.svelte';
+	import EconomySpecificChart from '$lib/components/charts/EconomySpecificChart.svelte';
+	import Receipt from '$lib/components/charts/receipt/Receipt.svelte';
+	import Button from '$lib/components/controls/Button.svelte';
+	import { getEstimateState, getSharePayloadError } from '$lib/sharing/sharePayload.js';
+	import { calculatorState } from '$lib/stores/calculatorState.js';
+	import { REPORT_URL } from '$lib/utils/links.js';
 
-  Responsibilities:
-  - Read and validate the shared calculator configuration from the URL.
-  - Reconstruct the corresponding estimate.
-  - Display the shared receipt and visualization.
-  - Allow the user to copy the share link or start a new estimate.
+	let payload = $state(null);
+	let resolvedData = $state([]);
+	let loading = $state(true);
+	let error = $state(null);
 
-  Implementation notes:
-  - Use parseShareUrl.js for URL parsing and validation.
-  - Recalculate the estimate from the shared assumptions and source data.
-  - Do not encode or trust calculated results from the URL.
--->
+	// Only charts that color spending components use the receipt as a legend.
+	let showComponentColors = $derived(
+		Boolean(payload) && payload.chartType !== 'historical' && payload.displaySettings.showComponents
+	);
+
+	// TEMPORARY (#18): read the payload handed over by the Visualizer.
+	// Replace with parseShareUrl() when #19 adds share URLs.
+	const readStoredPayload = () => {
+		try {
+			return JSON.parse(sessionStorage.getItem('sharePayload'));
+		} catch {
+			return null;
+		}
+	};
+
+	onMount(async () => {
+		try {
+			const parsedPayload = readStoredPayload();
+
+			const payloadError = getSharePayloadError(parsedPayload);
+
+			if (payloadError) {
+				error = payloadError;
+				return;
+			}
+
+			const sourceData = await loadData();
+
+			if (
+				parsedPayload.chartType === 'economySpecific' &&
+				!sourceData.some((row) => row.country === parsedPayload.displaySettings.economy)
+			) {
+				error = 'The shared economy is not available in the source data.';
+				return;
+			}
+
+			resolvedData = calculateEstimate(sourceData, getEstimateState(parsedPayload));
+
+			if (resolvedData.length === 0) {
+				error = 'The shared estimate could not be calculated.';
+				return;
+			}
+
+			payload = parsedPayload;
+		} catch (err) {
+			console.error(err);
+			error = 'Unable to load the data for this chart. Please try again later.';
+		} finally {
+			loading = false;
+		}
+	});
+
+	const handleNewEstimate = async () => {
+		calculatorState.reset();
+		await goto(resolve('/'));
+	};
+</script>
+
+<svelte:head>
+	<title>Share | More Red Ink Calculator</title>
+</svelte:head>
+
+<div class="share-page">
+	<h1 class="visually-hidden">Shared chart</h1>
+
+	{#if loading}
+		<p class="share-page__status text-body-2-regular" role="status">Loading shared chart…</p>
+	{:else if error || !payload}
+		<div class="share-page__error" role="alert">
+			<h2 class="text-heading-3">This shared chart can't be displayed</h2>
+			<p class="text-body-2-regular">{error ?? 'Unable to load shared chart.'}</p>
+		</div>
+	{:else}
+		<article class="share-page__card">
+			<div class="share-page__body">
+				<div class="share-page__chart">
+					{#if payload.chartType === 'historical'}
+						<HistoricalSpendingChart
+							data={resolvedData}
+							unit={payload.displaySettings.unit}
+							frozen
+						/>
+					{:else if payload.chartType === 'cumulative'}
+						<CumulativeSpendingChart
+							data={resolvedData}
+							unit={payload.displaySettings.unit}
+							showComponents={payload.displaySettings.showComponents}
+							showLegend={!showComponentColors}
+							frozen
+						/>
+					{:else if payload.chartType === 'yearSpecific'}
+						<YearSpecificChart
+							data={resolvedData}
+							year={payload.displaySettings.year}
+							unit={payload.displaySettings.unit}
+							showComponents={payload.displaySettings.showComponents}
+							scaleTo100={payload.displaySettings.scaleTo100}
+							showLegend={!showComponentColors}
+							frozen
+						/>
+					{:else if payload.chartType === 'economySpecific'}
+						<EconomySpecificChart
+							data={resolvedData}
+							economy={payload.displaySettings.economy}
+							unit={payload.displaySettings.unit}
+							showComponents={payload.displaySettings.showComponents}
+							showLegend={!showComponentColors}
+							frozen
+						/>
+					{/if}
+				</div>
+
+				<div class="share-page__receipt">
+					<Receipt mode={payload.mode} assumptions={payload.assumptions} {showComponentColors} />
+				</div>
+			</div>
+
+			<footer class="share-page__attribution">
+				<p class="text-label-x-small">
+					This chart was generated by the
+					<a href={resolve('/')}>More Red Ink Calculator</a>, a tool that complements the report
+					<!-- External link, so resolve() doesn't apply. -->
+					<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -->
+					<a href={REPORT_URL} target="_blank" rel="noreferrer">
+						<em
+							>More Red Ink: The Emerging Industrial Policy Spending Arms Race by China and Others</em
+						></a
+					>.
+				</p>
+
+				<img
+					class="share-page__logo"
+					src="/logos/csis-trustee-chair.svg"
+					alt="CSIS Trustee Chair in Chinese Business & Economics"
+					width="249"
+					height="29"
+				/>
+			</footer>
+		</article>
+	{/if}
+
+	<div class="share-page__actions">
+		<Button variant="secondary" onclick={handleNewEstimate}>Create a new estimate</Button>
+
+		<Button variant="secondary" href={REPORT_URL} target="_blank" rel="noreferrer">
+			Read the report
+			<img src="/icons/external-link.svg" alt="" />
+		</Button>
+
+		<!-- Copy link: added here by #19 once the Share page has a canonical URL. -->
+	</div>
+</div>
+
+<style>
+	.share-page {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 1.5rem;
+		width: 100%;
+		padding: 2.5rem 2rem 4rem;
+		background: var(--color-bg);
+	}
+
+	.visually-hidden {
+		position: absolute;
+		width: 1px;
+		height: 1px;
+		overflow: hidden;
+		clip-path: inset(50%);
+		white-space: nowrap;
+	}
+
+	.share-page__status,
+	.share-page__error h2,
+	.share-page__error p {
+		margin: 0;
+	}
+
+	.share-page__error {
+		display: flex;
+		flex-direction: column;
+		gap: 0.75rem;
+		width: 100%;
+		max-width: 40rem;
+		padding: 2rem;
+		background: var(--color-white);
+	}
+
+	.share-page__card {
+		width: 100%;
+		max-width: 1200px;
+		background: var(--color-white);
+	}
+
+	.share-page__body {
+		display: grid;
+		grid-template-columns: minmax(0, 2fr) minmax(300px, 1fr);
+		gap: 2rem;
+		padding: 2rem 2rem 1.5rem;
+	}
+
+	.share-page__chart {
+		min-width: 0;
+	}
+
+	.share-page__receipt {
+		min-width: 0;
+		padding-left: 2rem;
+		border-left: 1px solid var(--color-neutral-400);
+	}
+
+	.share-page__attribution {
+		display: flex;
+		align-items: flex-end;
+		justify-content: space-between;
+		gap: 2rem;
+		padding: 1rem 1.25rem;
+	}
+
+	.share-page__attribution p {
+		max-width: 48rem;
+		margin: 0;
+		line-height: 1.2;
+	}
+
+	.share-page__attribution a {
+		color: inherit;
+	}
+
+	.share-page__logo {
+		flex-shrink: 0;
+		width: 249px;
+		height: auto;
+	}
+
+	.share-page__actions {
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: center;
+		gap: 1.5rem;
+	}
+
+	@media (max-width: 900px) {
+		.share-page__body {
+			grid-template-columns: minmax(0, 1fr);
+		}
+
+		.share-page__receipt {
+			padding-top: 2rem;
+			padding-left: 0;
+			border-top: 1px solid var(--color-neutral-400);
+			border-left: 0;
+		}
+
+		.share-page__attribution {
+			flex-direction: column;
+			align-items: flex-start;
+			gap: 1rem;
+			padding: 1rem 2rem 1.5rem;
+		}
+	}
+
+	@media (max-width: 600px) {
+		.share-page {
+			padding: 1rem;
+		}
+
+		.share-page__body {
+			padding: 1rem;
+		}
+
+		.share-page__attribution {
+			padding: 1rem;
+		}
+
+		.share-page__logo {
+			width: min(249px, 100%);
+		}
+	}
+</style>

@@ -1,8 +1,11 @@
 <script>
 	import { assumptionOptions, fastTrackOptions } from '$lib/utils/assumptionOptions.js';
+	import { COMPONENT_COLORS } from '$lib/utils/chartOptions.js';
 	import { spendingComponents } from '$lib/utils/spendingComponents.js';
 
-	let { mode, assumptions } = $props();
+	// showComponentColors: add a color swatch to each row so the receipt can
+	// double as the chart legend.
+	let { mode, assumptions, showComponentColors = false } = $props();
 
 	const findOption = (config, value) => {
 		return config.options.find((option) => option.value === value);
@@ -160,9 +163,12 @@
 	</div>
 
 	<div class="receipt__table-wrapper">
-		<table class="receipt__table">
+		<table class="receipt__table" class:has-swatches={showComponentColors}>
 			<thead>
 				<tr>
+					{#if showComponentColors}
+						<td class="receipt__swatch-header" aria-hidden="true"></td>
+					{/if}
 					<th scope="col" class="text-label-x-small">Spending Component</th>
 					<th scope="col" class="text-label-x-small">Assumption for China</th>
 					<th scope="col" class="text-label-x-small">Assumption for Other Economies</th>
@@ -172,6 +178,13 @@
 			<tbody>
 				{#each rows as row (row.key)}
 					<tr>
+						{#if showComponentColors}
+							<td
+								class="receipt__swatch"
+								style:background-color={COMPONENT_COLORS[row.key]}
+								aria-hidden="true"
+							></td>
+						{/if}
 						<th scope="row">{row.label}</th>
 
 						{#if row.shared}
@@ -251,6 +264,21 @@
 
 	.receipt__table tbody th {
 		font-weight: 600;
+	}
+
+	.receipt__table .receipt__swatch-header,
+	.receipt__table .receipt__swatch {
+		width: 1rem;
+		padding: 0;
+	}
+
+	.receipt__table.has-swatches thead th:first-of-type {
+		width: 33%;
+	}
+
+	.receipt__table.has-swatches thead th:nth-of-type(2),
+	.receipt__table.has-swatches thead th:nth-of-type(3) {
+		width: calc((67% - 1rem) / 2);
 	}
 
 	.receipt__table tbody tr:first-child th,

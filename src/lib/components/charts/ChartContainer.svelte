@@ -1,30 +1,34 @@
 <script>
 	import Button from '$lib/components/controls/Button.svelte';
 
-	let { title, controls, children } = $props();
+	let { title, controls, children, share = () => {}, frozen = false } = $props();
 </script>
 
-<section class="chart-container">
-	<h3 class="chart-container__title text-heading-3">{title}</h3>
+<section class="chart-container" class:chart-container--frozen={frozen}>
+	{#if !frozen}
+		<h3 class="chart-container__title text-heading-3">{title}</h3>
 
-	{#if controls}
-		<div class="chart-container__controls">
-			{@render controls()}
-		</div>
+		{#if controls}
+			<div class="chart-container__controls">
+				{@render controls()}
+			</div>
+		{/if}
+
+		<hr class="chart-container__divider" />
 	{/if}
-
-	<hr class="chart-container__divider" />
 
 	<div class="chart-container__content">
 		{@render children?.()}
 	</div>
 
-	<div class="chart-container__actions">
-		<Button variant="primary">
-			Share chart
-			<img src="/icons/external-link.svg" alt="" aria-hidden="true" />
-		</Button>
-	</div>
+	{#if !frozen}
+		<div class="chart-container__actions">
+			<Button variant="primary" onclick={share}>
+				Share chart
+				<img src="/icons/external-link.svg" alt="" aria-hidden="true" />
+			</Button>
+		</div>
+	{/if}
 </section>
 
 <style>
@@ -61,5 +65,17 @@
 		display: flex;
 		justify-content: flex-start;
 		margin-top: 2rem;
+	}
+
+	.chart-container--frozen {
+		max-width: none;
+		padding: 0;
+		border: 0;
+		border-radius: 0;
+	}
+
+	.chart-container--frozen .chart-container__content {
+		padding: 0;
+		border: 0;
 	}
 </style>

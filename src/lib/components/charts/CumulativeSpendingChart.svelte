@@ -18,7 +18,10 @@
 		unit = 'pct_gdp',
 		showComponents = false,
 		onUnitChange = () => {},
-		onShowComponentsChange = () => {}
+		onShowComponentsChange = () => {},
+		share = () => {},
+		frozen = false,
+		showLegend = true
 	} = $props();
 
 	let chartElement;
@@ -144,7 +147,7 @@
 				}
 			},
 			legend: {
-				enabled: showComponents
+				enabled: showLegend && showComponents
 			},
 			plotOptions: {
 				column: {
@@ -184,8 +187,13 @@
 	});
 </script>
 
-<ChartContainer title="Chart 2: Cumulative Spending, 2019-2024">
-	{#snippet controls()}
+<ChartContainer
+	title="Chart 2: Cumulative Spending, 2019-2024"
+	controls={frozen ? undefined : chartControls}
+	share={frozen ? undefined : share}
+	{frozen}
+>
+	{#snippet chartControls()}
 		<div class="cumulative-spending-chart__controls">
 			<Select label="Unit" options={UNIT_OPTIONS} value={unit} onchange={handleUnitChange} />
 

@@ -22,7 +22,10 @@
 		onYearChange = () => {},
 		onUnitChange = () => {},
 		onShowComponentsChange = () => {},
-		onScaleTo100Change = () => {}
+		onScaleTo100Change = () => {},
+		share = () => {},
+		frozen = false,
+		showLegend = true
 	} = $props();
 
 	let chartElement;
@@ -169,7 +172,7 @@
 			},
 
 			legend: {
-				enabled: showComponents
+				enabled: showLegend && showComponents
 			},
 
 			plotOptions: {
@@ -211,8 +214,13 @@
 	});
 </script>
 
-<ChartContainer title="Chart 3: Year-Specific Spending">
-	{#snippet controls()}
+<ChartContainer
+	title="Chart 3: Year-Specific Spending"
+	controls={frozen ? undefined : chartControls}
+	share={frozen ? undefined : share}
+	{frozen}
+>
+	{#snippet chartControls()}
 		<div class="year-specific-chart__controls">
 			<Select label="Year" options={yearOptions} value={year} onchange={handleYearChange} />
 
