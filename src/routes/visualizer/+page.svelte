@@ -10,6 +10,7 @@
 	import Receipt from '$lib/components/charts/receipt/Receipt.svelte';
 	import { calculateEstimate } from '$lib/data/calculateEstimate.js';
 	import { loadData } from '$lib/data/loadData.js';
+	import { buildShareUrl } from '$lib/sharing/buildShareUrl.js';
 	import { calculatorState } from '$lib/stores/calculatorState.js';
 
 	let resolvedData = $state([]);
@@ -27,9 +28,9 @@
 			displaySettings: { ...state[chartType] }
 		};
 
-		sessionStorage.setItem('sharePayload', JSON.stringify(payload));
-
-		await goto(resolve('/share'));
+		// buildShareUrl() builds its path with resolve('/share').
+		// eslint-disable-next-line svelte/no-navigation-without-resolve
+		await goto(buildShareUrl(payload));
 	};
 
 	onMount(async () => {

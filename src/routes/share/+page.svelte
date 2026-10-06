@@ -2,6 +2,7 @@
 	import { onMount } from 'svelte';
 	import { goto } from '$app/navigation';
 	import { resolve } from '$app/paths';
+	import { page } from '$app/state';
 
 	import HistoricalSpendingChart from '$lib/components/charts/HistoricalSpendingChart.svelte';
 	import { calculateEstimate } from '$lib/data/calculateEstimate.js';
@@ -11,7 +12,9 @@
 	import EconomySpecificChart from '$lib/components/charts/EconomySpecificChart.svelte';
 	import Receipt from '$lib/components/charts/receipt/Receipt.svelte';
 	import Button from '$lib/components/controls/Button.svelte';
-	import { getEstimateState, getSharePayloadError } from '$lib/sharing/sharePayload.js';
+	import { buildShareUrl } from '$lib/sharing/buildShareUrl.js';
+	import { parseShareUrl } from '$lib/sharing/parseShareUrl.js';
+	import { getEstimateState } from '$lib/sharing/sharePayload.js';
 	import { calculatorState } from '$lib/stores/calculatorState.js';
 	import { REPORT_URL } from '$lib/utils/links.js';
 
@@ -25,21 +28,11 @@
 		Boolean(payload) && payload.chartType !== 'historical' && payload.displaySettings.showComponents
 	);
 
-	// TEMPORARY (#18): read the payload handed over by the Visualizer.
-	// Replace with parseShareUrl() when #19 adds share URLs.
-	const readStoredPayload = () => {
-		try {
-			return JSON.parse(sessionStorage.getItem('sharePayload'));
-		} catch {
-			return null;
-		}
-	};
+	let copyStatus = $state(null);
 
 	onMount(async () => {
 		try {
-			const parsedPayload = readStoredPayload();
-
-			const payloadError = getSharePayloadError(parsedPayload);
+			const { payload: parsedPayload, error: payloadError } = parseShareUrl(page.url.searchParams);
 
 			if (payloadError) {
 				error = payloadError;
@@ -71,6 +64,24 @@
 			loading = false;
 		}
 	});
+
+	// Copy the canonical link, rebuilt from the parsed payload, so any extra
+	// parameters added to the address (such as tracking codes) are dropped.
+	const handleCopyLink = async () => {
+		const url = new URL(buildShareUrl(payload), page.url.origin).href;
+
+		try {
+			await navigator.clipboard.writeText(url);
+			copyStatus = 'copied';
+		} catch (err) {
+			console.error(err);
+			copyStatus = 'failed';
+		}
+
+		setTimeout(() => {
+			copyStatus = null;
+		}, 3000);
+	};
 
 	const handleNewEstimate = async () => {
 		calculatorState.reset();
@@ -169,8 +180,20 @@
 			<img src="/icons/external-link.svg" alt="" />
 		</Button>
 
-		<!-- Copy link: added here by #19 once the Share page has a canonical URL. -->
+		{#if payload}
+			<Button variant="secondary" onclick={handleCopyLink}>
+				{copyStatus === 'copied' ? 'Link copied' : 'Copy link'}
+			</Button>
+		{/if}
 	</div>
+
+	<p class="share-page__copy-status text-label-small" aria-live="polite">
+		{#if copyStatus === 'copied'}
+			Link copied to your clipboard.
+		{:else if copyStatus === 'failed'}
+			Couldn't copy the link. Copy it from your browser's address bar instead.
+		{/if}
+	</p>
 </div>
 
 <style>
@@ -261,6 +284,12 @@
 		flex-wrap: wrap;
 		justify-content: center;
 		gap: 1.5rem;
+	}
+
+	.share-page__copy-status {
+		min-height: 1.2em;
+		margin: -0.75rem 0 0;
+		text-align: center;
 	}
 
 	@media (max-width: 900px) {
