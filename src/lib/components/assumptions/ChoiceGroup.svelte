@@ -81,7 +81,7 @@
 	.choice-group__label {
 		margin-bottom: 1rem;
 		padding: 0;
-		color: var(--color-radio-card-text-primary);
+		color: var(--color-card-button-text-primary);
 		line-height: 1.2;
 	}
 
@@ -105,11 +105,11 @@
 	}
 
 	.choice-group__title {
-		color: var(--color-radio-card-text-primary);
+		color: var(--color-card-button-text-primary);
 	}
 
 	.choice-group__description {
 		margin-top: 0.25rem;
-		color: var(--color-radio-card-text-secondary);
+		color: var(--color-card-button-text-secondary);
 	}
 </style>

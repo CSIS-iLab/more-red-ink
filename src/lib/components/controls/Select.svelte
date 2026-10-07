@@ -139,7 +139,7 @@
 		width: 1.25rem;
 		height: 1.25rem;
 		flex-shrink: 0;
-		color: var(--color-menu-icon);
+		color: var(--color-dropdown-icon);
 		transition: transform 0.2s ease;
 	}
 

@@ -204,7 +204,7 @@
 		gap: 1.5rem;
 		width: 100%;
 		padding: 2.5rem 2rem 4rem;
-		background: var(--color-bg);
+		background: var(--color-page);
 	}
 
 	.visually-hidden {
