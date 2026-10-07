@@ -61,6 +61,19 @@ const initialState = {
 const getInitialState = () => structuredClone(initialState);
 
 /**
+ * Merge persisted settings with current defaults without allowing null values
+ * to overwrite valid defaults.
+ */
+const mergeWithDefaults = (defaults, persisted = {}) => {
+	return Object.fromEntries(
+		Object.entries({
+			...defaults,
+			...persisted
+		}).map(([key, value]) => [key, value ?? defaults[key]])
+	);
+};
+
+/**
  * Check whether a value is one of the configured options.
  */
 const isValidOption = (options, value) => {
@@ -125,30 +138,22 @@ const createCalculatorState = () => {
 			if (savedState) {
 				try {
 					const parsedState = JSON.parse(savedState);
+					const defaults = getInitialState();
 
 					set({
-						...getInitialState(),
+						...defaults,
 						...parsedState,
 						userDrivenChoices: {
-							...getInitialState().userDrivenChoices,
+							...defaults.userDrivenChoices,
 							...parsedState.userDrivenChoices
 						},
-						historical: {
-							...getInitialState().historical,
-							...parsedState.historical
-						},
-						cumulative: {
-							...getInitialState().cumulative,
-							...parsedState.cumulative
-						},
-						yearSpecific: {
-							...getInitialState().yearSpecific,
-							...parsedState.yearSpecific
-						},
-						economySpecific: {
-							...getInitialState().economySpecific,
-							...parsedState.economySpecific
-						}
+						historical: mergeWithDefaults(defaults.historical, parsedState.historical),
+						cumulative: mergeWithDefaults(defaults.cumulative, parsedState.cumulative),
+						yearSpecific: mergeWithDefaults(defaults.yearSpecific, parsedState.yearSpecific),
+						economySpecific: mergeWithDefaults(
+							defaults.economySpecific,
+							parsedState.economySpecific
+						)
 					});
 				} catch {
 					sessionStorage.removeItem(STORAGE_KEY);
