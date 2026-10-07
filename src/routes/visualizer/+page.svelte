@@ -163,7 +163,7 @@
 
 	.visualizer__summary {
 		min-width: 0;
-		background-color: var(--color-bg);
+		background-color: var(--color-page);
 	}
 
 	.visualizer__summary-inner {
@@ -191,7 +191,7 @@
 		align-items: center;
 		gap: 2rem;
 		padding: 2rem;
-		background-color: var(--color-surface-primary);
+		background-color: var(--color-surface-secondary);
 	}
 
 	.visualizer__status {

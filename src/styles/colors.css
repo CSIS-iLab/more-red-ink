@@ -14,6 +14,7 @@
 	--color-sky-950: #052f4a;
 
 	/* Slate */
+  --color-slate-25: #fbfcfd;
 	--color-slate-50: #f8fafc;
 	--color-slate-100: #f1f5f9;
 	--color-slate-200: #e2e8f0;
@@ -29,7 +30,6 @@
 	/* Pure */
 	--color-white: #ffffff;
 	--color-black: #000000;
-	--color-error: #ff3c00;
 
 	/* Red */
 	--color-red-600: #e7000b;
@@ -48,48 +48,68 @@
 	--color-neutral-900: #171717;
 	--color-neutral-950: #0a0a0a;
 
+  /* Misc */
+  --color-jade-900: #113639;
+  --color-blue-975: #0c173d;
+
 	/* ------------------------------------------------------ */
 	/*                       Color Roles                      */
 	/* ------------------------------------------------------ */
-	/* ---------------- Dashboard Color Roles --------------- */
 
-	/* General */
-	--color-bg: var(--color-sky-50);
-	--color-surface-primary: var(--color-slate-300);
+	/* bg */
+	--color-page: var(--color-sky-50);
+	--color-surface-primary: var(--color-white);
+  --color-surface-secondary: var(--color-slate-300);
+  --color-author-block: var(--color-jade-900);
+  --color-footer: var(--color-slate-600);
+  
+  /* navbar */
+  --color-navbar-bg: var(--color-sky-50);
+  --color-navbar-text: var(--color-slate-800);
+
+  /* border */
+  --color-border-subtle: var(--color-slate-400);
+  --color-border-strong: var(--color-slate-500);
+  --color-border-gridline: var(--color-slate-300);
 
 	/* Text */
-	--color-text-primary: var(--color-slate-800);
-	--color-text-secondary: var(--color-slate-700);
-	--color-text-value: var(--color-white);
-	--color-text-active: var(--color-neutral-950);
-	--color-text-placeholder: var(--color-neutral-500);
-	--color-text-error: var(--color-red-700);
+  --color-text-page-title: var(--color-blue-975);
+  --color-text-page-subtitle: var(--color-sky-500);
+	--color-text-primary: var(--color-slate-950);
+	--color-text-secondary: var(--color-slate-800);
+  --color-text-helper: var(--color-slate-500);
+  --color-text-error: var(--color-red-700);
+
+  /* link */
+  --color-link-text: var(--color-slate-500);
+  --color-link-hover: var(--color-slate-800);
+
+  /* table */
+  --color-table-row: var(--color-slate-200);
+  --color-table-row-hover: var(--color-slate-300);
+  --color-table-card: var(--color-slate-100);
 
 	/* Spending components */
-	--color-spending-direct-subsidies: #006ea9;
-	--color-spending-other-tax-incentives: #86cdfb;
-	--color-spending-rd-tax-incentives: #e4a839;
-	--color-spending-rd-support: #ba4896;
-	--color-spending-below-market-credit: #246c54;
-	--color-spending-state-investment-funds: #e98ca0;
-	--color-spending-gov-procurement: #58c2a2;
-	--color-spending-soe-net-payables: #d25342;
-	--color-spending-land: #7f7575;
-	--color-spending-debt-equity-swaps: #a69644;
-
-	/* Data visualization */
-	--color-data-viz-primary: #fffead;
-	--color-data-viz-secondary: #5f92ff;
+	--color-spending-direct-subsidies: #005051;
+	--color-spending-other-tax-incentives: #aea21e;
+	--color-spending-rd-tax-incentives: #99e3c4;
+	--color-spending-rd-support: #e84409;
+	--color-spending-below-market-credit: #0080a4;
+	--color-spending-state-investment-funds: #ffbf00;
+	--color-spending-gov-procurement: #cb89bf;
+	--color-spending-soe-net-payables: #7a274d;
+	--color-spending-land: #e8b6a5;
+	--color-spending-debt-equity-swaps: #5da9e7;
 
 	/* Dropdown */
+  --color-dropdown-icon: var(--color-slate-400);
 	--color-dropdown-enabled: var(--color-white);
-	--color-dropdown-enabled-border: var(--color-slate-200);
+	--color-dropdown-enabled-border: var(--color-slate-400);
 	--color-dropdown-hover: var(--color-slate-50);
-	--color-dropdown-focus-border: var(--color-slate-400);
+	--color-dropdown-focus-border: var(--color-sky-500);
 	--color-dropdown-pressed: var(--color-slate-100);
-	--color-dropdown-pressed-border: var(--color-slate-400);
-	--color-dropdown-error-border: var(--color-error);
-	--color-dropdown-icon: var(--color-neutral-500);
+	--color-dropdown-pressed-border: var(--color-sky-500);
+	--color-dropdown-error-border: var(--color-red-700);
 
 	/* Menu */
 	--color-menu-enabled: var(--color-slate-100);
@@ -97,12 +117,7 @@
 	--color-menu-focus-border: var(--color-slate-300);
 	--color-menu-pressed: var(--color-slate-100);
 	--color-menu-pressed-border: var(--color-slate-300);
-	--color-menu-icon: var(--color-neutral-500);
 	--color-menu-divider: var(--color-slate-300);
-
-	/* Borders */
-	--color-border-light: var(--color-sky-400);
-	--color-border-dark: var(--color-sky-600);
 
 	/* CTA button */
 	--color-cta-text-primary: var(--color-white);
@@ -112,20 +127,38 @@
 	--color-cta-focus-border: var(--color-white);
 	--color-cta-pressed: var(--color-slate-600);
 
-	/* Radio card button */
-	--color-radio-card-text-primary: var(--color-slate-800);
-	--color-radio-card-text-secondary: var(--color-slate-600);
-	--color-radio-card-enabled: var(--color-sky-50);
-	--color-radio-card-enabled-border: var(--color-slate-600);
-	--color-radio-card-hover: var(--color-sky-100);
-	--color-radio-card-hover-border: var(--color-sky-500);
-	--color-radio-card-focus-border: var(--color-sky-400);
-	--color-radio-card-pressed: var(--color-sky-50);
-	--color-radio-card-pressed-border: var(--color-sky-600);
-	--color-radio-card-error: var(--color-sky-50);
-	--color-radio-card-error-border: var(--color-red-600);
+	/* card button */
+	--color-card-button-text-primary: var(--color-slate-800);
+	--color-card-button-text-secondary: var(--color-slate-600);
+	--color-card-button-enabled: var(--color-sky-50);
+	--color-card-button-enabled-border: var(--color-slate-600);
+	--color-card-button-hover: var(--color-sky-100);
+	--color-card-button-hover-border: var(--color-sky-500);
+	--color-card-button-focus-border: var(--color-sky-400);
+	--color-card-button-pressed: var(--color-sky-50);
+	--color-card-button-pressed-border: var(--color-sky-600);
+	--color-card-button-error: var(--color-sky-50);
+	--color-card-button-error-border: var(--color-red-600);
+
+  /* ghost button */
+  --color-ghost-button-text: var(--color-slate-800);
+  --color-ghost-button-enabled: var(--color-sky-50);
+  --color-ghost-button-enabled-border: var(--color-slate-600);
+  --color-ghost-button-hover: var(--color-slate-25);
+  --color-ghost-button-hover-border: var(--color-slate-600);
+  --color-ghost-button-focus-border: var(--color-sky-400);
+  --color-ghost-button-pressed: var(--color-sky-100);
+  --color-ghost-button-pressed-border: var(--color-slate-600);
 
 	/* Disabled */
 	--color-disabled: var(--color-slate-200);
 	--color-disabled-text: var(--color-slate-400);
+
+  /* scrollbar */
+  --color-scrollbar-thumb: var(--color-slate-400);
+  --color-scrollbar-track: var(--color-slate-300);
+
+  /* checkbox */
+  --color-checkbox-enabled-border: var(--color-slate-400);
+  --color-checkbox-fill: var(--color-slate-950);
 }
