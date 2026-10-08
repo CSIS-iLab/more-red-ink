@@ -66,7 +66,7 @@
 
 <style>
 	.credits {
-		background: var(--color-sky-800);
+		background: var(--color-slate-500);
 		color: var(--color-sky-50);
 		padding: 64px 24px;
 	}
