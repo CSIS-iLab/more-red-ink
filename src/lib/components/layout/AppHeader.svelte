@@ -17,8 +17,6 @@
 
 		<div class="app-header__brand" aria-label="Center for Strategic and International Studies">
 			<svg
-				// width="68"
-				// height="24"
 				viewBox="0 0 76 27"
 				fill="none"
 				xmlns="http://www.w3.org/2000/svg"
@@ -48,7 +46,7 @@
 	.app-header {
 		width: 100%;
 		height: 64px;
-		border-bottom: 1px solid var(--color-neutral-700);
+		border-bottom: 1px solid var(--color-border-subtle);
 		color: var(--color-text-primary);
 	}
 
