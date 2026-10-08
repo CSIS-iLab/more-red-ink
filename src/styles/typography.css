@@ -71,6 +71,13 @@
     font-weight: var(--font-weight-medium);
   }
 
+  /* ------------------------ logo ------------------------ */
+  .text-logo {
+    font-family: var(--font-hero);
+    font-size: var(--font-size-xx-small);
+    font-weight: 
+  }
+
 	/* ----------------------- heading ---------------------- */
 	.text-heading-1 {
 		font-family: var(--font-heading);
@@ -108,7 +115,7 @@
 	.text-label-large {
 		font-family: var(--font-label);
 		font-size: var(--font-size-base);
-		font-weight: var(--font-weight-medium);
+		font-weight: var(--font-weight-semibold);
 	}
 
 	.text-label-medium-short {
