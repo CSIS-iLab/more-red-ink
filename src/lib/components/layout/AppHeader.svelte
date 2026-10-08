@@ -5,14 +5,11 @@
 <header class="app-header">
 	<div class="app-header__inner">
 		<div class="app-header__titles">
-			<div class="app-header__app-name text-heading-3">
-				More Red Ink<br />
-				Calculator
-			</div>
+			<div class="app-header__app-name text-logo">Industrial Policy Spending Calculator</div>
 
 			{#if pageName}
 				<div class="app-header__divider" aria-hidden="true"></div>
-				<div class="app-header__page-name text-heading-1">
+				<div class="app-header__page-name text-label-x-large">
 					{pageName}
 				</div>
 			{/if}
@@ -20,8 +17,8 @@
 
 		<div class="app-header__brand" aria-label="Center for Strategic and International Studies">
 			<svg
-				width="76"
-				height="27"
+				// width="68"
+				// height="24"
 				viewBox="0 0 76 27"
 				fill="none"
 				xmlns="http://www.w3.org/2000/svg"
@@ -50,7 +47,7 @@
 <style>
 	.app-header {
 		width: 100%;
-		height: 80px;
+		height: 64px;
 		border-bottom: 1px solid var(--color-neutral-700);
 		color: var(--color-text-primary);
 	}
@@ -59,9 +56,11 @@
 		height: 100%;
 		display: flex;
 		align-items: center;
-		justify-content: space-between;
-		gap: 2rem;
-		padding: 0 24px;
+		/* justify-content: space-between;
+		gap: 2rem; */
+		gap: 12px;
+		padding: 0 20px;
+		outline: 4px solid green;
 	}
 
 	.app-header__titles {
@@ -70,49 +69,51 @@
 		align-items: center;
 		gap: 24px;
 		min-width: 0;
+		flex: 1;
+		outline: 1px solid blue;
 	}
 
 	.app-header__app-name {
-		flex: 0 0 auto;
-		line-height: 1.1;
+		flex: 0 0 134px;
+		width: 134px;
+		outline: 1px solid red;
 	}
 
 	.app-header__divider {
 		align-self: stretch;
+		flex: 0 0 1px;
 		width: 1px;
-		background-color: var(--color-text-primary);
+		background-color: var(--color-border-subtle);
 	}
 
 	.app-header__page-name {
 		min-width: 0;
-		line-height: 1;
+		white-space: nowrap;
+		outline: 1px solid purple;
 	}
 
 	.app-header__brand {
 		flex: 0 0 auto;
+    display: flex;
+    align-items: center;
+		margin-left: auto;
+		outline: 1px solid red;
 	}
 
-	@media (max-width: 640px) {
-		.app-header__inner {
-			gap: 1rem;
-			padding: 0 16px;
-		}
+	.app-header__brand svg {
+		display: block;
+		width: 68px;
+		height: auto;
+	}
 
+	@media (max-width: 480px) {
 		.app-header__titles {
-			gap: 16px;
+			flex: 0 0 auto;
 		}
 
-		.app-header__app-name {
-			font-size: var(--font-size-xx-small);
-		}
-
+		.app-header__divider,
 		.app-header__page-name {
-			font-size: var(--font-size-small);
-		}
-
-		.app-header__brand svg {
-			width: 60px;
-			height: auto;
+			display: none;
 		}
 	}
 </style>
