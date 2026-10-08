@@ -331,6 +331,7 @@
 	.footer {
 		background: var(--color-footer);
 		color: var(--color-white);
+    font-family: Arial, sans-serif;
 		padding-top: 40px;
 		padding-bottom: 2rem;
 		width: 100%;
@@ -356,7 +357,7 @@
 	}
 
 	.footer__brand path {
-		fill: var(--color-sky-100);
+		fill: var(--color-white);
 		transition: fill 0.3s ease;
 	}
 
@@ -386,7 +387,7 @@
 
 	/* animate the color on the link itself */
 	.footer__social a {
-		color: var(--color-sky-100);
+		color: var(--color-neutral-100);
 		opacity: 0.8;
 		transition:
 			color 0.3s ease,
@@ -395,7 +396,7 @@
 	}
 
 	.footer__social a:hover {
-		color: var(--color-sky-100);
+		color: var(--color-neutral-100);
 		opacity: 1;
 		transform: translateY(-1px);
 	}
@@ -412,7 +413,7 @@
 	}
 
 	.footer__copyright a {
-		color: var(--color-sky-100);
+		color: var(--color-neutral-100);
 		opacity: 0.8;
 		transition: all 0.3s ease-in-out;
 	}
@@ -440,7 +441,7 @@
 
 	.footer__col.footer__address p {
 		margin: 0;
-		color: var(--color-sky-100);
+		color: var(--color-neutral-100);
 		opacity: 0.8;
 	}
 
