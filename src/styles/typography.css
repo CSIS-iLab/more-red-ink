@@ -64,19 +64,19 @@
 		font-weight: var(--font-weight-regular);
 	}
 
-  /* ---------------------- metadata ---------------------- */
-  .text-body-metadata {
-    font-family: var(--font-metadata);
-    font-size: var(--font-size-xxx-small);
-    font-weight: var(--font-weight-medium);
-  }
+	/* ---------------------- metadata ---------------------- */
+	.text-body-metadata {
+		font-family: var(--font-metadata);
+		font-size: var(--font-size-xxx-small);
+		font-weight: var(--font-weight-medium);
+	}
 
-  /* ------------------------ logo ------------------------ */
-  .text-logo {
-    font-family: var(--font-hero);
-    font-size: var(--font-size-xx-small);
-    font-weight: 
-  }
+	/* ------------------------ logo ------------------------ */
+	.text-logo {
+		font-family: var(--font-hero);
+		font-size: var(--font-size-xx-small);
+		font-weight:;
+	}
 
 	/* ----------------------- heading ---------------------- */
 	.text-heading-1 {
@@ -99,19 +99,25 @@
 
 	.text-heading-3 {
 		font-family: var(--font-heading);
-		font-size: var(--font-size-base);
+		font-size: var(--font-size-large);
+		font-weight: var(--font-weight-medium);
+	}
+
+	.text-heading-5 {
+		font-family: var(--font-heading);
+		font-size: var(--font-size-small);
 		font-weight: var(--font-weight-medium);
 	}
 
 	/* -------------------- label -------------------- */
 
-  .text-label-x-large { 
-    font-family: var(--font-label);
-    font-weight: var(--font-weight-medium);
-    font-size: var(--font-size-medium);
-  }
+	.text-label-x-large {
+		font-family: var(--font-label);
+		font-weight: var(--font-weight-medium);
+		font-size: var(--font-size-medium);
+	}
 
-  /*defined in figma digital report design kit*/
+	/*defined in figma digital report design kit*/
 	.text-label-large {
 		font-family: var(--font-label);
 		font-size: var(--font-size-base);
@@ -124,7 +130,7 @@
 		font-weight: var(--font-weight-medium);
 	}
 
-  /*defined in figma digital report design kit*/
+	/*defined in figma digital report design kit*/
 	.text-label-small {
 		font-family: var(--font-label);
 		font-size: var(--font-size-xx-small);
@@ -147,7 +153,7 @@
 		font-family: var(--font-label);
 		font-size: var(--font-size-xxx-small);
 		font-weight: var(--font-weight-medium);
-    font-style: var(--font-style-italic);
+		font-style: var(--font-style-italic);
 	}
 
 	.text-label-x-small-emphasized {

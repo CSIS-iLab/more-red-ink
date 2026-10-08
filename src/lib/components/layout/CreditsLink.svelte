@@ -7,14 +7,14 @@
 	{href}
 	target={newTab ? '_blank' : undefined}
 	rel={newTab ? 'noopener noreferrer' : undefined}
-	class="credits-link"
+	class="credits-link text-body-2-regular"
 >
 	{@render children?.()}
 </a>
 
 <style>
 	.credits-link {
-		color: inherit;
+		color: var(--color-text-secondary);
 		text-decoration: none;
 		border-bottom: 1px solid currentColor;
 		transition:
@@ -24,12 +24,12 @@
 
 	.credits-link:hover,
 	.credits-link:focus-visible {
-		color: var(--color-sky-300);
-		border-bottom-color: var(--color-sky-300);
+		color: var(--color-slate-500);
+		border-bottom-color: var(--color-slate-500);
 	}
 
 	.credits-link:focus-visible {
-		outline: 2px solid var(--color-sky-300);
+		outline: 2px solid var(--color-text-primary);
 		outline-offset: 2px;
 	}
 </style>

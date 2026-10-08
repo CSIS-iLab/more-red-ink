@@ -5,10 +5,10 @@
 <section class="credits">
 	<div class="credits-grid">
 		<div class="credits-col">
-			<p class="text-body-1-regular">Research</p>
+			<p class="text-heading-3">Research</p>
 
 			<a
-				class="text-body-2-regular"
+				class="text-heading-5"
 				href="https://www.csis.org/programs/chinese-business-and-economics"
 				target="_blank"
 				rel="noopener noreferrer"
@@ -16,7 +16,7 @@
 				Trustee Chair in Chinese Business and Economics
 			</a>
 
-			<p class="text-body-3-regular">
+			<p class="text-body-2-regular">
 				Written by:
 				<CreditsLink href="https://www.csis.org/people/scott-kennedy">Scott Kennedy</CreditsLink>
 				and
@@ -27,10 +27,10 @@
 		</div>
 
 		<div class="credits-col">
-			<p class="text-body-1-regular">Story Production</p>
+			<p class="text-heading-3">Production</p>
 
 			<a
-				class="text-body-2-regular"
+				class="text-heading-5"
 				href="https://www.csis.org/dracopoulos-ideas-lab"
 				target="_blank"
 				rel="noopener noreferrer"
@@ -39,12 +39,12 @@
 			</a>
 
 			<div class="credits-list">
-				<p class="text-body-3-regular">
+				<p class="text-body-2-regular">
 					Data visualization by:
 					<CreditsLink href="https://www.csis.org/people/shannon-yeung">Shannon Yeung</CreditsLink>
 				</p>
 
-				<p class="text-body-3-regular">
+				<p class="text-body-2-regular">
 					Development by:
 					<CreditsLink href="https://www.csis.org/people/mariel-de-la-garza">
 						Mariel A. de la Garza
@@ -55,7 +55,7 @@
 					</CreditsLink>
 				</p>
 
-				<p class="text-body-3-regular">
+				<p class="text-body-2-regular">
 					Page design by:
 					<CreditsLink href="https://www.csis.org/people/shannon-yeung">Shannon Yeung</CreditsLink>
 				</p>
@@ -66,13 +66,14 @@
 
 <style>
 	.credits {
-		background: var(--color-slate-500);
-		color: var(--color-sky-50);
-		padding: 64px 24px;
+		background: var(--color-author-block);
+		color: var(--color-text-primary);
+		padding: 40px 0;
 	}
 
 	.credits-grid {
-		max-width: 1280px;
+		width: 100%;
+		max-width: 1296px;
 		margin: 0 auto;
 		display: grid;
 		grid-template-columns: 1fr 1fr;
@@ -91,7 +92,7 @@
 	}
 
 	.credits a {
-		color: var(--color-sky-50);
+		color: var(--color-text-primary);
 		text-decoration-line: underline;
 		text-decoration-thickness: 1px;
 		text-underline-offset: 0.15em;
@@ -101,7 +102,7 @@
 
 	.credits a:hover,
 	.credits a:focus-visible {
-		color: var(--color-sky-300);
+		color: var(--color-slate-500);
 	}
 
 	.credits a:focus-visible {
@@ -109,14 +110,49 @@
 		outline-offset: 2px;
 	}
 
-	@media (max-width: 760px) {
+	@media screen and (max-width: 1439px) {
+		.credits-grid {
+			padding-left: 64px;
+			padding-right: 64px;
+		}
+	}
+
+	@media screen and (max-width: 1279px) {
+		.credits-grid {
+			padding-left: 48px;
+			padding-right: 48px;
+		}
+	}
+
+	@media screen and (max-width: 959px) {
+		.credits-grid {
+			padding-left: 32px;
+			padding-right: 32px;
+		}
+	}
+
+	@media screen and (max-width: 760px) {
 		.credits {
-			padding: 40px 18px;
+			padding-top: 40px;
+			padding-bottom: 40px;
 		}
 
 		.credits-grid {
 			grid-template-columns: 1fr;
 			gap: 32px;
+		}
+	}
+
+	@media screen and (max-width: 639px) {
+		.credits-grid {
+			max-width: 320px;
+		}
+	}
+
+	@media screen and (max-width: 320px) {
+		.credits-grid {
+			padding-left: 20px;
+			padding-right: 20px;
 		}
 	}
 </style>
