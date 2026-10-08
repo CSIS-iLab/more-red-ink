@@ -2,9 +2,11 @@
 	import Highcharts from 'highcharts';
 
 	import ChartContainer from './ChartContainer.svelte';
+	import ControlRow from '$lib/components/controls/ControlRow.svelte';
 	import Select from '$lib/components/controls/Select.svelte';
 	import { CHART_YEARS, UNIT_OPTIONS, getUnitOption } from '$lib/utils/chartOptions.js';
 	import { formatChartAxisValue, formatChartValue } from '$lib/utils/formatters.js';
+	import { createChartOptions, wholePercentTicks } from '$lib/utils/chartTheme.js';
 
 	let {
 		data = [],
@@ -54,90 +56,76 @@
 			return;
 		}
 
-		const chart = Highcharts.chart(chartElement, {
-			chart: {
-				type: 'spline',
-				backgroundColor: 'transparent',
-				marginTop: 100
-			},
-
-			credits: {
-				enabled: false
-			},
-
-			title: {
-				text: 'Annual Industrial Policy Spending by Economy, 2019 - 2024',
-				align: 'left',
-				style: {
-					fontFamily: 'Roboto, sans-serif',
-					fontSize: '25.1px',
-					fontWeight: '500'
-				}
-			},
-
-			subtitle: {
-				text: getUnitOption(unit)?.subtitle ?? '',
-				align: 'left',
-				className: 'text-heading-3'
-			},
-			xAxis: {
-				categories: CHART_YEARS,
-				title: {
-					text: null
-				}
-			},
-
-			yAxis: {
-				min: 0,
-				title: {
-					text: null
+		const chart = Highcharts.chart(
+			chartElement,
+			createChartOptions({
+				chart: {
+					type: 'spline'
 				},
-				labels: {
-					formatter() {
-						return formatChartAxisValue(this.value, unit);
+
+				title: {
+					text: 'Annual Industrial Policy Spending by Economy, 2019 - 2024'
+				},
+
+				subtitle: {
+					text: getUnitOption(unit)?.subtitle ?? ''
+				},
+				xAxis: {
+					categories: CHART_YEARS,
+					title: {
+						text: null
 					}
-				}
-			},
+				},
 
-			tooltip: {
-				shared: true,
-				useHTML: true,
-				formatter() {
-					const year = CHART_YEARS[this.x];
-					const lines = [`<strong>${year}</strong>`];
-
-					for (const point of this.points ?? []) {
-						lines.push(
-							`<span style="color: ${point.color}"><strong>${point.series.name}:</strong> ${formatChartValue(point.y, unit)}</span>`
-						);
-					}
-
-					return lines.join('<br>');
-				}
-			},
-
-			legend: {
-				enabled: true
-			},
-
-			plotOptions: {
-				spline: {
-					legendSymbol: 'rectangle',
-					marker: {
-						enabled: false,
-						symbol: 'circle',
-						states: {
-							hover: {
-								enabled: true
-							}
+				yAxis: {
+					tickPositioner: unit === 'pct_gdp' ? wholePercentTicks : undefined,
+					labels: {
+						formatter() {
+							return formatChartAxisValue(this.value, unit);
 						}
-					},
-					lineWidth: 2
-				}
-			},
+					}
+				},
 
-			series
-		});
+				tooltip: {
+					shared: true,
+					useHTML: true,
+					formatter() {
+						const year = CHART_YEARS[this.x];
+						const lines = [`<strong>${year}</strong>`];
+
+						for (const point of this.points ?? []) {
+							lines.push(
+								`<span style="color: ${point.color}"><strong>${point.series.name}:</strong> ${formatChartValue(point.y, unit)}</span>`
+							);
+						}
+
+						return lines.join('<br>');
+					}
+				},
+
+				legend: {
+					enabled: true
+				},
+
+				plotOptions: {
+					spline: {
+						legendSymbol: 'rectangle',
+						marker: {
+							enabled: false,
+							symbol: 'circle',
+							states: {
+								hover: {
+									enabled: true
+								}
+							}
+						},
+						lineWidth: 2
+					}
+				},
+
+				series
+			})
+		);
 
 		return () => {
 			chart.destroy();
@@ -152,9 +140,9 @@
 	{frozen}
 >
 	{#snippet chartControls()}
-		<div class="historical-spending-chart__controls">
-			<Select label="Unit" options={UNIT_OPTIONS} value={unit} onchange={handleUnitChange} />
-		</div>
+		<ControlRow label="Unit">
+			<Select options={UNIT_OPTIONS} value={unit} onchange={handleUnitChange} />
+		</ControlRow>
 	{/snippet}
 
 	<div class="historical-spending-chart__chart" bind:this={chartElement}></div>
@@ -163,7 +151,5 @@
 <style>
 	.historical-spending-chart__chart {
 		width: 100%;
-		max-width: 822px;
-		height: 677px;
 	}
 </style>
