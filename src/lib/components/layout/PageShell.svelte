@@ -13,10 +13,4 @@
 		display: flex;
 		flex-direction: column;
 	}
-
-	@media (max-width: 640px) {
-		.page-shell {
-			padding: 1rem;
-		}
-	}
 </style>
