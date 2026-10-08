@@ -189,37 +189,26 @@
 				</g>
 				<defs>
 					<clipPath id="clip0_55_1370">
-						<rect
-							width="250"
-							height="35.7143"
-							fill="white"
-							transform="translate(0 0.285583)"
-						/>
+						<rect width="250" height="35.7143" fill="white" transform="translate(0 0.285583)" />
 					</clipPath>
 				</defs>
 			</svg>
 			<!-- LEFT COLUMN: CSIS -->
 			<div class="footer__col footer__csis">
 				<p>
-					Established in Washington, D.C., in 1962, the Center for Strategic and
-					International Studies (CSIS) is a bipartisan, nonprofit policy
-					research organization dedicated to advancing practical ideas that
-					address the world's greatest challenges.
+					Established in Washington, D.C., in 1962, the Center for Strategic and International
+					Studies (CSIS) is a bipartisan, nonprofit policy research organization dedicated to
+					advancing practical ideas that address the world's greatest challenges.
 				</p>
 			</div>
 
 			<!-- RIGHT COLUMN: Address -->
 			<div class="footer__col footer__address">
 				<p>
-					1616 Rhode Island Avenue, NW<br />Washington, DC 20036<br />(202)
-					887-0200
+					1616 Rhode Island Avenue, NW<br />Washington, DC 20036<br />(202) 887-0200
 				</p>
 				<div class="footer__social">
-					<a
-						href="https://facebook.com/CSIS"
-						aria-label="Facebook"
-						target="_blank"
-						rel="noopener"
+					<a href="https://facebook.com/CSIS" aria-label="Facebook" target="_blank" rel="noopener"
 						><svg
 							width="17"
 							height="17"
@@ -227,10 +216,7 @@
 							fill="none"
 							xmlns="http://www.w3.org/2000/svg"
 						>
-							<g
-								id="Facebook_Logo_2024 1"
-								clip-path="url(#clip0_133_9)"
-							>
+							<g id="Facebook_Logo_2024 1" clip-path="url(#clip0_133_9)">
 								<g id="Logo">
 									<path
 										id="Initiator"
@@ -241,21 +227,12 @@
 							</g>
 							<defs>
 								<clipPath id="clip0_133_9">
-									<rect
-										width="17"
-										height="17"
-										fill="white"
-									/>
+									<rect width="17" height="17" fill="white" />
 								</clipPath>
 							</defs>
 						</svg></a
 					>
-					<a
-						href="https://twitter.com/CSIS"
-						aria-label="Twitter"
-						target="_blank"
-						rel="noopener"
-					>
+					<a href="https://twitter.com/CSIS" aria-label="Twitter" target="_blank" rel="noopener">
 						<svg
 							xmlns="http://www.w3.org/2000/svg"
 							width="17"
@@ -287,12 +264,7 @@
 							/>
 						</svg></a
 					>
-					<a
-						href="https://youtube.com/@CSIS"
-						aria-label="YouTube"
-						target="_blank"
-						rel="noopener"
-					>
+					<a href="https://youtube.com/@CSIS" aria-label="YouTube" target="_blank" rel="noopener">
 						<svg
 							xmlns="http://www.w3.org/2000/svg"
 							width="17"
@@ -306,11 +278,7 @@
 							/>
 						</svg></a
 					>
-					<a
-						href="https://instagram.com/csis"
-						aria-label="Instagram"
-						target="_blank"
-						rel="noopener"
+					<a href="https://instagram.com/csis" aria-label="Instagram" target="_blank" rel="noopener"
 						><svg
 							xmlns="http://www.w3.org/2000/svg"
 							width="17"
@@ -353,12 +321,7 @@
 					Copyright &copy; {new Date().getFullYear()}
 					Center for Strategic & International Studies. All rights reserved.
 				</span>
-				<a
-					href="https://www.csis.org/privacy-policy"
-					class="privacy-policy"
-				>
-					Privacy Policy</a
-				>
+				<a href="https://www.csis.org/privacy-policy" class="privacy-policy"> Privacy Policy</a>
 			</p>
 		</div>
 	</div>
@@ -366,15 +329,15 @@
 
 <style>
 	.footer {
-		background: var(--color-sky-950);
-		color: var(--color-sky-100);
-		padding-top: 1.25rem;
+		background: var(--color-footer);
+		color: var(--color-white);
+		padding-top: 40px;
 		padding-bottom: 2rem;
 		width: 100%;
 	}
 
 	.container {
-		max-width: 1290px;
+		max-width: 1296px;
 		margin: auto;
 	}
 
@@ -484,25 +447,32 @@
 	/*-- --------------------------------------------------- --*/
 	/*--                    Media Queries                    --*/
 	/*-- --------------------------------------------------- --*/
-	@media screen and (max-width: 1280px) {
-		.container {
-			max-width: 1152px;
-			padding-left: 40px;
-			padding-right: 40px;
-		}
 
-		.footer__col.footer__csis {
-			max-width: 920px;
+	@media screen and (max-width: 1439px) {
+		.container {
+			padding-left: 64px;
+			padding-right: 64px;
 		}
 	}
-	@media screen and (max-width: 1024px) {
+
+	@media screen and (max-width: 1279px) {
+		.container {
+			padding-left: 48px;
+			padding-right: 48px;
+		}
+	}
+	@media screen and (max-width: 959px) {
 		.footer {
 			padding-top: 2rem;
 			padding-bottom: 2rem;
 		}
 
 		.container {
-			max-width: 506px;
+			width: 100%;
+			max-width: none;
+			padding-left: 32px;
+			padding-right: 32px;
+			box-sizing: border-box;
 		}
 
 		.footer__col.footer__address {
@@ -514,7 +484,7 @@
 		}
 	}
 
-	@media screen and (max-width: 640px) {
+	@media screen and (max-width: 639px) {
 		.footer {
 			padding-top: 1.25rem;
 			padding-bottom: 2rem;
@@ -536,6 +506,13 @@
 
 		.footer__social {
 			margin-top: 0;
+		}
+	}
+
+	@media screen and (max-width: 320px) {
+		.container {
+			padding-left: 20px;
+			padding-right: 20px;
 		}
 	}
 </style>
