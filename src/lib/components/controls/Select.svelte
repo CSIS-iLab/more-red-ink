@@ -9,6 +9,8 @@
 		...restProps
 	} = $props();
 
+	const helperId = $props.id();
+
 	let isOpen = $state(false);
 
 	let selectedOption = $derived(options.find((option) => option.value === value));
@@ -45,52 +47,55 @@
 		<span class="select__label text-label-medium-short">{label}</span>
 	{/if}
 
-	<div class="select__control">
-		<button
-			type="button"
-			class="select__trigger text-body-3-regular"
-			{disabled}
-			aria-expanded={isOpen}
-			aria-haspopup="listbox"
-			onclick={toggleOpen}
-			onkeydown={handleKeydown}
-			{...restProps}
-		>
-			<span>{displayValue}</span>
+	<div class="select__field">
+		<div class="select__control">
+			<button
+				type="button"
+				class="select__trigger text-body-3-regular"
+				{disabled}
+				aria-expanded={isOpen}
+				aria-haspopup="listbox"
+				aria-describedby={helper ? helperId : undefined}
+				onclick={toggleOpen}
+				onkeydown={handleKeydown}
+				{...restProps}
+			>
+				<span>{displayValue}</span>
 
-			<img
-				class="select__arrow"
-				class:open={isOpen}
-				src="/icons/keyboard-arrow-down.svg"
-				alt=""
-				width="48"
-				height="48"
-			/>
-		</button>
+				<img
+					class="select__arrow"
+					class:open={isOpen}
+					src="/icons/keyboard-arrow-down.svg"
+					alt=""
+					width="48"
+					height="48"
+				/>
+			</button>
 
-		{#if isOpen}
-			<div class="select__options" role="listbox">
-				{#each options as option (option.value)}
-					<button
-						type="button"
-						class="select__option text-body-3-regular"
-						class:selected={option.value === value}
-						disabled={option.disabled ?? false}
-						role="option"
-						aria-selected={option.value === value}
-						onclick={() => selectOption(option)}
-						onkeydown={handleKeydown}
-					>
-						{option.label}
-					</button>
-				{/each}
-			</div>
+			{#if isOpen}
+				<div class="select__options" role="listbox">
+					{#each options as option (option.value)}
+						<button
+							type="button"
+							class="select__option text-body-3-regular"
+							class:selected={option.value === value}
+							disabled={option.disabled ?? false}
+							role="option"
+							aria-selected={option.value === value}
+							onclick={() => selectOption(option)}
+							onkeydown={handleKeydown}
+						>
+							{option.label}
+						</button>
+					{/each}
+				</div>
+			{/if}
+		</div>
+
+		{#if helper}
+			<span id={helperId} class="select__helper text-label-x-small">{helper}</span>
 		{/if}
 	</div>
-
-	{#if helper}
-		<span class="select__helper text-label-x-small">{helper}</span>
-	{/if}
 </div>
 
 <style>
@@ -107,9 +112,18 @@
 		color: var(--color-text-secondary);
 	}
 
+	/* 20rem (Figma: 298px) so the longest unit label,
+	   "US$ (purchasing power parity)", fits without cutting off. */
+	.select__field {
+		display: flex;
+		flex: 0 1 20rem;
+		flex-direction: column;
+		gap: 0.25rem;
+		min-width: 0;
+	}
+
 	.select__control {
 		position: relative;
-		flex: 0 1 18.625rem;
 		min-width: 0;
 	}
 
@@ -220,6 +234,7 @@
 	.select__helper {
 		margin: 0;
 		color: var(--color-text-primary);
+		line-height: 1.2;
 	}
 
 	@media (max-width: 959px) {
@@ -230,13 +245,13 @@
 		}
 
 		.select__label,
-		.select__control {
+		.select__field {
 			flex: none;
 		}
 
-		.select__control {
+		.select__field {
 			width: 100%;
-			max-width: 18.625rem;
+			max-width: 20rem;
 		}
 	}
 </style>

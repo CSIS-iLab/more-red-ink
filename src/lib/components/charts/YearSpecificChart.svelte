@@ -219,7 +219,14 @@
 		</ControlRow>
 
 		<ControlRow label="Unit">
-			<Select options={UNIT_OPTIONS} value={unit} onchange={handleUnitChange} />
+			<!-- Scaled values are shares of the total, so the unit doesn't apply. -->
+			<Select
+				options={UNIT_OPTIONS}
+				value={unit}
+				disabled={scaleTo100}
+				helper={scaleTo100 ? 'Unit is not applicable when “Scale to 100%” is selected' : undefined}
+				onchange={handleUnitChange}
+			/>
 		</ControlRow>
 
 		<ControlRow label="Options">
