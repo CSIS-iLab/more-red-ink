@@ -58,44 +58,69 @@
 		{/each}
 	</div>
 
-	<!-- Wider screens: table -->
-	<div class="receipt__table-scroll">
-		<table class="receipt__table">
-			<thead>
-				<tr>
-					<th scope="col">{receiptContent.columns.component}</th>
-					<th scope="col">{receiptContent.columns.china}</th>
-					<th scope="col">{receiptContent.columns.otherEconomies}</th>
-				</tr>
-			</thead>
-
-			<tbody>
-				{#each rows as row (row.key)}
+	<!-- Wider screens: table. The visible header row sits outside the
+	     scrolling area (screen readers use the hidden copy in the table). -->
+	<div class="receipt__table">
+		<div class="receipt__head-scroll">
+			<table class="receipt__grid receipt__head" aria-hidden="true">
+				{@render columns()}
+				<thead>
 					<tr>
-						<th scope="row">
-							<span class="receipt__component">
-								{#if showComponentColors}
-									<span
-										class="receipt__swatch"
-										style:background-color={COMPONENT_COLORS[row.key]}
-										aria-hidden="true"
-									></span>
-								{/if}
-								{row.label}
-							</span>
-						</th>
-
-						{#if row.shared}
-							<td colspan="2">{row.china}</td>
-						{:else}
-							<td>{row.china}</td>
-							<td>{row.otherEconomies}</td>
-						{/if}
+						<th>{receiptContent.columns.component}</th>
+						<th>{receiptContent.columns.china}</th>
+						<th>{receiptContent.columns.otherEconomies}</th>
 					</tr>
-				{/each}
-			</tbody>
-		</table>
+				</thead>
+			</table>
+		</div>
+
+		<div class="receipt__table-scroll">
+			<table class="receipt__grid">
+				{@render columns()}
+				<thead class="receipt__hidden-head">
+					<tr>
+						<th scope="col">{receiptContent.columns.component}</th>
+						<th scope="col">{receiptContent.columns.china}</th>
+						<th scope="col">{receiptContent.columns.otherEconomies}</th>
+					</tr>
+				</thead>
+
+				<tbody>
+					{#each rows as row (row.key)}
+						<tr>
+							<th scope="row">
+								<span class="receipt__component">
+									{#if showComponentColors}
+										<span
+											class="receipt__swatch"
+											style:background-color={COMPONENT_COLORS[row.key]}
+											aria-hidden="true"
+										></span>
+									{/if}
+									{row.label}
+								</span>
+							</th>
+
+							{#if row.shared}
+								<td colspan="2">{row.china}</td>
+							{:else}
+								<td>{row.china}</td>
+								<td>{row.otherEconomies}</td>
+							{/if}
+						</tr>
+					{/each}
+				</tbody>
+			</table>
+		</div>
 	</div>
+
+	{#snippet columns()}
+		<colgroup>
+			<col class="receipt__component-column" />
+			<col />
+			<col />
+		</colgroup>
+	{/snippet}
 
 	<!-- Phones: one card per spending tool -->
 	<ul class="receipt__cards">
@@ -162,18 +187,34 @@
 
 	/* ---------------------------- table ---------------------------- */
 
+	.receipt__table {
+		display: flex;
+		flex-direction: column;
+		min-height: 0;
+	}
+
 	.receipt__table-scroll {
 		min-height: 0;
 	}
 
-	.receipt__table {
+	.receipt__grid {
 		width: 100%;
 		border-collapse: separate;
 		border-spacing: 2px 4px;
 		table-layout: fixed;
 	}
 
-	.receipt__table thead th {
+	.receipt__component-column {
+		width: 8rem;
+	}
+
+	/* Room for the swatch. (Figma: 200px, which leaves too little room for
+	   the assumption columns in the Share page's narrow Receipt column.) */
+	.receipt.legend .receipt__component-column {
+		width: 8.5rem;
+	}
+
+	.receipt__head th {
 		padding: 4px 8px 4px 4px;
 		color: var(--color-text-helper);
 		font-family: var(--font-metadata);
@@ -185,23 +226,28 @@
 		vertical-align: bottom;
 	}
 
-	.receipt__table thead th:first-child {
-		width: 8rem;
-	}
-
-	.receipt.legend .receipt__table thead th {
+	.receipt.legend .receipt__head th {
 		font-family: var(--font-label);
 		text-transform: none;
 	}
 
-	/* Room for the swatch. (Figma: 200px, which leaves too little room for
-	   the assumption columns in the Share page's narrow Receipt column.) */
-	.receipt.legend .receipt__table thead th:first-child {
-		width: 8.5rem;
+	/* The data table's own header row, for screen readers only. */
+	.receipt__hidden-head th {
+		height: 0;
+		padding: 0;
+		overflow: hidden;
+		font-size: 0;
+		line-height: 0;
 	}
 
-	.receipt__table tbody th,
-	.receipt__table tbody td {
+	/* Pull the rows up over the hidden header row's spacing so they start
+	   right under the visible header. */
+	.receipt__table-scroll .receipt__grid {
+		margin-top: -8px;
+	}
+
+	.receipt__grid tbody th,
+	.receipt__grid tbody td {
 		padding: 10px;
 		background: var(--color-table-row);
 		font-family: var(--font-body);
@@ -211,12 +257,12 @@
 		vertical-align: top;
 	}
 
-	.receipt__table tbody th {
+	.receipt__grid tbody th {
 		color: var(--color-text-primary);
 		font-weight: var(--font-weight-medium);
 	}
 
-	.receipt__table tbody td {
+	.receipt__grid tbody td {
 		color: var(--color-text-secondary);
 		font-weight: var(--font-weight-regular);
 	}
@@ -314,7 +360,7 @@
 	}
 
 	@media (max-width: 639px) {
-		.receipt__table-scroll {
+		.receipt__table {
 			display: none;
 		}
 

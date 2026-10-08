@@ -51,7 +51,7 @@
 		padding: 0 1.25rem;
 		border: 1px solid transparent;
 		border-radius: 0.25rem;
-		font: inherit;
+		line-height: 1.2;
 		text-decoration: none;
 		cursor: pointer;
 		transition:

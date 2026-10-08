@@ -78,7 +78,8 @@ function fitLegendColumns(chart) {
  * After each render, finish the responsive layout:
  * - put an under-chart legend into two columns, then
  * - resize the chart's height so the plot area keeps the approved ratio,
- *   whatever space the title and legend take.
+ *   whatever space the title and legend take, growing it further if a
+ *   legend beside the chart would otherwise overlap the title.
  * Each change triggers one more render, which then finds nothing to change.
  */
 function finishLayout() {
@@ -87,11 +88,20 @@ function finishLayout() {
 		return;
 	}
 
-	const target = Math.round(this.plotWidth * getPlotRatio());
-	const difference = target - this.plotHeight;
+	// Height that gives the plot area the approved ratio.
+	const ratioHeight =
+		this.chartHeight + Math.round(this.plotWidth * getPlotRatio()) - this.plotHeight;
 
-	if (Math.abs(difference) > 1) {
-		this.setSize(undefined, this.chartHeight + difference, false);
+	// A legend beside the chart must fit below the title and subtitle; if it
+	// doesn't, make the chart taller rather than overlap them.
+	const { legend } = this;
+	const besideChart = legend.display && legend.options.layout === 'vertical';
+	const legendHeight = besideChart ? this.plotTop + (legend.legendHeight ?? 0) : 0;
+
+	const height = Math.max(ratioHeight, legendHeight);
+
+	if (Math.abs(height - this.chartHeight) > 1) {
+		this.setSize(undefined, height, false);
 	}
 }
 
@@ -193,7 +203,8 @@ export function createChartOptions(options) {
 		legend: {
 			layout: 'vertical',
 			align: 'right',
-			verticalAlign: 'middle',
+			// Anchored to the bottom, beside the bars (approved design).
+			verticalAlign: 'bottom',
 			width: 180,
 			padding: 12,
 			itemMarginBottom: 8,

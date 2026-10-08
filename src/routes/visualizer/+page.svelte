@@ -64,6 +64,16 @@
 		}
 	});
 
+	// Back returns to the assumptions form for an active estimate, or Home
+	// when there's no active session.
+	let backHref = $derived(
+		$calculatorState.mode === 'fastTrack'
+			? resolve('/fast-track')
+			: $calculatorState.mode === 'userDriven'
+				? resolve('/user-driven')
+				: resolve('/')
+	);
+
 	const handleNewEstimate = async () => {
 		calculatorState.reset();
 		await goto(resolve('/'));
@@ -77,11 +87,7 @@
 <div class="visualizer">
 	<aside class="visualizer__summary">
 		<div class="visualizer__summary-inner">
-			<BackLink
-				href={$calculatorState.mode === 'fastTrack'
-					? resolve('/fast-track')
-					: resolve('/user-driven')}
-			/>
+			<BackLink href={backHref} />
 
 			<Receipt
 				mode={$calculatorState.mode}
@@ -201,10 +207,20 @@
 		overflow-y: auto;
 	}
 
-	.visualizer__summary-inner :global(.receipt__table thead th) {
-		position: sticky;
-		top: 0;
-		background: var(--color-page);
+	/* The rows scroll under a fixed header; space for the scrollbar is
+	   kept beside both so their columns line up. */
+	.visualizer__summary-inner :global(.receipt__table) {
+		flex: 1;
+	}
+
+	.visualizer__summary-inner :global(.receipt__table-scroll) {
+		scrollbar-gutter: stable;
+	}
+
+	/* The header reserves the same scrollbar space without drawing one. */
+	.visualizer__summary-inner :global(.receipt__head-scroll) {
+		overflow-y: hidden;
+		scrollbar-gutter: stable;
 	}
 
 	.visualizer__charts {
@@ -239,6 +255,12 @@
 
 		.visualizer__summary-inner :global(.receipt__table-scroll) {
 			overflow: visible;
+			scrollbar-gutter: auto;
+		}
+
+		.visualizer__summary-inner :global(.receipt__head-scroll) {
+			overflow: visible;
+			scrollbar-gutter: auto;
 		}
 
 		.visualizer__new-estimate {

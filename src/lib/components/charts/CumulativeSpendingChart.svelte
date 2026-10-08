@@ -17,7 +17,7 @@
 	let {
 		data = [],
 		unit = 'pct_gdp',
-		showComponents = false,
+		showComponents = true,
 		onUnitChange = () => {},
 		onShowComponentsChange = () => {},
 		share = () => {},
