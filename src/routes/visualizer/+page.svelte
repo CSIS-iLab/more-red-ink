@@ -8,6 +8,8 @@
 	import YearSpecificChart from '$lib/components/charts/YearSpecificChart.svelte';
 	import EconomySpecificChart from '$lib/components/charts/EconomySpecificChart.svelte';
 	import Receipt from '$lib/components/charts/receipt/Receipt.svelte';
+	import BackLink from '$lib/components/controls/BackLink.svelte';
+	import Button from '$lib/components/controls/Button.svelte';
 	import { calculateEstimate } from '$lib/data/calculateEstimate.js';
 	import { loadData } from '$lib/data/loadData.js';
 	import { buildShareUrl } from '$lib/sharing/buildShareUrl.js';
@@ -68,9 +70,19 @@
 	};
 </script>
 
+<svelte:head>
+	<title>Visualizer | More Red Ink Calculator</title>
+</svelte:head>
+
 <div class="visualizer">
 	<aside class="visualizer__summary">
 		<div class="visualizer__summary-inner">
+			<BackLink
+				href={$calculatorState.mode === 'fastTrack'
+					? resolve('/fast-track')
+					: resolve('/user-driven')}
+			/>
+
 			<Receipt
 				mode={$calculatorState.mode}
 				assumptions={$calculatorState.mode === 'fastTrack'
@@ -78,17 +90,17 @@
 					: $calculatorState.userDrivenChoices}
 			/>
 
-			<button class="visualizer__new-estimate" type="button" onclick={handleNewEstimate}>
-				Create a new estimate
-			</button>
+			<div class="visualizer__new-estimate">
+				<Button variant="ghost" onclick={handleNewEstimate}>Create a new estimate</Button>
+			</div>
 		</div>
 	</aside>
 
-	<main class="visualizer__charts">
+	<div class="visualizer__charts">
 		{#if loading}
-			<p class="visualizer__status">Loading charts…</p>
+			<p class="visualizer__status text-body-2-regular" role="status">Loading charts…</p>
 		{:else if error}
-			<p class="visualizer__status">{error}</p>
+			<p class="visualizer__status text-body-2-regular" role="alert">{error}</p>
 		{:else}
 			<HistoricalSpendingChart
 				data={resolvedData}
@@ -150,47 +162,58 @@
 				share={() => handleShare('economySpecific')}
 			/>
 		{/if}
-	</main>
+	</div>
 </div>
 
 <style>
 	.visualizer {
 		display: grid;
-		grid-template-columns: 392px minmax(0, 1fr);
-		align-items: stretch;
+		grid-template-columns: 36rem minmax(0, 1fr);
+		align-items: start;
 		width: 100%;
 	}
 
+	/* The sidebar stays in view while the charts scroll; the Receipt table
+	   scrolls inside it. */
 	.visualizer__summary {
+		position: sticky;
+		top: 0;
 		min-width: 0;
+		height: 100vh;
 		background-color: var(--color-page);
 	}
 
 	.visualizer__summary-inner {
-		position: sticky;
-		top: 0;
 		display: flex;
 		flex-direction: column;
-		gap: 2rem;
-		padding: 2.5rem;
+		gap: 1.5rem;
+		height: 100%;
+		padding: 2.5rem 1.75rem;
 	}
 
-	.visualizer__new-estimate {
-		align-self: flex-start;
-		padding: 0.75rem 1rem;
-		border: 1px solid currentColor;
-		border-radius: 3px;
-		background: transparent;
-		font: inherit;
+	.visualizer__summary-inner :global(.receipt) {
+		flex: 1;
+		min-height: 0;
+	}
+
+	.visualizer__summary-inner :global(.receipt__table-scroll) {
+		flex: 1;
+		overflow-y: auto;
+	}
+
+	.visualizer__summary-inner :global(.receipt__table thead th) {
+		position: sticky;
+		top: 0;
+		background: var(--color-page);
 	}
 
 	.visualizer__charts {
 		display: flex;
 		min-width: 0;
+		min-height: 100vh;
 		flex-direction: column;
-		align-items: center;
 		gap: 2rem;
-		padding: 2rem;
+		padding: 2rem 2.5rem;
 		background-color: var(--color-surface-secondary);
 	}
 
@@ -198,24 +221,44 @@
 		margin: 0;
 	}
 
-	@media (max-width: 900px) {
+	/* Below 1200px the Receipt section sits above the charts. */
+	@media (max-width: 1199px) {
 		.visualizer {
 			grid-template-columns: minmax(0, 1fr);
 		}
 
-		.visualizer__summary-inner {
+		.visualizer__summary {
 			position: static;
-			padding: 1.5rem;
+			height: auto;
+		}
+
+		.visualizer__summary-inner {
+			width: min(100%, 27rem + 3.5rem);
+			margin: 0 auto;
+		}
+
+		.visualizer__summary-inner :global(.receipt__table-scroll) {
+			overflow: visible;
+		}
+
+		.visualizer__new-estimate {
+			display: flex;
+			justify-content: center;
 		}
 
 		.visualizer__charts {
+			min-height: 0;
 			padding: 1.5rem;
 		}
 	}
 
-	@media (max-width: 600px) {
-		.visualizer__summary-inner,
+	@media (max-width: 639px) {
+		.visualizer__summary-inner {
+			padding: 2rem 1rem;
+		}
+
 		.visualizer__charts {
+			gap: 1rem;
 			padding: 1rem;
 		}
 	}
