@@ -56,11 +56,8 @@
 		height: 100%;
 		display: flex;
 		align-items: center;
-		/* justify-content: space-between;
-		gap: 2rem; */
 		gap: 12px;
 		padding: 0 20px;
-		outline: 4px solid green;
 	}
 
 	.app-header__titles {
@@ -70,13 +67,11 @@
 		gap: 24px;
 		min-width: 0;
 		flex: 1;
-		outline: 1px solid blue;
 	}
 
 	.app-header__app-name {
 		flex: 0 0 134px;
 		width: 134px;
-		outline: 1px solid red;
 	}
 
 	.app-header__divider {
@@ -89,7 +84,6 @@
 	.app-header__page-name {
 		min-width: 0;
 		white-space: nowrap;
-		outline: 1px solid purple;
 	}
 
 	.app-header__brand {
@@ -97,7 +91,6 @@
     display: flex;
     align-items: center;
 		margin-left: auto;
-		outline: 1px solid red;
 	}
 
 	.app-header__brand svg {
@@ -106,7 +99,7 @@
 		height: auto;
 	}
 
-	@media (max-width: 480px) {
+	@media (max-width: 470px) {
 		.app-header__titles {
 			flex: 0 0 auto;
 		}
