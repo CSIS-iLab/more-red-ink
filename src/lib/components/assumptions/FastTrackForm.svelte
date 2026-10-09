@@ -79,7 +79,7 @@
 	.fast-track-form {
 		display: flex;
 		flex-direction: column;
-		gap: 3.75rem;
+		gap: 2.5rem;
 	}
 
 	.fast-track-form__intro {
@@ -102,6 +102,7 @@
 	}
 
 	.fast-track-form__actions {
+    padding: 2.5rem 0 2.5rem 0;
 		display: flex;
 		flex-direction: column;
 		align-items: center;

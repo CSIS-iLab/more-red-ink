@@ -24,7 +24,7 @@
 	.fast-track {
 		width: min(100% - 2rem, 39.75rem);
 		margin: 0 auto;
-		padding: 7.5rem 0;
+		padding: 5rem 0;
 	}
 
 	.back-link {

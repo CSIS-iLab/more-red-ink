@@ -97,7 +97,7 @@
 
 	.choice-group__options {
 		display: grid;
-		gap: 1rem;
+		gap: 0.75rem;
 	}
 
 	.choice-group__error {

@@ -20,11 +20,12 @@
  * and listed as paragraphs.
  */
 export const assumptionsIntro = {
-	label: 'Choose Assumptions',
+	label: 'Select Assumptions',
 	// TODO: Replace with final program copy.
 	descriptions: {
 		fastTrack: [
-			'Context for what makes up an industrial policy spending estimate and how the assumptions were curated. Highlight that enabling fair comparison between countries was a key objective...'
+			'This “Fast Track” option lets you look at the two extremes in our data - the upper-bound and lower-bound estimates.',
+			'Select between lower- and upper-bound estimates for all the economies based on which assumptions would yield the lowest or highest estimates for China. The Minimum option is the most conservative; it excludes several China-specific factors and applies conservative assumptions on the potential scale of spending throughout. The Maximum option includes all of the potential tools using broader assumptions.'
 		],
 		userDriven: [
 			'Context for what makes up an industrial policy spending estimate and how the assumptions were curated. Highlight that enabling fair comparison between countries was a key objective...',
@@ -191,9 +192,9 @@ export const alwaysIncluded = {
  */
 export const fastTrackOptions = {
 	// TODO: Replace with final program-provided variable name.
-	label: '[Variable Name for Min vs. Max]',
+	label: '',
 	description:
-		'These options let you compare our lower- and upper-bound estimates for China. The minimum option is the most conservative: it excludes several China-specific factors and applies the most cautious assumptions throughout. The maximum option includes all of these factors under our broadest assumptions.',
+		'',
 	options: [
 		{
 			value: 'minimum',
