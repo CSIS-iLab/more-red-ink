@@ -74,6 +74,10 @@
 		background: var(--color-card-button-error);
 	}
 
+	.choice-card.invalid input {
+		border-color: var(--color-card-button-error-border);
+	}
+
 	/* Selected / pressed */
 	.choice-card.checked {
 		border: 2px solid var(--color-card-button-pressed-border);

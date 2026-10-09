@@ -1,19 +1,3 @@
-<!--
-  Fast Track
-
-  Predefined estimation workflow.
-
-  Responsibilities:
-  - Establish Fast Track as the active calculator mode.
-  - Render FastTrackForm.
-  - Allow the user to choose a predefined estimation approach.
-  - Continue to the visualizer once the required selection is valid.
-
-  Implementation notes:
-  - Store user choices in calculator state.
-  - Do not calculate the estimate on this page.
--->
-
 <script>
 	import { page } from '$app/state';
 	import { resolve } from '$app/paths';
@@ -38,7 +22,7 @@
 
 <style>
 	.fast-track {
-		width: min(100% - 2rem, 40rem);
+		width: min(100% - 2rem, 39.75rem);
 		margin: 0 auto;
 		padding: 7.5rem 0;
 	}

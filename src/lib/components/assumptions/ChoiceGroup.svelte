@@ -55,7 +55,7 @@
 				</div>
 
 				{#if option.description}
-					<div class="choice-group__description text-body-3-regular">
+					<div class="choice-group__description text-label-small">
 						{option.description}
 					</div>
 				{/if}
