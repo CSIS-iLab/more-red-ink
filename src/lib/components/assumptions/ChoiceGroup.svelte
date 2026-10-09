@@ -29,15 +29,17 @@
 
 <fieldset class="choice-group" {disabled} aria-describedby={describedBy} {...restProps}>
 	{#if label}
-		<legend class="choice-group__label text-body-1-regular" class:has-description={description}>
+		<legend class="choice-group__label text-heading-4" class:has-description={description}>
 			{label}
 		</legend>
 	{/if}
 
 	{#if description}
-		<p id={descriptionId} class="choice-group__intro text-body-2-regular">
-			{description}
-		</p>
+		<div id={descriptionId} class="choice-group__intro">
+			{#each Array.isArray(description) ? description : [description] as paragraph, index (index)}
+				<p class="text-body-2-regular">{paragraph}</p>
+			{/each}
+		</div>
 	{/if}
 
 	<div class="choice-group__options">
@@ -55,7 +57,7 @@
 				</div>
 
 				{#if option.description}
-					<div class="choice-group__description text-body-3-regular">
+					<div class="choice-group__description text-label-small">
 						{option.description}
 					</div>
 				{/if}
@@ -82,22 +84,32 @@
 		margin-bottom: 1rem;
 		padding: 0;
 		color: var(--color-card-button-text-primary);
-		line-height: 1.2;
+		line-height: 1.1;
 	}
 
 	.choice-group__label.has-description {
-		margin-bottom: 0.5rem;
+		margin-bottom: 0.75rem;
 	}
 
 	.choice-group__intro {
-		margin: 0 0 1.5rem;
+		margin: 0 0 2.5rem;
 		color: var(--color-text-primary);
 		line-height: 1.5;
 	}
 
+	.choice-group__intro p {
+		margin: 0;
+	}
+
+	.choice-group__intro p + p {
+		margin-top: 1.5rem; /* 24px between paragraphs */
+	}
+
 	.choice-group__options {
 		display: grid;
-		gap: 1rem;
+		grid-template-columns: minmax(0, 1fr);
+		gap: 0.75rem;
+		margin-bottom: 2.5rem;
 	}
 
 	.choice-group__error {
@@ -109,7 +121,9 @@
 	}
 
 	.choice-group__description {
+		min-width: 0;
 		margin-top: 0.25rem;
 		color: var(--color-card-button-text-secondary);
+		overflow-wrap: break-word;
 	}
 </style>

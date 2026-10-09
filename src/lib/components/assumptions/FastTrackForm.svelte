@@ -47,7 +47,7 @@
 
 <div class="fast-track-form">
 	<div class="fast-track-form__intro">
-		<h1 class="text-heading-1">{assumptionsIntro.label}</h1>
+		<h1 class="text-heading-2">{assumptionsIntro.label}</h1>
 
 		{#each assumptionsIntro.descriptions.fastTrack as paragraph (paragraph)}
 			<p class="text-body-2-regular">{paragraph}</p>
@@ -79,7 +79,7 @@
 	.fast-track-form {
 		display: flex;
 		flex-direction: column;
-		gap: 3.75rem;
+		gap: 2.5rem;
 	}
 
 	.fast-track-form__intro {
@@ -102,6 +102,7 @@
 	}
 
 	.fast-track-form__actions {
+    padding: 2.5rem 0 2.5rem 0;
 		display: flex;
 		flex-direction: column;
 		align-items: center;
