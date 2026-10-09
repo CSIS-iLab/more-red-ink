@@ -108,46 +108,46 @@ export const assumptionOptions = {
 	belowMarketCredit: {
 		label: 'Below-Market Credit',
 		description:
-			'This variable captures the impact of below-market lending by state-backed institutions in our sample economies.',
+			'Below-market credit is measured as either the savings in interest-rate payments provided to priority recipients for all of their outstanding credit (“Stock”) or the total amount of priority lending they receive in any given year (“Flow”). The latter option is based on the possibility that receipt of preferential credit confers a more fundamental market-entry opportunity more significant than reduced loan repayment terms.',
 		chinaOnly: false,
 		options: [
 			{
 				value: 'stock',
 				label: 'Stock',
 				description:
-					'This estimates below-market credit based on a spread between high-yield and investment-grade corporate bonds in our sample economies as a proxy for preferential lending. This is then applied to the outstanding lending amount for state-backed financial institutions.'
+					'“Stock” estimates below-market credit based on the spread between high-yield and investment-grade corporate bonds in each economy, which is then applied to the outstanding lending of state-backed financial institutions.'
 			},
 			{
 				value: 'flow',
 				label: 'Flow',
 				description:
-					'This estimate is based on the amount of new lending by state-backed financial institutions.'
+					'"Flow” estimates below-market credit based on the amount of annual new lending by state-backed financial institutions.'
 			}
 		]
 	},
 	stateInvestmentFunds: {
 		label: 'State Investment Funds',
 		description:
-			'This variable captures equity investments made by state investment funds for our sample economies.',
+			'State investment funds are measured by either counting only 10% of their total as a subsidy, to reflect the likely difference between state-guided support and market-based equity investment, or by counting their entire value, which instead would reflect that state investment confers a more fundamental market-entry opportunity more significant than better investment terms.',
 		chinaOnly: false,
 		options: [
 			{
 				value: 'tenPercent',
 				label: '10% of funding',
 				description:
-					'Includes only 10 percent of new equity investments made by state investment funds.'
+					'“10% of funding” uses 10% as a proxy for the relative benefit of receiving state-backed funding as opposed to relying on market-based funding sources.'
 			},
 			{
 				value: 'oneHundredPercent',
 				label: '100% of funding',
-				description: 'Includes all new equity investments made by state investment funds.'
+				description: '“100% of funding” treats the entire equity investment as valuable and tied to recipients’ basic access into a sector.'
 			}
 		]
 	},
 	procurementCoverage: {
 		label: 'Government Procurement Coverage',
 		description:
-			'This variable captures the potential use of government procurement for industrial policy purposes.',
+			['Government procurement is the most opaque of all industrial policy tools. Government procurement refers to purchases of goods, services, and construction work by public sector organizations. Governments can utilize their influence as large purchasers within an economy to provide benefits to firms through favorable terms. For our estimates, the Calculator automatically only counts 10 percent of each economy\'s actual reported total procurement as being in service of industrial policy.', 'Select what government procurement you consider to be most relevant for industrial policy:'],
 		chinaOnly: false,
 		options: [
 			{

@@ -101,11 +101,15 @@
 		margin: 0;
 	}
 
+	.choice-group__intro p + p {
+		margin-top: 1.5rem; /* 24px between paragraphs */
+	}
+
 	.choice-group__options {
 		display: grid;
 		grid-template-columns: minmax(0, 1fr);
 		gap: 0.75rem;
-    margin-bottom: 2.5rem;
+		margin-bottom: 2.5rem;
 	}
 
 	.choice-group__error {
