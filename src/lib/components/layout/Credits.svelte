@@ -4,8 +4,9 @@
 
 <section class="credits">
 	<div class="credits-grid">
+		<!-- Research -->
 		<div class="credits-col">
-			<p class="text-heading-3">Research</p>
+			<h2 class="text-heading-3">Research</h2>
 
 			<a
 				class="text-heading-5"
@@ -16,18 +17,35 @@
 				Trustee Chair in Chinese Business and Economics
 			</a>
 
-			<p class="text-body-2-regular">
-				Written by:
-				<CreditsLink href="https://www.csis.org/people/scott-kennedy">Scott Kennedy</CreditsLink>
-				and
-				<CreditsLink href="https://www.csis.org/people/ryan-featherston">
-					Ryan Featherston
-				</CreditsLink>
-			</p>
+			<div class="credits-group">
+				<p class="text-label-small-emphasized">Written by</p>
+				<div class="credits-names">
+					<CreditsLink href="https://www.csis.org/people/scott-kennedy">Scott Kennedy</CreditsLink>
+					<CreditsLink href="https://www.csis.org/people/ryan-featherston">
+						Ryan Featherston
+					</CreditsLink>
+				</div>
+			</div>
+
+			<!-- Acknowledgments -->
+			<div class="acknowledgments">
+				<h2 class="text-heading-3">Acknowledgments</h2>
+
+				<p class="text-body-2-regular">
+					Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt
+					ut labore et dolore magna aliqua.
+				</p>
+
+				<p class="text-body-2-regular">
+					Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
+					commodo consequat.
+				</p>
+			</div>
 		</div>
 
+		<!-- Production -->
 		<div class="credits-col">
-			<p class="text-heading-3">Production</p>
+			<h2 class="text-heading-3">Production</h2>
 
 			<a
 				class="text-heading-5"
@@ -39,26 +57,35 @@
 			</a>
 
 			<div class="credits-list">
-				<p class="text-body-2-regular">
-					Data visualization by:
-					<CreditsLink href="https://www.csis.org/people/shannon-yeung">Shannon Yeung</CreditsLink>
-				</p>
+				<div class="credits-group">
+					<p class="text-label-small-emphasized">UI/UX, information design & management</p>
+					<p class="text-body-2-regular">
+						<CreditsLink href="https://www.csis.org/people/shannon-yeung">
+							Shannon Yeung
+						</CreditsLink>
+					</p>
+				</div>
 
-				<p class="text-body-2-regular">
-					Development by:
-					<CreditsLink href="https://www.csis.org/people/mariel-de-la-garza">
-						Mariel A. de la Garza
-					</CreditsLink>
-					and
-					<CreditsLink href="https://www.csis.org/people/lindsay-allison">
-						Lindsay Allison
-					</CreditsLink>
-				</p>
+				<div class="credits-group">
+					<p class="text-label-small-emphasized">Development</p>
+					<div class="credits-names">
+						<CreditsLink href="https://www.csis.org/people/mariel-de-la-garza">
+							Mariel A. de la Garza
+						</CreditsLink>
+						<CreditsLink href="https://www.csis.org/people/lindsay-allison">
+							Lindsay Allison
+						</CreditsLink>
+					</div>
+				</div>
 
-				<p class="text-body-2-regular">
-					Page design by:
-					<CreditsLink href="https://www.csis.org/people/shannon-yeung">Shannon Yeung</CreditsLink>
-				</p>
+				<div class="credits-group">
+					<p class="text-label-small-emphasized">Copyediting</p>
+					<p class="text-body-2-regular">
+						<CreditsLink href="https://www.csis.org/people/shannon-yeung">
+							Shannon Yeung
+						</CreditsLink>
+					</p>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -67,8 +94,8 @@
 <style>
 	.credits {
 		background: var(--color-author-block);
-		color: var(--color-text-primary);
-		padding: 40px 0;
+		color: var(--color-text-secondary);
+		padding: 48px 0;
 	}
 
 	.credits-grid {
@@ -76,14 +103,62 @@
 		max-width: 1296px;
 		margin: 0 auto;
 		display: grid;
-		grid-template-columns: 1fr 1fr;
+		grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
 		gap: 64px;
 	}
 
 	.credits-col {
-		display: grid;
-		gap: 20px;
-		align-content: start;
+		display: flex;
+		flex-direction: column;
+		align-items: flex-start;
+		gap: 24px;
+		min-width: 0;
+	}
+
+	.credits-names {
+		display: flex;
+		flex-direction: column;
+		align-items: flex-start;
+		gap: 4px;
+	}
+
+	.credits-col > h2,
+	.acknowledgments h2 {
+		color: var(--color-text-primary);
+		text-align: center;
+		margin: 0;
+	}
+
+	.credits-col > h2 {
+		align-self: center;
+	}
+
+	.credits-col > a {
+		color: var(--color-text-secondary);
+	}
+
+	.credits-list {
+		display: flex;
+		flex-direction: column;
+		gap: 24px;
+	}
+
+	.credits-group {
+		display: flex;
+		flex-direction: column;
+		gap: 2px;
+	}
+
+	.acknowledgments {
+		display: flex;
+		flex-direction: column;
+		gap: 24px;
+		width: 100%;
+		margin-top: 32px;
+	}
+
+	.acknowledgments h2 {
+		margin-bottom: 4px;
 	}
 
 	p {
@@ -92,7 +167,7 @@
 	}
 
 	.credits a {
-		color: var(--color-text-primary);
+		color: var(--color-text-secondary);
 		text-decoration-line: underline;
 		text-decoration-thickness: 1px;
 		text-underline-offset: 0.15em;
@@ -102,11 +177,11 @@
 
 	.credits a:hover,
 	.credits a:focus-visible {
-		color: var(--color-slate-500);
+		color: var(--color-text-primary);
 	}
 
 	.credits a:focus-visible {
-		outline: 2px solid var(--color-sky-300);
+		outline: 2px solid var(--color-text-primary);
 		outline-offset: 2px;
 	}
 
