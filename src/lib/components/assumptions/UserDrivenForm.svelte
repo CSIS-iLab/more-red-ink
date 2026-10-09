@@ -100,7 +100,7 @@
 	{/each}
 
 	<div class="user-driven-form__always-included">
-		<h2 class="text-body-1-regular">{alwaysIncluded.label}</h2>
+		<h2 class="text-heading-4">{alwaysIncluded.label}</h2>
 		<p class="text-body-2-regular">{alwaysIncluded.description}</p>
 	</div>
 
