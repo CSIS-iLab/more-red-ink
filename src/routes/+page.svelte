@@ -1,7 +1,6 @@
 <script>
 	import { resolve } from '$app/paths';
 	import Button from '$lib/components/controls/Button.svelte';
-	import Credits from '$lib/components/layout/Credits.svelte';
 </script>
 
 <svelte:head>
@@ -55,8 +54,6 @@
 			</div>
 		</div>
 	</div>
-
-	<Credits />
 </div>
 
 <style>
