@@ -82,8 +82,8 @@
   --color-text-error: var(--color-red-700);
 
   /* link */
-  --color-link-text: var(--color-slate-500);
-  --color-link-hover: var(--color-slate-800);
+  --color-link-text: var(--color-slate-800);
+  --color-link-hover: var(--color-blue-800);
 
   /* table */
   --color-table-row: var(--color-slate-200);

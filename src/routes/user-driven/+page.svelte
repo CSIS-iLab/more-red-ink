@@ -46,7 +46,7 @@
 
 	.back-link {
 		display: inline-block;
-		margin-bottom: 2.25rem;
+		margin-bottom: 4.5rem;
 		color: var(--color-neutral-600);
 		line-height: 1.5;
 	}
