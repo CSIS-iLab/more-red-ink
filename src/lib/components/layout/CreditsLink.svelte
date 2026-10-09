@@ -29,7 +29,7 @@
 	}
 
 	.credits-link:focus-visible {
-		outline: 2px solid var(--color-text-primary);
+		outline: 2px solid var(--color-blue-800);
 		outline-offset: 2px;
 	}
 </style>
