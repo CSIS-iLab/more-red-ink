@@ -152,24 +152,24 @@ export const assumptionOptions = {
 		options: [
 			{
 				value: 'allItems',
-				label: 'All Items',
+				label: 'Include All Items',
 				description: 'All procurement reported to the WTO (or national sources where unavailable).'
 			},
 			{
 				value: 'totalGoods',
-				label: 'Total Goods',
+				label: 'Include Total Goods Only',
 				description:
 					'Total goods procurement reported to the WTO (or national sources where unavailable).'
 			},
 			{
 				value: 'centralGoods',
-				label: 'Central Goods',
+				label: 'Include Central Goods Only',
 				description:
 					'Central government-level goods procurement reported to the WTO (or national sources where unavailable).'
 			},
 			{
 				value: 'excludeAll',
-				label: 'Exclude All',
+				label: 'Exclude All Items',
 				description: 'Exclude government procurement entirely.'
 			}
 		]
