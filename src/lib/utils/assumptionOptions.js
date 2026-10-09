@@ -45,8 +45,7 @@ export const assumptionSections = [
 		chinaOnly: true,
 		label: 'China-Specific Assumptions',
 		// TODO: Replace with final program copy.
-		description:
-			''
+		description: ''
 	},
 	{
 		key: 'allEconomies',
@@ -66,7 +65,11 @@ export const assumptionSections = [
 export const assumptionOptions = {
 	chinaEstimationApproach: {
 		label: 'Estimation Approach',
-		description: ['Unlike the other economies, the most accurate data for two kinds of Chinese industrial policy spending - direct subsidies and other tax incentives - comes from reporting disclosures provided by listed firms. These figures are then used as a basis for creating estimates for unlisted Chinese firms, which account for a large [insert %] share of the country\'s economy.', 'When analyzing these data, there are two reasonable alternative approaches to creating estimates, one based on company ownership, the other on industries.', 'Pick the approach you believe better captures industrial policy dynamics.'],
+		description: [
+			"Unlike the other economies, the most accurate data for two kinds of Chinese industrial policy spending - direct subsidies and other tax incentives - comes from reporting disclosures provided by listed firms. These figures are then used as a basis for creating estimates for unlisted Chinese firms, which account for a large [insert %] share of the country's economy.",
+			'When analyzing these data, there are two reasonable alternative approaches to creating estimates, one based on company ownership, the other on industries.',
+			'Pick the approach you believe better captures industrial policy dynamics.'
+		],
 		chinaOnly: true,
 		options: [
 			{
@@ -84,9 +87,10 @@ export const assumptionOptions = {
 		]
 	},
 	chinaOther: {
-		label: 'Other Variables - SOE Net Payables, Land and Debt-Equity Swaps',
+		label: 'Other China-Specific Tools - Land, Debt-equity swaps, and SOE net payables',
 		// TODO: Replace with final program copy.
-		description: '',
+		description:
+			'There are some tools for which we only have estimates for China. Below-market land refers to the preferential sale of land to industrial firms and below market prices. In concrete terms we look at the difference in price between industrial land sold at competitive auction vs land sold through less competitive agreements. Debt-for-equity swaps refers to a policy where banks exchange their loans to a given company for equity shares. We measure the benefits to firms by assuming a spread the firms would have had to pay if these swaps were still loans. Ultimately, this is a small estimate. Finally, SOE net payables represents the savings SOEs accrue by delaying payment to suppliers.',
 		chinaOnly: true,
 		options: [
 			{
@@ -192,8 +196,7 @@ export const alwaysIncluded = {
 export const fastTrackOptions = {
 	// TODO: Replace with final program-provided variable name.
 	label: '',
-	description:
-		'',
+	description: '',
 	options: [
 		{
 			value: 'minimum',

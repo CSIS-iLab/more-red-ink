@@ -88,13 +88,17 @@
 	}
 
 	.choice-group__label.has-description {
-		margin-bottom: 0.5rem;
+		margin-bottom: 0.75rem;
 	}
 
 	.choice-group__intro {
-		margin: 0 0 1.5rem;
+		margin: 0 0 2.5rem;
 		color: var(--color-text-primary);
 		line-height: 1.5;
+	}
+
+	.choice-group__intro p {
+		margin: 0;
 	}
 
 	.choice-group__options {
