@@ -35,7 +35,6 @@
 
 	@media (max-width: 640px) {
 		.fast-track {
-			width: 100%;
 			padding: 2rem 0 4rem;
 		}
 	}

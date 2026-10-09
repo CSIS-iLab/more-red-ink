@@ -97,6 +97,7 @@
 
 	.choice-group__options {
 		display: grid;
+		grid-template-columns: minmax(0, 1fr);
 		gap: 0.75rem;
 	}
 
