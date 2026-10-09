@@ -43,10 +43,10 @@ export const assumptionSections = [
 	{
 		key: 'chinaOnly',
 		chinaOnly: true,
-		label: 'Variables for China Only',
+		label: 'China-Specific Assumptions',
 		// TODO: Replace with final program copy.
 		description:
-			'Short description about why China has different variables and how they should be considered in the grand scheme of the industrial-policy...'
+			''
 	},
 	{
 		key: 'allEconomies',
@@ -66,7 +66,7 @@ export const assumptionSections = [
 export const assumptionOptions = {
 	chinaEstimationApproach: {
 		label: 'Estimation Approach',
-		description: 'Which do you think is more influential in Chinese industrial policy',
+		description: ['Unlike the other economies, the most accurate data for two kinds of Chinese industrial policy spending - direct subsidies and other tax incentives - comes from reporting disclosures provided by listed firms. These figures are then used as a basis for creating estimates for unlisted Chinese firms, which account for a large [insert %] share of the country\'s economy.', 'When analyzing these data, there are two reasonable alternative approaches to creating estimates, one based on company ownership, the other on industries.', 'Pick the approach you believe better captures industrial policy dynamics.'],
 		chinaOnly: true,
 		options: [
 			{

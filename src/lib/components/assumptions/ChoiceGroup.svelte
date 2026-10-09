@@ -29,15 +29,17 @@
 
 <fieldset class="choice-group" {disabled} aria-describedby={describedBy} {...restProps}>
 	{#if label}
-		<legend class="choice-group__label text-body-1-regular" class:has-description={description}>
+		<legend class="choice-group__label text-heading-4" class:has-description={description}>
 			{label}
 		</legend>
 	{/if}
 
 	{#if description}
-		<p id={descriptionId} class="choice-group__intro text-body-2-regular">
-			{description}
-		</p>
+		<div id={descriptionId} class="choice-group__intro">
+			{#each Array.isArray(description) ? description : [description] as paragraph, index (index)}
+				<p class="text-body-2-regular">{paragraph}</p>
+			{/each}
+		</div>
 	{/if}
 
 	<div class="choice-group__options">
@@ -82,7 +84,7 @@
 		margin-bottom: 1rem;
 		padding: 0;
 		color: var(--color-card-button-text-primary);
-		line-height: 1.2;
+		line-height: 1.1;
 	}
 
 	.choice-group__label.has-description {

@@ -66,7 +66,7 @@
 
 <div class="user-driven-form">
 	<div class="user-driven-form__intro">
-		<h1 class="text-heading-1">{assumptionsIntro.label}</h1>
+		<h1 class="text-heading-2">{assumptionsIntro.label}</h1>
 
 		<div class="user-driven-form__paragraphs">
 			{#each assumptionsIntro.descriptions.userDriven as paragraph (paragraph)}
@@ -78,7 +78,7 @@
 	{#each sections as section (section.key)}
 		<section class="user-driven-form__section" aria-labelledby="{section.key}-heading">
 			<div class="user-driven-form__section-heading">
-				<h2 id="{section.key}-heading" class="text-heading-2-regular">{section.label}</h2>
+				<h2 id="{section.key}-heading" class="text-heading-3">{section.label}</h2>
 
 				{#if section.description}
 					<p class="text-body-2-regular">{section.description}</p>
