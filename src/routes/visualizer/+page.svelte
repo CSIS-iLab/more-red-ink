@@ -174,7 +174,9 @@
 <style>
 	.visualizer {
 		display: grid;
-		grid-template-columns: 36rem minmax(0, 1fr);
+		/* Sidebar: Figma's 576px at 1440px, scaling down to 416px so the
+		   charts keep enough room on smaller laptops. */
+		grid-template-columns: clamp(26rem, 40vw, 36rem) minmax(0, 1fr);
 		align-items: start;
 		width: 100%;
 	}
@@ -249,8 +251,13 @@
 		}
 
 		.visualizer__summary-inner {
-			width: min(100%, 27rem + 3.5rem);
-			margin: 0 auto;
+			/* Same side padding as the chart column, so the Receipt lines up
+			   with the chart cards below it. */
+			padding: 2.5rem 1.5rem;
+		}
+
+		.visualizer__summary-inner :global(.receipt__intro) {
+			max-width: 45rem;
 		}
 
 		.visualizer__summary-inner :global(.receipt__table-scroll) {
