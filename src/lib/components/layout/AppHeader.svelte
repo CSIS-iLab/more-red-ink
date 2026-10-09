@@ -1,11 +1,12 @@
 <script>
+	import { resolve } from '$app/paths';
 	let { pageName = '' } = $props();
 </script>
 
 <header class="app-header">
 	<div class="app-header__inner">
 		<div class="app-header__titles">
-			<div class="app-header__app-name text-logo">Industrial Policy Spending Calculator</div>
+			<a href={resolve('/')} class="app-header__app-name text-logo"> Industrial Policy Spending Calculator </a>
 
 			{#if pageName}
 				<div class="app-header__divider" aria-hidden="true"></div>
@@ -16,11 +17,7 @@
 		</div>
 
 		<div class="app-header__brand" aria-label="Center for Strategic and International Studies">
-			<svg
-				viewBox="0 0 76 27"
-				fill="none"
-				xmlns="http://www.w3.org/2000/svg"
-			>
+			<svg viewBox="0 0 76 27" fill="none" xmlns="http://www.w3.org/2000/svg">
 				<path
 					d="M19.68 0.72C20.76 0.84 22.08 1.44 22.68 1.44C22.92 1.44 23.28 1.68 23.28 2.64C23.28 3.48 23.52 5.16 23.52 6.12C23.52 6.96 23.28 7.44 22.92 7.44C22.68 7.44 22.44 6.96 22.32 6.36C21.96 4.92 21.24 3.84 20.64 3.36C18.48 1.68 16.44 1.32 14.28 1.32C7.92 1.32 3.84 6.6 3.84 12.6C3.84 15.24 4.32 17.4 5.28 19.08C7.44 23.64 12.12 25.44 15.36 25.44C16.08 25.44 18 25.32 19.68 24.36C21.48 23.4 22.44 22.2 23.4 20.52C23.88 19.68 24.12 19.44 24.24 19.44C24.6 19.44 24.72 20.28 24.6 20.76C24.48 21.72 23.52 23.88 23.04 24.72C22.92 25.08 22.2 25.56 21.84 25.8C21.24 26.04 18 26.88 14.64 26.88C9 26.88 4.92 24.12 3.36 22.2C1.8 20.4 0 17.64 0 13.08C0 8.52 2.64 4.92 4.32 3.6C7.68 0.84 11.4 0 15 0C16.32 0.12 18.12 0.36 19.68 0.72Z"
 					fill="currentColor"
@@ -70,6 +67,19 @@
 	.app-header__app-name {
 		flex: 0 0 134px;
 		width: 134px;
+		color: var(--color-text-primary);
+		text-decoration: none;
+		transition: color 0.3s ease;
+	}
+
+	.app-header__app-name:hover,
+	.app-header__app-name:focus-visible {
+		color: var(--color-blue-800);
+	}
+
+	.app-header__app-name:focus-visible {
+		outline: 2px solid var(--color-text-primary);
+		outline-offset: 2px;
 	}
 
 	.app-header__divider {
@@ -86,8 +96,8 @@
 
 	.app-header__brand {
 		flex: 0 0 auto;
-    display: flex;
-    align-items: center;
+		display: flex;
+		align-items: center;
 		margin-left: auto;
 	}
 
