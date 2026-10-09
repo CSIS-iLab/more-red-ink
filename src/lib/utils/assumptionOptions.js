@@ -200,13 +200,13 @@ export const fastTrackOptions = {
 			value: 'minimum',
 			label: 'Minimum',
 			description:
-				'“Minimum” is based on assumptions that produce the smallest possible estimate for China. This highly conservative option excludes some China-specific tools as well as government procurement. '
+				'“Minimum” is based on assumptions that produce the smallest possible estimate for China. This highly conservative option excludes some China-specific tools as well as government procurement.'
 		},
 		{
 			value: 'maximum',
 			label: 'Maximum',
 			description:
-				'“Maximum” is based on assumptions that produce the largest possible estimate for China. It is an upper-bound scenario that includes China-specific tools and government procurement and applies a broader definition of state support to create its estimate. '
+				'“Maximum” is based on assumptions that produce the largest possible estimate for China. It is an upper-bound scenario that includes China-specific tools and government procurement and applies a broader definition of state support to create its estimate.'
 		}
 	]
 };

@@ -110,7 +110,9 @@
 	}
 
 	.choice-group__description {
+		min-width: 0;
 		margin-top: 0.25rem;
 		color: var(--color-card-button-text-secondary);
+		overflow-wrap: break-word;
 	}
 </style>
