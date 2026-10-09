@@ -50,9 +50,8 @@ export const assumptionSections = [
 	{
 		key: 'allEconomies',
 		chinaOnly: false,
-		label: 'Variables for Other Economies',
-		// TODO: Replace with final program copy.
-		description: 'Short description about variables that apply to all 8 economies.'
+		label: 'Tools for Other Economies',
+		description: 'The assumptions for estimating most industrial policy tools used by the other 7 economies are straightforward and fixed. But for some tools, there are reasonable alternative options.'
 	}
 ];
 

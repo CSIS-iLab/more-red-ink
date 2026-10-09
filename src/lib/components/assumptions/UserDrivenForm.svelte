@@ -151,13 +151,14 @@
 	.user-driven-form__section {
 		display: flex;
 		flex-direction: column;
-		gap: 3.75rem;
+		gap: 2.5rem;
 	}
 
 	.user-driven-form__section-heading {
 		display: flex;
 		flex-direction: column;
 		gap: 1.25rem;
+    margin-top: 3rem;
 	}
 
 	.user-driven-form__always-included {
@@ -176,4 +177,8 @@
 		align-items: center;
 		gap: 0.75rem;
 	}
+
+  #chinaOnly-heading {
+    margin-bottom: 18px;
+  }
 </style>
