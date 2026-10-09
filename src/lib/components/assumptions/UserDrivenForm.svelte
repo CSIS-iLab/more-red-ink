@@ -76,8 +76,6 @@
 	</div>
 
 	{#each sections as section (section.key)}
-		<hr class="user-driven-form__divider" />
-
 		<section class="user-driven-form__section" aria-labelledby="{section.key}-heading">
 			<div class="user-driven-form__section-heading">
 				<h2 id="{section.key}-heading" class="text-heading-2-regular">{section.label}</h2>
@@ -120,7 +118,7 @@
 	.user-driven-form {
 		display: flex;
 		flex-direction: column;
-		gap: 3.75rem;
+		gap: 3rem;
 	}
 
 	.user-driven-form h1,
@@ -148,13 +146,6 @@
 		display: flex;
 		flex-direction: column;
 		gap: 1.5rem;
-	}
-
-	.user-driven-form__divider {
-		width: 100%;
-		margin: 0;
-		border: 0;
-		border-top: 1px solid var(--color-neutral-400);
 	}
 
 	.user-driven-form__section {

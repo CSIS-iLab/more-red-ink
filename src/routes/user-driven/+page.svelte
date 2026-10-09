@@ -41,9 +41,9 @@
 
 <style>
 	.user-driven {
-		width: min(100% - 2rem, 40rem);
+		width: min(100% - 2rem, 39.75rem);
 		margin: 0 auto;
-		padding: 7.5rem 0;
+		padding: 5rem 0;
 	}
 
 	.back-link-wrapper {
@@ -52,7 +52,6 @@
 
 	@media (max-width: 640px) {
 		.user-driven {
-			width: 100%;
 			padding: 2rem 0 4rem;
 		}
 	}

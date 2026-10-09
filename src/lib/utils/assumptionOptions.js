@@ -28,8 +28,7 @@ export const assumptionsIntro = {
 			'Select between lower- and upper-bound estimates for all the economies based on which assumptions would yield the lowest or highest estimates for China. The Minimum option is the most conservative; it excludes several China-specific factors and applies conservative assumptions on the potential scale of spending throughout. The Maximum option includes all of the potential tools using broader assumptions.'
 		],
 		userDriven: [
-			'Context for what makes up an industrial policy spending estimate and how the assumptions were curated. Highlight that enabling fair comparison between countries was a key objective...',
-			'Introduce two decision scopes: assumptions that apply to China only and assumption that apply to all 8 economies...'
+			'Select the underlying assumptions of the various industrial policy spending tools that together produce overall estimates for China and the seven other economies.'
 		]
 	}
 };
