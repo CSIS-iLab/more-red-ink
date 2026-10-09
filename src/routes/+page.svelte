@@ -73,8 +73,6 @@
 			</div>
 		{/each}
 	{/if}
-
-  <Credits />
 </div>
 
 <style>
