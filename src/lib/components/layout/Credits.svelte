@@ -177,11 +177,11 @@
 
 	.credits a:hover,
 	.credits a:focus-visible {
-		color: var(--color-text-primary);
+		color: var(--color-blue-800);
 	}
 
 	.credits a:focus-visible {
-		outline: 2px solid var(--color-text-primary);
+		outline: 2px solid var(--color-blue-800);
 		outline-offset: 2px;
 	}
 

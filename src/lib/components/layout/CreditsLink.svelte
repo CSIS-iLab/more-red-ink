@@ -24,8 +24,8 @@
 
 	.credits-link:hover,
 	.credits-link:focus-visible {
-		color: var(--color-slate-500);
-		border-bottom-color: var(--color-slate-500);
+		color: var(--color-blue-800);
+		border-bottom-color: var(--color-blue-800);
 	}
 
 	.credits-link:focus-visible {
