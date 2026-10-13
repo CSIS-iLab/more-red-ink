@@ -19,25 +19,32 @@
 import Highcharts from 'highcharts';
 
 import { COMPONENT_COLOR_TOKENS } from './chartOptions.js';
-
-const readToken = (name) =>
-	getComputedStyle(document.documentElement).getPropertyValue(name).trim();
-
-/**
- * A type-scale token (defined in rem) as pixels, which Highcharts needs for
- * its text layout. Read at render time so the mobile type scale applies.
- */
-const readFontSize = (name) => {
-	const rootSize = parseFloat(getComputedStyle(document.documentElement).fontSize);
-
-	return `${parseFloat(readToken(name)) * rootSize}px`;
-};
+import { bindLegendFocus } from './chartHover.js';
+import { readFontSize, readToken } from './designTokens.js';
 
 /**
  * The resolved color for a spending component, e.g. '#005051'.
+ * Pass variant 'defocus' for its pale, pushed-back version.
  */
-export function getComponentColor(key) {
-	return readToken(COMPONENT_COLOR_TOKENS[key]);
+export function getComponentColor(key, variant) {
+	return readToken(COMPONENT_COLOR_TOKENS[key] + (variant ? `-${variant}` : ''));
+}
+
+/**
+ * The resolved color for an economy in the line chart, from the
+ * --color-country-* tokens. Pass variant 'defocus' or 'glow'.
+ */
+export function getCountryColor(country, variant) {
+	const slug = country.toLowerCase().replace(/\s+/g, '-');
+
+	return readToken(`--color-country-${slug}` + (variant ? `-${variant}` : ''));
+}
+
+/**
+ * The resolved color for bars when spending components are hidden.
+ */
+export function getTotalColor() {
+	return readToken('--color-data-cumulative');
 }
 
 /**
@@ -83,6 +90,8 @@ function fitLegendColumns(chart) {
  * Each change triggers one more render, which then finds nothing to change.
  */
 function finishLayout() {
+	bindLegendFocus(this);
+
 	if (fitLegendColumns(this)) {
 		this.redraw(false);
 		return;
@@ -119,14 +128,14 @@ export function wholePercentTicks() {
 }
 
 /**
- * Build chart options: the shared theme merged with chart-specific options.
+ * Build chart options: the shared theme merged with one or more sets of
+ * chart-specific options (later sets win).
  */
-export function createChartOptions(options) {
+export function createChartOptions(...optionSets) {
 	const textPrimary = readToken('--color-text-primary');
 	const textSecondary = readToken('--color-text-secondary');
 	const textHelper = readToken('--color-text-helper');
 	const gridline = readToken('--color-border-gridline');
-	const borderSubtle = readToken('--color-border-subtle');
 	const fontHeading = readToken('--font-heading');
 	const fontLabel = readToken('--font-label');
 
@@ -219,12 +228,21 @@ export function createChartOptions(options) {
 				// Wrap long labels instead of cutting them off.
 				textOverflow: 'none'
 			},
-			itemHoverStyle: { color: textPrimary }
+			// Hovering a legend item focuses its series (see chartHover.js).
+			itemHoverStyle: { color: textPrimary },
+			// Series can't be hidden from the legend.
+			events: { itemClick: () => false }
 		},
 
+		// Hover data panel (content built with hoverPanel() in chartHover.js).
 		tooltip: {
+			useHTML: true,
 			backgroundColor: readToken('--color-surface-primary'),
-			borderColor: borderSubtle,
+			borderColor: readToken('--color-border-strong'),
+			borderWidth: 1,
+			borderRadius: 4,
+			padding: 10,
+			shadow: false,
 			style: {
 				fontFamily: fontLabel,
 				fontSize: readFontSize('--font-size-xxx-small'),
@@ -235,9 +253,12 @@ export function createChartOptions(options) {
 		plotOptions: {
 			column: {
 				// Stacked segments sit flush, with no outline between them.
-				borderWidth: 0
+				borderWidth: 0,
+				states: { hover: { brightness: 0 } }
 			},
 			series: {
+				// chartHover.js handles focus; turn off Highcharts' own fading.
+				states: { inactive: { enabled: false } },
 				dataLabels: {
 					style: {
 						fontSize: readFontSize('--font-size-xx-small'),
@@ -271,5 +292,5 @@ export function createChartOptions(options) {
 		}
 	};
 
-	return Highcharts.merge(theme, options);
+	return Highcharts.merge(theme, ...optionSets);
 }

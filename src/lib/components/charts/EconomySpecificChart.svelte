@@ -7,9 +7,11 @@
 	import Select from '$lib/components/controls/Select.svelte';
 	import { CHART_YEARS, UNIT_OPTIONS, getUnitOption } from '$lib/utils/chartOptions.js';
 	import { formatChartAxisValue, formatChartValue } from '$lib/utils/formatters.js';
+	import { hoverPanel, stackedBarHover } from '$lib/utils/chartHover.js';
 	import {
 		createChartOptions,
 		getComponentColor,
+		getTotalColor,
 		wholePercentTicks
 	} from '$lib/utils/chartTheme.js';
 	import { spendingComponents } from '$lib/utils/spendingComponents.js';
@@ -52,6 +54,7 @@
 		componentEntries.map(([key, metadata]) => ({
 			name: metadata.label,
 			color: getComponentColor(key),
+			custom: { defocusColor: getComponentColor(key, 'defocus') },
 			data: CHART_YEARS.map((year) => {
 				const row = filteredData.find((row) => row.year === year);
 
@@ -79,107 +82,101 @@
 
 		const chart = Highcharts.chart(
 			chartElement,
-			createChartOptions({
-				chart: {
-					type: 'column'
-				},
+			createChartOptions(
+				{
+					chart: {
+						type: 'column'
+					},
 
-				title: {
-					text: `Industrial Policy Spending in ${economy}, 2019 - 2024`
-				},
-
-				subtitle: {
-					text: getUnitOption(unit)?.subtitle ?? ''
-				},
-
-				xAxis: {
-					categories: CHART_YEARS,
 					title: {
-						text: null
-					}
-				},
+						text: `Industrial Policy Spending in ${economy}, 2019 - 2024`
+					},
 
-				yAxis: {
-					tickPositioner: unit === 'pct_gdp' ? wholePercentTicks : undefined,
-					// Stack the first component (Direct Subsidies) at the bottom.
-					reversedStacks: false,
-					stackLabels: {
-						enabled: showComponents,
-						formatter() {
-							return formatChartValue(this.total, unit);
+					subtitle: {
+						text: getUnitOption(unit)?.subtitle ?? ''
+					},
+
+					xAxis: {
+						categories: CHART_YEARS,
+						title: {
+							text: null
 						}
 					},
-					labels: {
-						formatter() {
-							return formatChartAxisValue(this.value, unit);
-						}
-					}
-				},
 
-				tooltip: {
-					enabled: showComponents,
-					shared: true,
-					useHTML: true,
-					formatter() {
-						const year = CHART_YEARS[this.x];
-
-						const rows = (this.points ?? []).map(
-							(point) => `
-							<div style="margin-top: 4px;">
-								<span style="color: ${point.color}">●</span>
-								${point.series.name}:
-								<strong>${formatChartValue(point.y, unit)}</strong>
-							</div>
-						`
-						);
-
-						return `
-						<div>
-							<strong style="font-size: 16px;">${year}</strong>
-							${rows.join('')}
-						</div>
-					`;
-					}
-				},
-
-				legend: {
-					enabled: showLegend && showComponents,
-					// List components top to bottom in the same order as the stack.
-					reversed: true
-				},
-
-				plotOptions: {
-					column: {
-						stacking: showComponents ? 'normal' : undefined,
-						borderRadius: 0,
-						pointPadding: 0.05,
-						groupPadding: 0.1,
-						dataLabels: {
-							enabled: !showComponents,
-							inside: false,
-							crop: false,
-							overflow: 'allow',
+					yAxis: {
+						tickPositioner: unit === 'pct_gdp' ? wholePercentTicks : undefined,
+						// Stack the first component (Direct Subsidies) at the bottom.
+						reversedStacks: false,
+						stackLabels: {
+							enabled: showComponents,
 							formatter() {
-								return formatChartValue(this.y, unit);
+								return formatChartValue(this.total, unit);
+							}
+						},
+						labels: {
+							formatter() {
+								return formatChartAxisValue(this.value, unit);
 							}
 						}
-					}
-				},
+					},
 
-				series: showComponents
-					? componentSeries
-					: [
-							{
-								name: 'Total spending',
-								color: '#325573',
-								data: CHART_YEARS.map((year) => {
-									const row = filteredData.find((row) => row.year === year);
+					tooltip: {
+						enabled: showComponents,
+						shared: true,
+						formatter() {
+							// Components listed top to bottom, in the same order as the stack.
+							const rows = [...(this.points ?? [])].reverse().map((point) => ({
+								color: point.color,
+								name: point.series.name,
+								value: formatChartValue(point.y, unit)
+							}));
 
-									return row?.total ?? null;
-								})
+							return hoverPanel(CHART_YEARS[this.x], rows);
+						}
+					},
+
+					legend: {
+						enabled: showLegend && showComponents,
+						// List components top to bottom in the same order as the stack.
+						reversed: true
+					},
+
+					plotOptions: {
+						column: {
+							stacking: showComponents ? 'normal' : undefined,
+							borderRadius: 0,
+							pointPadding: 0.05,
+							groupPadding: 0.1,
+							dataLabels: {
+								enabled: !showComponents,
+								inside: false,
+								crop: false,
+								overflow: 'allow',
+								formatter() {
+									return formatChartValue(this.y, unit);
+								}
 							}
-						]
-			})
+						}
+					},
+
+					series: showComponents
+						? componentSeries
+						: [
+								{
+									name: 'Total spending',
+									color: getTotalColor(),
+									// Totals only: no hover interactions (approved design).
+									enableMouseTracking: false,
+									data: CHART_YEARS.map((year) => {
+										const row = filteredData.find((row) => row.year === year);
+
+										return row?.total ?? null;
+									})
+								}
+							]
+				},
+				showComponents ? stackedBarHover : {}
+			)
 		);
 
 		return () => {

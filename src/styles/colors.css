@@ -14,7 +14,7 @@
 	--color-sky-950: #052f4a;
 
 	/* Slate */
-  --color-slate-25: #fbfcfd;
+	--color-slate-25: #fbfcfd;
 	--color-slate-50: #f8fafc;
 	--color-slate-100: #f1f5f9;
 	--color-slate-200: #e2e8f0;
@@ -34,7 +34,7 @@
 	/* Red */
 	--color-red-600: #e7000b;
 	--color-red-700: #c10007;
-  --color-rose-800: #9F1239;
+	--color-rose-800: #9f1239;
 
 	/* Neutral */
 	--color-neutral-50: #fafafa;
@@ -49,9 +49,33 @@
 	--color-neutral-900: #171717;
 	--color-neutral-950: #0a0a0a;
 
-  /* Misc */
-  --color-blue-975: #0c173d;
-  --color-blue-800: #193CB8;
+	/* Misc */
+	--color-blue-975: #0c173d;
+	--color-blue-800: #193cb8;
+
+	/* Data visualization palette (Figma: data/1–10) */
+	--color-data-1: #005051;
+	--color-data-2: #aea21e;
+	--color-data-3: #99e3c4;
+	--color-data-4: #e84409;
+	--color-data-5: #0080a4;
+	--color-data-6: #ffbf00;
+	--color-data-7: #cb89bf;
+	--color-data-8: #7a274d;
+	--color-data-9: #f7bfac;
+	--color-data-10: #5da9e7;
+
+	/* Pale versions used for series pushed back on hover (data/N-defocus) */
+	--color-data-1-defocus: #bfcfcf;
+	--color-data-2-defocus: #e1dfc5;
+	--color-data-3-defocus: #ddece6;
+	--color-data-4-defocus: #edccc0;
+	--color-data-5-defocus: #bfd8df;
+	--color-data-6-defocus: #f2e5bf;
+	--color-data-7-defocus: #e7dae5;
+	--color-data-8-defocus: #d7c6ce;
+	--color-data-9-defocus: #f0e5e1;
+	--color-data-10-defocus: #d1e0ed;
 
 	/* ------------------------------------------------------ */
 	/*                       Color Roles                      */
@@ -60,50 +84,90 @@
 	/* bg */
 	--color-page: var(--color-sky-50);
 	--color-surface-primary: var(--color-white);
-  --color-surface-secondary: var(--color-slate-300);
-  --color-author-block: var(--color-sky-100);
-  --color-footer: var(--color-slate-600);
-  
-  /* navbar */
-  --color-navbar-bg: var(--color-sky-50);
-  --color-navbar-text: var(--color-slate-800);
+	--color-surface-secondary: var(--color-slate-300);
+	--color-author-block: var(--color-sky-100);
+	--color-footer: var(--color-slate-600);
 
-  /* border */
-  --color-border-subtle: var(--color-slate-400);
-  --color-border-strong: var(--color-slate-500);
-  --color-border-gridline: var(--color-slate-300);
+	/* navbar */
+	--color-navbar-bg: var(--color-sky-50);
+	--color-navbar-text: var(--color-slate-800);
+
+	/* border */
+	--color-border-subtle: var(--color-slate-400);
+	--color-border-strong: var(--color-slate-500);
+	--color-border-gridline: var(--color-slate-300);
 
 	/* Text */
-  --color-text-page-title: var(--color-blue-975);
-  --color-text-page-subtitle: var(--color-sky-500);
+	--color-text-page-title: var(--color-blue-975);
+	--color-text-page-subtitle: var(--color-sky-500);
 	--color-text-primary: var(--color-slate-950);
 	--color-text-secondary: var(--color-slate-800);
-  --color-text-helper: var(--color-slate-500);
-  --color-text-error: var(--color-red-700);
+	--color-text-helper: var(--color-slate-500);
+	--color-text-error: var(--color-red-700);
 
-  /* link */
-  --color-link-text: var(--color-slate-800);
-  --color-link-hover: var(--color-blue-800);
+	/* link */
+	--color-link-text: var(--color-slate-800);
+	--color-link-hover: var(--color-blue-800);
 
-  /* table */
-  --color-table-row: var(--color-slate-200);
-  --color-table-row-hover: var(--color-slate-300);
-  --color-table-card: var(--color-slate-100);
+	/* table */
+	--color-table-row: var(--color-slate-200);
+	--color-table-row-hover: var(--color-slate-300);
+	--color-table-card: var(--color-slate-100);
 
 	/* Spending components */
-	--color-spending-direct-subsidies: #005051;
-	--color-spending-other-tax-incentives: #aea21e;
-	--color-spending-rd-tax-incentives: #99e3c4;
-	--color-spending-rd-support: #e84409;
-	--color-spending-below-market-credit: #0080a4;
-	--color-spending-state-investment-funds: #ffbf00;
-	--color-spending-gov-procurement: #cb89bf;
-	--color-spending-soe-net-payables: #7a274d;
-	--color-spending-land: #f7bfac;
-	--color-spending-debt-equity-swaps: #5da9e7;
+	--color-spending-direct-subsidies: var(--color-data-1);
+	--color-spending-other-tax-incentives: var(--color-data-2);
+	--color-spending-rd-tax-incentives: var(--color-data-3);
+	--color-spending-rd-support: var(--color-data-4);
+	--color-spending-below-market-credit: var(--color-data-5);
+	--color-spending-state-investment-funds: var(--color-data-6);
+	--color-spending-gov-procurement: var(--color-data-7);
+	--color-spending-soe-net-payables: var(--color-data-8);
+	--color-spending-land: var(--color-data-9);
+	--color-spending-debt-equity-swaps: var(--color-data-10);
+	--color-spending-direct-subsidies-defocus: var(--color-data-1-defocus);
+	--color-spending-other-tax-incentives-defocus: var(--color-data-2-defocus);
+	--color-spending-rd-tax-incentives-defocus: var(--color-data-3-defocus);
+	--color-spending-rd-support-defocus: var(--color-data-4-defocus);
+	--color-spending-below-market-credit-defocus: var(--color-data-5-defocus);
+	--color-spending-state-investment-funds-defocus: var(--color-data-6-defocus);
+	--color-spending-gov-procurement-defocus: var(--color-data-7-defocus);
+	--color-spending-soe-net-payables-defocus: var(--color-data-8-defocus);
+	--color-spending-land-defocus: var(--color-data-9-defocus);
+	--color-spending-debt-equity-swaps-defocus: var(--color-data-10-defocus);
+
+	/* Bars when spending components are hidden (data/cumulative) */
+	--color-data-cumulative: var(--color-slate-500);
+
+	/* Countries (line chart) */
+	--color-country-brazil: var(--color-data-10);
+	--color-country-china: var(--color-data-4);
+	--color-country-france: var(--color-data-3);
+	--color-country-germany: var(--color-data-2);
+	--color-country-japan: var(--color-data-8);
+	--color-country-south-korea: var(--color-data-7);
+	--color-country-taiwan: var(--color-data-6);
+	--color-country-united-states: var(--color-data-5);
+	--color-country-brazil-defocus: var(--color-data-10-defocus);
+	--color-country-china-defocus: var(--color-data-4-defocus);
+	--color-country-france-defocus: var(--color-data-3-defocus);
+	--color-country-germany-defocus: var(--color-data-2-defocus);
+	--color-country-japan-defocus: var(--color-data-8-defocus);
+	--color-country-south-korea-defocus: var(--color-data-7-defocus);
+	--color-country-taiwan-defocus: var(--color-data-6-defocus);
+	--color-country-united-states-defocus: var(--color-data-5-defocus);
+	/* Hover dot glow: the country color at 20% (France 30%) */
+	--color-country-brazil-glow: #5da9e733;
+	--color-country-china-glow: #e8440933;
+	--color-country-france-glow: #99e3c44d;
+	--color-country-germany-glow: #aea21e33;
+	--color-country-japan-glow: #7a274d33;
+	--color-country-south-korea-glow: #cb89bf33;
+	--color-country-taiwan-glow: #ffbf0033;
+	--color-country-united-states-glow: #0080a433;
 
 	/* Dropdown */
-  --color-dropdown-icon: var(--color-slate-400);
+	--color-dropdown-icon: var(--color-slate-400);
 	--color-dropdown-enabled: var(--color-white);
 	--color-dropdown-enabled-border: var(--color-slate-400);
 	--color-dropdown-hover: var(--color-slate-50);
@@ -141,25 +205,25 @@
 	--color-card-button-error: var(--color-sky-50);
 	--color-card-button-error-border: var(--color-red-600);
 
-  /* ghost button */
-  --color-ghost-button-text: var(--color-slate-800);
-  --color-ghost-button-enabled: var(--color-sky-50);
-  --color-ghost-button-enabled-border: var(--color-slate-600);
-  --color-ghost-button-hover: var(--color-slate-25);
-  --color-ghost-button-hover-border: var(--color-slate-600);
-  --color-ghost-button-focus-border: var(--color-sky-400);
-  --color-ghost-button-pressed: var(--color-sky-100);
-  --color-ghost-button-pressed-border: var(--color-slate-600);
+	/* ghost button */
+	--color-ghost-button-text: var(--color-slate-800);
+	--color-ghost-button-enabled: var(--color-sky-50);
+	--color-ghost-button-enabled-border: var(--color-slate-600);
+	--color-ghost-button-hover: var(--color-slate-25);
+	--color-ghost-button-hover-border: var(--color-slate-600);
+	--color-ghost-button-focus-border: var(--color-sky-400);
+	--color-ghost-button-pressed: var(--color-sky-100);
+	--color-ghost-button-pressed-border: var(--color-slate-600);
 
 	/* Disabled */
 	--color-disabled: var(--color-slate-200);
 	--color-disabled-text: var(--color-slate-400);
 
-  /* scrollbar */
-  --color-scrollbar-thumb: var(--color-slate-400);
-  --color-scrollbar-track: var(--color-slate-300);
+	/* scrollbar */
+	--color-scrollbar-thumb: var(--color-slate-400);
+	--color-scrollbar-track: var(--color-slate-300);
 
-  /* checkbox */
-  --color-checkbox-enabled-border: var(--color-slate-400);
-  --color-checkbox-fill: var(--color-slate-950);
+	/* checkbox */
+	--color-checkbox-enabled-border: var(--color-slate-400);
+	--color-checkbox-fill: var(--color-slate-950);
 }
