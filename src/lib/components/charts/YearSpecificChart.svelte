@@ -26,7 +26,7 @@
 		onUnitChange = () => {},
 		onShowComponentsChange = () => {},
 		onScaleTo100Change = () => {},
-		share = () => {},
+		share,
 		frozen = false,
 		showLegend = true
 	} = $props();

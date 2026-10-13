@@ -24,7 +24,7 @@
 		onEconomyChange = () => {},
 		onUnitChange = () => {},
 		onShowComponentsChange = () => {},
-		share = () => {},
+		share,
 		frozen = false,
 		showLegend = true
 	} = $props();

@@ -9,13 +9,7 @@
 	import { hoverPanel } from '$lib/utils/chartHover.js';
 	import { createChartOptions, getCountryColor, wholePercentTicks } from '$lib/utils/chartTheme.js';
 
-	let {
-		data = [],
-		unit = 'pct_gdp',
-		onUnitChange = () => {},
-		share = () => {},
-		frozen = false
-	} = $props();
+	let { data = [], unit = 'pct_gdp', onUnitChange = () => {}, share, frozen = false } = $props();
 
 	let chartElement;
 

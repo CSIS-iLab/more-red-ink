@@ -19,20 +19,18 @@
 	let loading = $state(true);
 	let error = $state(null);
 
-	const handleShare = async (chartType) => {
+	// Share URL for one chart's current estimate and settings. The Share
+	// buttons link to it (opening a new tab) and update as settings change.
+	const shareUrl = (chartType) => {
 		const state = $calculatorState;
 
-		const payload = {
+		return buildShareUrl({
 			mode: state.mode,
 			assumptions:
 				state.mode === 'fastTrack' ? state.fastTrackChoice : { ...state.userDrivenChoices },
 			chartType,
 			displaySettings: { ...state[chartType] }
-		};
-
-		// buildShareUrl() builds its path with resolve('/share').
-		// eslint-disable-next-line svelte/no-navigation-without-resolve
-		await goto(buildShareUrl(payload));
+		});
 	};
 
 	onMount(async () => {
@@ -115,7 +113,7 @@
 				onUnitChange={(value) => {
 					calculatorState.updateChartSettings('historical', { unit: value });
 				}}
-				share={() => handleShare('historical')}
+				share={shareUrl('historical')}
 			/>
 
 			<CumulativeSpendingChart
@@ -128,7 +126,7 @@
 				onShowComponentsChange={(value) => {
 					calculatorState.updateChartSettings('cumulative', { showComponents: value });
 				}}
-				share={() => handleShare('cumulative')}
+				share={shareUrl('cumulative')}
 			/>
 
 			<YearSpecificChart
@@ -149,7 +147,7 @@
 				onScaleTo100Change={(value) => {
 					calculatorState.updateChartSettings('yearSpecific', { scaleTo100: value });
 				}}
-				share={() => handleShare('yearSpecific')}
+				share={shareUrl('yearSpecific')}
 			/>
 
 			<EconomySpecificChart
@@ -166,7 +164,7 @@
 				onShowComponentsChange={(value) => {
 					calculatorState.updateChartSettings('economySpecific', { showComponents: value });
 				}}
-				share={() => handleShare('economySpecific')}
+				share={shareUrl('economySpecific')}
 			/>
 		{/if}
 	</div>
@@ -251,14 +249,12 @@
 			height: auto;
 		}
 
+		/* The Receipt column is centered and maxes out at 45.75rem. */
 		.visualizer__summary-inner {
-			/* Same side padding as the chart column, so the Receipt lines up
-			   with the chart cards below it. */
+			width: 100%;
+			max-width: calc(45.75rem + 3rem);
+			margin: 0 auto;
 			padding: 2.5rem 1.5rem;
-		}
-
-		.visualizer__summary-inner :global(.receipt__intro) {
-			max-width: 45rem;
 		}
 
 		.visualizer__summary-inner :global(.receipt__table-scroll) {

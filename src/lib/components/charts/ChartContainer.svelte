@@ -7,7 +7,8 @@
 		chartSubtitle,
 		controls,
 		children,
-		share = () => {},
+		// URL of this chart's Share page (opened in a new tab).
+		share,
 		frozen = false
 	} = $props();
 </script>
@@ -41,9 +42,10 @@
 
 	{#if !frozen}
 		<div class="chart-container__actions">
-			<Button variant="primary" onclick={share}>
+			<Button variant="primary" href={share} target="_blank" rel="noopener">
 				Share chart
 				<img src="/icons/external-link.svg" alt="" aria-hidden="true" />
+				<span class="visually-hidden">(opens in a new tab)</span>
 			</Button>
 		</div>
 	{/if}
@@ -120,6 +122,15 @@
 	.chart-container__actions {
 		display: flex;
 		justify-content: flex-start;
+	}
+
+	.visually-hidden {
+		position: absolute;
+		width: 1px;
+		height: 1px;
+		overflow: hidden;
+		clip-path: inset(50%);
+		white-space: nowrap;
 	}
 
 	.chart-container__actions :global(.action) {
