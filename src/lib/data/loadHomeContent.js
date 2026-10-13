@@ -30,7 +30,7 @@ export async function getHomeContent() {
 			img_url: row.img_url ? row.img_url : false,
 			img_alt: row.img_alt ? row.img_alt : false,
 			intro: [row.intro, row.intro_two, row.intro_three].filter(Boolean),
-			how_to: row.how_to ? row.how_to : false
+			how_to: [row.how_to, row.how_to_two, row.how_to_three].filter(Boolean)
 		}));
 
 		return home;
