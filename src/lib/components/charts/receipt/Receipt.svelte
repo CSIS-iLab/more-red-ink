@@ -228,7 +228,7 @@
 		line-height: 1.2;
 		text-align: left;
 		text-transform: uppercase;
-		vertical-align: bottom;
+		vertical-align: top;
 	}
 
 	.receipt.legend .receipt__head th {
