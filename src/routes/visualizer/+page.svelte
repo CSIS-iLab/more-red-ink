@@ -257,6 +257,13 @@
 			padding: 2.5rem 1.5rem;
 		}
 
+		/* The text above the Receipt is centered and maxes out at 26.25rem. */
+		.visualizer__summary-inner :global(.receipt__intro) {
+			width: 100%;
+			max-width: 26.25rem;
+			margin: 0 auto;
+		}
+
 		.visualizer__summary-inner :global(.receipt__table-scroll) {
 			overflow: visible;
 			scrollbar-gutter: auto;

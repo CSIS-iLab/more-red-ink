@@ -168,7 +168,6 @@
 		display: flex;
 		flex-direction: column;
 		gap: 1.2em;
-		max-width: 26.25rem;
 	}
 
 	.receipt__heading {
