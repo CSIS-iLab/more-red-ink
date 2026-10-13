@@ -83,6 +83,7 @@
 		margin-top: 20px;
 		padding: 0 var(--layout-guide-specs-xs-320-margin-5-vw, 16px)
 			var(--global-spacing-section-vertical-padding-small, 36px);
+    max-width: 320px;
 	}
 
 	/* -------------------------------------------------------------------------- */
@@ -202,6 +203,12 @@
 	/*                                HOME CONTENT                                */
 	/* -------------------------------------------------------------------------- */
 	.home__content {
+    margin-block: var(--global-spacing-section-vertical-padding-small, 36px);
+
+    @media (width>= 640px) {
+      max-width: 480px;
+      margin-inline: auto;
+    }
 		p {
 			margin: 0;
 			margin-bottom: var(--text-style-specs-body-long-regular-size, 18px);
@@ -246,7 +253,7 @@
 
 		.mode-options {
 			display: grid;
-			grid-template-columns: repeat(2, minmax(0, 1fr));
+			/* grid-template-columns: repeat(2, minmax(0, 1fr)); */
 			gap: 1.5rem;
 			margin-top: 3rem;
 		}
