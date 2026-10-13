@@ -66,7 +66,7 @@
 
 <div class="user-driven-form">
 	<div class="user-driven-form__intro">
-		<h1 class="text-heading-1">{assumptionsIntro.label}</h1>
+		<h1 class="text-heading-2">{assumptionsIntro.label}</h1>
 
 		<div class="user-driven-form__paragraphs">
 			{#each assumptionsIntro.descriptions.userDriven as paragraph (paragraph)}
@@ -76,11 +76,9 @@
 	</div>
 
 	{#each sections as section (section.key)}
-		<hr class="user-driven-form__divider" />
-
 		<section class="user-driven-form__section" aria-labelledby="{section.key}-heading">
 			<div class="user-driven-form__section-heading">
-				<h2 id="{section.key}-heading" class="text-heading-2-regular">{section.label}</h2>
+				<h2 id="{section.key}-heading" class="text-heading-3">{section.label}</h2>
 
 				{#if section.description}
 					<p class="text-body-2-regular">{section.description}</p>
@@ -102,7 +100,7 @@
 	{/each}
 
 	<div class="user-driven-form__always-included">
-		<h2 class="text-body-1-regular">{alwaysIncluded.label}</h2>
+		<h2 class="text-heading-4">{alwaysIncluded.label}</h2>
 		<p class="text-body-2-regular">{alwaysIncluded.description}</p>
 	</div>
 
@@ -120,7 +118,7 @@
 	.user-driven-form {
 		display: flex;
 		flex-direction: column;
-		gap: 3.75rem;
+		gap: 3rem;
 	}
 
 	.user-driven-form h1,
@@ -150,23 +148,17 @@
 		gap: 1.5rem;
 	}
 
-	.user-driven-form__divider {
-		width: 100%;
-		margin: 0;
-		border: 0;
-		border-top: 1px solid var(--color-neutral-400);
-	}
-
 	.user-driven-form__section {
 		display: flex;
 		flex-direction: column;
-		gap: 3.75rem;
+		gap: 2.5rem;
 	}
 
 	.user-driven-form__section-heading {
 		display: flex;
 		flex-direction: column;
 		gap: 1.25rem;
+    margin-top: 3rem;
 	}
 
 	.user-driven-form__always-included {
@@ -185,4 +177,8 @@
 		align-items: center;
 		gap: 0.75rem;
 	}
+
+  #chinaOnly-heading {
+    margin-bottom: 18px;
+  }
 </style>

@@ -66,12 +66,13 @@
 
 	// Back returns to the assumptions form for an active estimate, or Home
 	// when there's no active session.
+	// (BackLink resolves the path itself.)
 	let backHref = $derived(
 		$calculatorState.mode === 'fastTrack'
-			? resolve('/fast-track')
+			? '/fast-track'
 			: $calculatorState.mode === 'userDriven'
-				? resolve('/user-driven')
-				: resolve('/')
+				? '/user-driven'
+				: '/'
 	);
 
 	const handleNewEstimate = async () => {

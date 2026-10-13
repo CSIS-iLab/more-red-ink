@@ -17,7 +17,6 @@
 
 <script>
 	import { page } from '$app/state';
-	import { resolve } from '$app/paths';
 	import BackLink from '$lib/components/controls/BackLink.svelte';
 	import UserDrivenForm from '$lib/components/assumptions/UserDrivenForm.svelte';
 	import { calculatorState } from '$lib/stores/calculatorState.js';
@@ -33,8 +32,8 @@
 </svelte:head>
 
 <div class="user-driven">
-	<div class="back">
-		<BackLink href={resolve('/')} />
+	<div class="back-link-wrapper">
+		<BackLink href="/" />
 	</div>
 
 	<UserDrivenForm {showIncompleteMessage} />
@@ -42,18 +41,17 @@
 
 <style>
 	.user-driven {
-		width: min(100% - 2rem, 40rem);
+		width: min(100% - 2rem, 39.75rem);
 		margin: 0 auto;
-		padding: 7.5rem 0;
+		padding: 5rem 0;
 	}
 
-	.back {
-		margin-bottom: 2.25rem;
+	.back-link-wrapper {
+		margin-bottom: 4.5rem; /* 72px */
 	}
 
 	@media (max-width: 640px) {
 		.user-driven {
-			width: 100%;
 			padding: 2rem 0 4rem;
 		}
 	}

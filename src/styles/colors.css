@@ -34,6 +34,7 @@
 	/* Red */
 	--color-red-600: #e7000b;
 	--color-red-700: #c10007;
+  --color-rose-800: #9F1239;
 
 	/* Neutral */
 	--color-neutral-50: #fafafa;
@@ -49,8 +50,8 @@
 	--color-neutral-950: #0a0a0a;
 
   /* Misc */
-  --color-jade-900: #113639;
   --color-blue-975: #0c173d;
+  --color-blue-800: #193CB8;
 
 	/* ------------------------------------------------------ */
 	/*                       Color Roles                      */
@@ -60,7 +61,7 @@
 	--color-page: var(--color-sky-50);
 	--color-surface-primary: var(--color-white);
   --color-surface-secondary: var(--color-slate-300);
-  --color-author-block: var(--color-jade-900);
+  --color-author-block: var(--color-sky-100);
   --color-footer: var(--color-slate-600);
   
   /* navbar */
@@ -81,8 +82,8 @@
   --color-text-error: var(--color-red-700);
 
   /* link */
-  --color-link-text: var(--color-slate-500);
-  --color-link-hover: var(--color-slate-800);
+  --color-link-text: var(--color-slate-800);
+  --color-link-hover: var(--color-blue-800);
 
   /* table */
   --color-table-row: var(--color-slate-200);
