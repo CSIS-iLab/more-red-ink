@@ -66,19 +66,19 @@
 				{
 					key: 'soeNetPayables',
 					label: spendingComponents.soeNetPayables.label,
-					china: getUserDrivenLabel('chinaOther'),
+					china: getUserDrivenLabel('soeNetPayables'),
 					otherEconomies: 'Not applicable'
 				},
 				{
 					key: 'land',
 					label: spendingComponents.land.label,
-					china: getUserDrivenLabel('chinaOther'),
+					china: getUserDrivenLabel('land'),
 					otherEconomies: 'Not applicable'
 				},
 				{
 					key: 'debtEquitySwaps',
 					label: spendingComponents.debtEquitySwaps.label,
-					china: getUserDrivenLabel('chinaOther'),
+					china: getUserDrivenLabel('debtEquitySwaps'),
 					otherEconomies: 'Not applicable'
 				}
 			];
