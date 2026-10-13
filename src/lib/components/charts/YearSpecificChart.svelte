@@ -229,12 +229,10 @@
 				onchange={handleComponentsChange}
 			/>
 
-			<Checkbox
-				label="Scale to 100%"
-				checked={scaleTo100}
-				disabled={!showComponents}
-				onchange={handleScaleChange}
-			/>
+			<!-- Scale to 100% only applies to spending components (approved design). -->
+			{#if showComponents}
+				<Checkbox label="Scale to 100%" checked={scaleTo100} onchange={handleScaleChange} />
+			{/if}
 		</ControlRow>
 	{/snippet}
 
