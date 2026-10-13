@@ -29,10 +29,12 @@ const initialState = {
 
 	userDrivenChoices: {
 		chinaEstimationApproach: null,
+		land: null,
+		debtEquitySwaps: null,
+		soeNetPayables: null,
 		belowMarketCredit: null,
 		stateInvestmentFunds: null,
-		procurementCoverage: null,
-		chinaOther: null
+		procurementCoverage: null
 	},
 
 	historical: {
@@ -143,10 +145,12 @@ const createCalculatorState = () => {
 					set({
 						...defaults,
 						...parsedState,
-						userDrivenChoices: {
-							...defaults.userDrivenChoices,
-							...parsedState.userDrivenChoices
-						},
+						userDrivenChoices: Object.fromEntries(
+							Object.keys(defaults.userDrivenChoices).map((key) => [
+								key,
+								parsedState.userDrivenChoices?.[key] ?? defaults.userDrivenChoices[key]
+							])
+						),
 						historical: mergeWithDefaults(defaults.historical, parsedState.historical),
 						cumulative: mergeWithDefaults(defaults.cumulative, parsedState.cumulative),
 						yearSpecific: mergeWithDefaults(defaults.yearSpecific, parsedState.yearSpecific),

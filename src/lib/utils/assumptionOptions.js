@@ -51,7 +51,8 @@ export const assumptionSections = [
 		key: 'allEconomies',
 		chinaOnly: false,
 		label: 'Tools for Other Economies',
-		description: 'The assumptions for estimating most industrial policy tools used by the other 7 economies are straightforward and fixed. But for some tools, there are reasonable alternative options.'
+		description:
+			'The assumptions for estimating most industrial policy tools used by the other 7 economies are straightforward and fixed. But for some tools, there are reasonable alternative options.'
 	}
 ];
 
@@ -85,23 +86,53 @@ export const assumptionOptions = {
 			}
 		]
 	},
-	chinaOther: {
-		label: 'Other China-Specific Tools - Land, Debt-equity swaps, and SOE net payables',
-		// TODO: Replace with final program copy.
+	land: {
+		label: 'Land',
 		description:
-			'There are some tools for which we only have estimates for China. Below-market land refers to the preferential sale of land to industrial firms and below market prices. In concrete terms we look at the difference in price between industrial land sold at competitive auction vs land sold through less competitive agreements. Debt-for-equity swaps refers to a policy where banks exchange their loans to a given company for equity shares. We measure the benefits to firms by assuming a spread the firms would have had to pay if these swaps were still loans. Ultimately, this is a small estimate. Finally, SOE net payables represents the savings SOEs accrue by delaying payment to suppliers.',
+			'Below-market land refers to the preferential sale of land to industrial firms at below-market prices. In concrete terms, the calculator uses the difference in price between industrial land sold at competitive auction versus land sold through less competitive agreements.',
 		chinaOnly: true,
 		options: [
 			{
-				value: 'includeAll',
-				label: 'Include All',
-				description:
-					'Include instruments that are unique to China and not necessarily comparable with the other 7 economies.'
+				value: 'include',
+				label: 'Include'
 			},
 			{
-				value: 'excludeAll',
-				label: 'Exclude All',
-				description: 'Exclude instruments that are unique to China.'
+				value: 'exclude',
+				label: 'Exclude'
+			}
+		]
+	},
+
+	debtEquitySwaps: {
+		label: 'Debt-Equity Swaps',
+		description:
+			'Debt-equity swaps refers to a policy where banks exchange their loans to a given company for equity shares. The benefits to firms are measured by assuming a spread the firms would have had to pay if these swaps were still loans. Ultimately, this is a small estimate.',
+		chinaOnly: true,
+		options: [
+			{
+				value: 'include',
+				label: 'Include'
+			},
+			{
+				value: 'exclude',
+				label: 'Exclude'
+			}
+		]
+	},
+
+	soeNetPayables: {
+		label: 'SOE Net Payables',
+		description:
+			'SOE net payables represents the savings SOEs accrue by delaying payment to suppliers. To measure this, we treat net payables as a loan from suppliers to these firms, with the subsidy being their interest savings.',
+		chinaOnly: true,
+		options: [
+			{
+				value: 'include',
+				label: 'Include'
+			},
+			{
+				value: 'exclude',
+				label: 'Exclude'
 			}
 		]
 	},
@@ -140,14 +171,17 @@ export const assumptionOptions = {
 			{
 				value: 'oneHundredPercent',
 				label: '100% of funding',
-				description: '“100% of funding” treats the entire equity investment as valuable and tied to recipients’ basic access into a sector.'
+				description:
+					'“100% of funding” treats the entire equity investment as valuable and tied to recipients’ basic access into a sector.'
 			}
 		]
 	},
 	procurementCoverage: {
 		label: 'Government Procurement Coverage',
-		description:
-			['Government procurement is the most opaque of all industrial policy tools. Government procurement refers to purchases of goods, services, and construction work by public sector organizations. Governments can utilize their influence as large purchasers within an economy to provide benefits to firms through favorable terms. For our estimates, the Calculator automatically only counts 10 percent of each economy\'s actual reported total procurement as being in service of industrial policy.', 'Select what government procurement you consider to be most relevant for industrial policy:'],
+		description: [
+			"Government procurement is the most opaque of all industrial policy tools. Government procurement refers to purchases of goods, services, and construction work by public sector organizations. Governments can utilize their influence as large purchasers within an economy to provide benefits to firms through favorable terms. For our estimates, the Calculator automatically only counts 10 percent of each economy's actual reported total procurement as being in service of industrial policy.",
+			'Select what government procurement you consider to be most relevant for industrial policy:'
+		],
 		chinaOnly: false,
 		options: [
 			{

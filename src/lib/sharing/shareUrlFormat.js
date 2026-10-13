@@ -12,7 +12,7 @@
  *   undefined so the parser can reject it.
  *
  * Example:
- *   /share?m=u&ce=soe&co=x&bc=s&sf=10&gp=tg&c=y&y=2022&u=gdp&sc=1&s100=0
+ *   /share?m=u&ce=soe&la=in&de=x&np=in&bc=s&sf=10&gp=tg&c=y&y=2022&u=gdp&sc=1&s100=0
  */
 
 /**
@@ -74,9 +74,17 @@ export const USER_DRIVEN_CHOICES = {
 		param: 'ce',
 		...codeMap({ industryBased: 'ind', soeAdvantage: 'soe' })
 	},
-	chinaOther: {
-		param: 'co',
-		...codeMap({ includeAll: 'in', excludeAll: 'x' })
+	land: {
+		param: 'la',
+		...codeMap({ include: 'in', exclude: 'x' })
+	},
+	debtEquitySwaps: {
+		param: 'de',
+		...codeMap({ include: 'in', exclude: 'x' })
+	},
+	soeNetPayables: {
+		param: 'np',
+		...codeMap({ include: 'in', exclude: 'x' })
 	},
 	belowMarketCredit: {
 		param: 'bc',

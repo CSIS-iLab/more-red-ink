@@ -304,10 +304,10 @@ export const receiptContent = {
 				by: 'mode',
 				text: {
 					userDriven: {
-						by: 'chinaOther',
+						by: 'soeNetPayables',
 						text: {
-							includeAll: 'Measures the benefit to SOEs from delayed repayment to suppliers.',
-							excludeAll: EXCLUDED
+							include: 'Measures the benefit to SOEs from delayed repayment to suppliers.',
+							exclude: EXCLUDED
 						}
 					},
 					fastTrack: {
@@ -327,10 +327,10 @@ export const receiptContent = {
 				by: 'mode',
 				text: {
 					userDriven: {
-						by: 'chinaOther',
+						by: 'land',
 						text: {
-							includeAll: 'Measures the implied subsidy from below-market industrial land sales.',
-							excludeAll: EXCLUDED
+							include: 'Measures the implied subsidy from below-market industrial land sales.',
+							exclude: EXCLUDED
 						}
 					},
 					fastTrack: {
@@ -350,11 +350,11 @@ export const receiptContent = {
 				by: 'mode',
 				text: {
 					userDriven: {
-						by: 'chinaOther',
+						by: 'debtEquitySwaps',
 						text: {
-							includeAll:
+							include:
 								'Measures the benefit of debt converted to equity as the savings on the original loans.',
-							excludeAll: EXCLUDED
+							exclude: EXCLUDED
 						}
 					},
 					fastTrack: {
