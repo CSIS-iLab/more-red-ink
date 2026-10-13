@@ -257,11 +257,11 @@
 			padding: 2.5rem 1.5rem;
 		}
 
-		/* The text above the Receipt is centered and maxes out at 39.6875rem,
+		/* The text above the Receipt is centered and maxes out at 39.75rem,
 		   matching the content width of the other pages. */
 		.visualizer__summary-inner :global(.receipt__intro) {
 			width: 100%;
-			max-width: 39.6875rem;
+			max-width: 39.75rem;
 			margin: 0 auto;
 		}
 
