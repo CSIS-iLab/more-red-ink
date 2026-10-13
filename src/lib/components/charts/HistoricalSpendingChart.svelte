@@ -21,7 +21,10 @@
 		data.filter((row) => row.unit === unit && CHART_YEARS.includes(row.year))
 	);
 
-	let countries = $derived([...new Set(filteredData.map((row) => row.country))]);
+	// Alphabetical, so the legend lists economies A–Z.
+	let countries = $derived(
+		[...new Set(filteredData.map((row) => row.country))].sort((a, b) => a.localeCompare(b))
+	);
 
 	let series = $derived(
 		countries.map((country) => ({
@@ -78,9 +81,9 @@
 				tooltip: {
 					shared: true,
 					formatter() {
-						// Economies listed in the order of their data points.
+						// Economies listed alphabetically, matching the legend.
 						const rows = [...(this.points ?? [])]
-							.sort((a, b) => b.y - a.y)
+							.sort((a, b) => a.series.name.localeCompare(b.series.name))
 							.map((point) => ({
 								color: point.color,
 								name: point.series.name,
