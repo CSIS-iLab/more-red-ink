@@ -1,7 +1,15 @@
 <script>
 	import Button from '$lib/components/controls/Button.svelte';
 
-	let { title, controls, children, share = () => {}, frozen = false } = $props();
+	let {
+		title,
+		chartTitle,
+		chartSubtitle,
+		controls,
+		children,
+		share = () => {},
+		frozen = false
+	} = $props();
 </script>
 
 <section class="chart-container" class:chart-container--frozen={frozen}>
@@ -18,6 +26,16 @@
 	{/if}
 
 	<div class="chart-container__content">
+		{#if chartTitle}
+			<div class="chart-container__heading">
+				<h4 class="chart-container__chart-title">{chartTitle}</h4>
+
+				{#if chartSubtitle}
+					<p class="chart-container__chart-subtitle">{chartSubtitle}</p>
+				{/if}
+			</div>
+		{/if}
+
 		{@render children?.()}
 	</div>
 
@@ -72,6 +90,33 @@
 		background: var(--color-surface-primary);
 	}
 
+	/* Chart title and subtitle, above the Highcharts chart. */
+	.chart-container__heading {
+		display: flex;
+		flex-direction: column;
+		gap: 0.25rem;
+		/* 28px to the chart, less the chart's 8px top spacing. */
+		margin-bottom: 1.25rem;
+	}
+
+	.chart-container__chart-title {
+		margin: 0;
+		color: var(--color-text-primary);
+		font-family: var(--font-heading);
+		font-size: var(--font-size-medium);
+		font-weight: var(--font-weight-medium);
+		line-height: 1.1;
+	}
+
+	.chart-container__chart-subtitle {
+		margin: 0;
+		color: var(--color-text-helper);
+		font-family: var(--font-label);
+		font-size: var(--font-size-x-small);
+		font-weight: var(--font-weight-medium);
+		line-height: 1.2;
+	}
+
 	.chart-container__actions {
 		display: flex;
 		justify-content: flex-start;
@@ -93,7 +138,7 @@
 		border: 0;
 	}
 
-	@media (max-width: 1440px) {
+	@media (max-width: 1439px) {
 		.chart-container:not(.chart-container--frozen) {
 			gap: 2.25rem;
 			padding: 2.25rem;
@@ -101,6 +146,10 @@
 	}
 
 	@media (max-width: 959px) {
+		.chart-container__heading {
+			margin-bottom: 1rem;
+		}
+
 		.chart-container:not(.chart-container--frozen) {
 			gap: 1.5rem;
 			padding: 1.25rem 1.5rem;

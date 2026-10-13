@@ -19,6 +19,10 @@
 
 	let chartElement;
 
+	// Shown above the chart by ChartContainer.
+	let chartTitle = $derived('Annual Industrial Policy Spending by Economy, 2019 - 2024');
+	let chartSubtitle = $derived(getUnitOption(unit)?.subtitle ?? '');
+
 	let filteredData = $derived(
 		data.filter((row) => row.unit === unit && CHART_YEARS.includes(row.year))
 	);
@@ -61,13 +65,6 @@
 					type: 'line'
 				},
 
-				title: {
-					text: 'Annual Industrial Policy Spending by Economy, 2019 - 2024'
-				},
-
-				subtitle: {
-					text: getUnitOption(unit)?.subtitle ?? ''
-				},
 				xAxis: {
 					categories: CHART_YEARS,
 					title: {
@@ -131,6 +128,8 @@
 
 <ChartContainer
 	title="Chart 1: Historical Spending, 2019-2024"
+	{chartTitle}
+	{chartSubtitle}
 	controls={frozen ? undefined : chartControls}
 	share={frozen ? undefined : share}
 	{frozen}

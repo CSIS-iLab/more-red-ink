@@ -31,6 +31,10 @@
 
 	let chartElement;
 
+	// Shown above the chart by ChartContainer.
+	let chartTitle = $derived(`Industrial Policy Spending in ${economy}, 2019 - 2024`);
+	let chartSubtitle = $derived(getUnitOption(unit)?.subtitle ?? '');
+
 	const componentEntries = Object.entries(spendingComponents);
 
 	let economyOptions = $derived(
@@ -86,14 +90,6 @@
 				{
 					chart: {
 						type: 'column'
-					},
-
-					title: {
-						text: `Industrial Policy Spending in ${economy}, 2019 - 2024`
-					},
-
-					subtitle: {
-						text: getUnitOption(unit)?.subtitle ?? ''
 					},
 
 					xAxis: {
@@ -187,6 +183,8 @@
 
 <ChartContainer
 	title="Chart 4: Economy-Specific Spending, 2019-2024"
+	{chartTitle}
+	{chartSubtitle}
 	controls={frozen ? undefined : chartControls}
 	share={frozen ? undefined : share}
 	{frozen}

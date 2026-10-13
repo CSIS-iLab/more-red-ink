@@ -33,6 +33,12 @@
 
 	let chartElement;
 
+	// Shown above the chart by ChartContainer.
+	let chartTitle = $derived(`Industrial Policy Spending Breakdown by Economy, ${year}`);
+	let chartSubtitle = $derived(
+		scaleTo100 ? 'Share of total industrial policy spending' : (getUnitOption(unit)?.subtitle ?? '')
+	);
+
 	const componentEntries = Object.entries(spendingComponents);
 
 	const yearOptions = CHART_YEARS.map((year) => ({
@@ -98,16 +104,6 @@
 				{
 					chart: {
 						type: 'column'
-					},
-
-					title: {
-						text: `Industrial Policy Spending Breakdown by Economy, ${year}`
-					},
-
-					subtitle: {
-						text: scaleTo100
-							? 'Share of total industrial policy spending'
-							: (getUnitOption(unit)?.subtitle ?? '')
 					},
 
 					xAxis: {
@@ -204,6 +200,8 @@
 
 <ChartContainer
 	title="Chart 3: Year-Specific Spending"
+	{chartTitle}
+	{chartSubtitle}
 	controls={frozen ? undefined : chartControls}
 	share={frozen ? undefined : share}
 	{frozen}

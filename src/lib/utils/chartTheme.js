@@ -136,45 +136,22 @@ export function createChartOptions(...optionSets) {
 	const textSecondary = readToken('--color-text-secondary');
 	const textHelper = readToken('--color-text-helper');
 	const gridline = readToken('--color-border-gridline');
-	const fontHeading = readToken('--font-heading');
 	const fontLabel = readToken('--font-label');
 
 	const theme = {
 		chart: {
 			backgroundColor: 'transparent',
-			spacing: [0, 0, 0, 0],
+			// Room at the top for the highest axis label and bar totals.
+			spacing: [8, 0, 0, 0],
 			style: { fontFamily: fontLabel },
 			events: { render: finishLayout }
 		},
 
 		credits: { enabled: false },
 
-		title: {
-			align: 'left',
-			margin: 28,
-			// HTML titles wrap and measure accurately, so the subtitle never overlaps.
-			useHTML: true,
-			style: {
-				fontFamily: fontHeading,
-				fontSize: readFontSize('--font-size-medium'),
-				fontWeight: '500',
-				color: textPrimary
-			}
-		},
-
-		subtitle: {
-			align: 'left',
-			useHTML: true,
-			style: {
-				fontFamily: fontLabel,
-				fontSize: readFontSize('--font-size-x-small'),
-				fontWeight: '500',
-				color: textHelper,
-				// Highcharts places the subtitle 7px into the serif title's
-				// line box; this leaves the approved 4px gap.
-				paddingTop: '11px'
-			}
-		},
+		// Titles are HTML above the chart (ChartContainer), not Highcharts text.
+		title: { text: null },
+		subtitle: { text: null },
 
 		xAxis: {
 			lineColor: gridline,

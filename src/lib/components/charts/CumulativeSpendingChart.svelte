@@ -28,6 +28,10 @@
 	} = $props();
 
 	let chartElement;
+
+	// Shown above the chart by ChartContainer.
+	let chartTitle = $derived('Cumulative Industrial Policy Spending by Economy, 2019 - 2024');
+	let chartSubtitle = $derived(getUnitOption(unit)?.subtitle ?? '');
 	const componentEntries = Object.entries(spendingComponents);
 
 	let filteredData = $derived(
@@ -87,14 +91,6 @@
 				{
 					chart: {
 						type: 'column'
-					},
-
-					title: {
-						text: 'Cumulative Industrial Policy Spending by Economy, 2019 - 2024'
-					},
-
-					subtitle: {
-						text: getUnitOption(unit)?.subtitle ?? ''
 					},
 
 					xAxis: {
@@ -180,6 +176,8 @@
 
 <ChartContainer
 	title="Chart 2: Cumulative Spending, 2019-2024"
+	{chartTitle}
+	{chartSubtitle}
 	controls={frozen ? undefined : chartControls}
 	share={frozen ? undefined : share}
 	{frozen}
