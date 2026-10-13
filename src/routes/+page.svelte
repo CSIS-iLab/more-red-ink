@@ -33,7 +33,9 @@
 						<time datetime={content.published_date.iso}>{content.published_date.label}</time>
 					</div>
 				</div>
-				<img class="" src={content.img_url} alt={content.img_alt} />
+				<figure class="img-header">
+					<img src={content.img_url} alt={content.img_alt} width="1024" height="1024" />
+				</figure>
 			</header>
 			<div class="home__content">
 				{#each content.intro as paragraph, i (i)}
@@ -83,10 +85,28 @@
 	}
 	header {
 		display: flex;
-		/* max-width: 320px; */
 		flex-direction: column;
 		justify-content: center;
 		align-items: center;
+		padding-block-end: var(--global-spacing-section-vertical-padding-small, 36px);
+
+		@media (width >= 640px) {
+			/* width: 428px; */
+			max-width: 480px;
+			margin-inline: auto;
+		}
+
+		@media (width >= 1280px) {
+			width: 480px;
+		}
+
+		@media (width >= 1440px) {
+			flex-direction: row;
+			align-items: center;
+			min-width: 1440px;
+			/* gap: 64px; */
+      padding: var(--global-spacing-section-vertical-padding-medium, 80px) 0;
+		}
 	}
 	.text-header-block {
 		display: flex;
@@ -94,7 +114,20 @@
 			var(--text-components-report-title-block-bottom-padding, 36px) 0;
 		flex-direction: column;
 		align-items: flex-start;
+		justify-content: center;
 		gap: var(--text-components-report-title-block-gap, 36px);
+
+		@media (width>= 1440px) {
+			min-width: 480px;
+			align-self: stretch;
+			gap: var(--text-components-report-title-block-gap, 40px);
+			align-self: stretch;
+      padding: 0 80px;
+
+      h1 {
+        margin: 0;
+      }
+		}
 	}
 
 	.header-footer p {
@@ -111,6 +144,21 @@
 
 	.byline__author:not(:last-child)::after {
 		content: ', ';
+	}
+
+	.img-header {
+		margin: 0;
+
+    @media (width >= 1440px) {
+      width: 100%;
+      padding: var(--global-spacing-section-vertical-padding-medium, 80px) 40px;
+    }
+
+		img {
+			display: block;
+			width: 100%;
+			height: auto;
+		}
 	}
 
 	.instructions {
