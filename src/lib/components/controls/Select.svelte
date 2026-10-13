@@ -9,6 +9,8 @@
 		...restProps
 	} = $props();
 
+	const helperId = $props.id();
+
 	let isOpen = $state(false);
 
 	let selectedOption = $derived(options.find((option) => option.value === value));
@@ -42,104 +44,132 @@
 
 <div class="select" class:disabled onfocusout={handleBlur}>
 	{#if label}
-		<span class="select__label text-body-2-regular">{label}</span>
+		<span class="select__label text-label-medium-short">{label}</span>
 	{/if}
 
-	<div class="select__control">
-		<button
-			type="button"
-			class="select__trigger text-body-2-regular"
-			{disabled}
-			aria-expanded={isOpen}
-			aria-haspopup="listbox"
-			onclick={toggleOpen}
-			onkeydown={handleKeydown}
-			{...restProps}
-		>
-			<span>{displayValue}</span>
+	<div class="select__field">
+		<div class="select__control">
+			<button
+				type="button"
+				class="select__trigger text-body-3-regular"
+				{disabled}
+				aria-expanded={isOpen}
+				aria-haspopup="listbox"
+				aria-describedby={helper ? helperId : undefined}
+				onclick={toggleOpen}
+				onkeydown={handleKeydown}
+				{...restProps}
+			>
+				<span>{displayValue}</span>
 
-			<span class="select__arrow" class:open={isOpen} aria-hidden="true">
-				<svg viewBox="0 0 24 24">
-					<path d="M7 10L12 15L17 10" />
-				</svg>
-			</span>
-		</button>
+				<img
+					class="select__arrow"
+					class:open={isOpen}
+					src="/icons/keyboard-arrow-down.svg"
+					alt=""
+					width="48"
+					height="48"
+				/>
+			</button>
 
-		{#if isOpen}
-			<div class="select__options" role="listbox">
-				{#each options as option (option.value)}
-					<button
-						type="button"
-						class="select__option text-body-2-regular"
-						class:selected={option.value === value}
-						disabled={option.disabled ?? false}
-						role="option"
-						aria-selected={option.value === value}
-						onclick={() => selectOption(option)}
-						onkeydown={handleKeydown}
-					>
-						{option.label}
-					</button>
-				{/each}
-			</div>
+			{#if isOpen}
+				<div class="select__options" role="listbox">
+					{#each options as option (option.value)}
+						<button
+							type="button"
+							class="select__option text-body-3-regular"
+							class:selected={option.value === value}
+							disabled={option.disabled ?? false}
+							role="option"
+							aria-selected={option.value === value}
+							onclick={() => selectOption(option)}
+							onkeydown={handleKeydown}
+						>
+							{option.label}
+						</button>
+					{/each}
+				</div>
+			{/if}
+		</div>
+
+		{#if helper}
+			<span id={helperId} class="select__helper text-label-x-small">{helper}</span>
 		{/if}
 	</div>
-
-	{#if helper}
-		<span class="select__helper text-body-3-regular">{helper}</span>
-	{/if}
 </div>
 
 <style>
 	.select {
 		display: flex;
 		align-items: center;
-		gap: 24px;
+		gap: 1.5rem;
 		width: 100%;
 		min-width: 0;
 	}
 
 	.select__label {
-		flex: 0 0 120px;
+		flex: 0 0 5rem;
+		color: var(--color-text-secondary);
 	}
+
+	/* 20rem (Figma: 298px) so the longest unit label,
+	   "US$ (purchasing power parity)", fits without cutting off. */
+	.select__field {
+		display: flex;
+		flex: 0 1 20rem;
+		flex-direction: column;
+		gap: 0.25rem;
+		min-width: 0;
+	}
+
 	.select__control {
 		position: relative;
-		flex: 1 1 380px;
 		min-width: 0;
-		max-width: 380px;
 	}
 
 	.select__trigger {
-		width: 100%;
-		height: 48px;
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
-		gap: 1rem;
-		padding: 0 1rem;
-		border: 1px solid var(--color-slate-200);
-		background: transparent;
+		width: 100%;
+		height: 3rem;
+		padding: 0 0 0 1rem;
+		border: 1px solid var(--color-dropdown-enabled-border);
+		border-radius: 2px;
+		background: var(--color-dropdown-enabled);
+		color: var(--color-text-primary);
+		line-height: 1.2;
+		text-align: left;
+		cursor: pointer;
+	}
+
+	.select__trigger > span {
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
 	}
 
 	.select__trigger:hover:not(:disabled) {
-		background: var(--color-menu-hover);
+		background: var(--color-dropdown-hover);
 	}
 
+	/* Focus and open: a 2px border, drawn inside so the size doesn't change. */
 	.select__trigger:focus-visible {
-		border-color: var(--color-menu-focus-border);
+		border-color: var(--color-dropdown-focus-border);
 		outline: none;
+		box-shadow: inset 0 0 0 1px var(--color-dropdown-focus-border);
 	}
 
 	.select__trigger[aria-expanded='true'] {
-		border-color: var(--color-menu-pressed-border);
-		background: var(--color-menu-pressed);
+		border-color: var(--color-dropdown-pressed-border);
+		background: var(--color-dropdown-enabled);
+		box-shadow: inset 0 0 0 1px var(--color-dropdown-pressed-border);
 	}
 
 	.select__arrow {
-		width: 1.25rem;
-		height: 1.25rem;
 		flex-shrink: 0;
-		color: var(--color-dropdown-icon);
+		width: 3rem;
+		height: 3rem;
 		transition: transform 0.2s ease;
 	}
 
@@ -147,38 +177,29 @@
 		transform: rotate(180deg);
 	}
 
-	.select__arrow svg {
-		display: block;
-		width: 100%;
-		height: 100%;
-		fill: none;
-		stroke: currentColor;
-		stroke-width: 2;
-		stroke-linecap: round;
-		stroke-linejoin: round;
-	}
-
 	.select__options {
 		position: absolute;
-		top: calc(100% + 0.25rem);
+		top: 100%;
 		left: 0;
 		z-index: 10;
 		width: 100%;
-		box-sizing: border-box;
-		border: 1px solid var(--color-menu-pressed-border);
+		max-height: 20rem;
+		overflow-y: auto;
 		background: var(--color-menu-enabled);
+		box-shadow: 0 4px 12px rgb(0 0 0 / 0.12);
 	}
 
 	.select__option {
-		display: block;
+		display: flex;
+		align-items: center;
 		width: 100%;
-		min-height: 2.5rem;
-		padding: 0.5rem 0.75rem;
+		min-height: 2.75rem;
+		padding: 0.5rem 1rem;
 		border: 0;
 		border-bottom: 1px solid var(--color-menu-divider);
 		background: var(--color-menu-enabled);
-		color: inherit;
-		font: inherit;
+		color: var(--color-text-primary);
+		line-height: 1.2;
 		text-align: left;
 		cursor: pointer;
 	}
@@ -190,50 +211,47 @@
 	.select__option:hover:not(:disabled),
 	.select__option:focus-visible {
 		background: var(--color-menu-hover);
-	}
-
-	.select__option:focus-visible {
 		outline: none;
 	}
 
 	.select__option.selected {
 		background: var(--color-menu-pressed);
+		box-shadow: inset 0 0 0 1px var(--color-menu-pressed-border);
 	}
 
 	.select__option:disabled {
+		color: var(--color-disabled-text);
 		cursor: not-allowed;
-		opacity: 0.5;
 	}
 
 	.select.disabled .select__trigger {
+		border-color: var(--color-disabled-text);
+		background: var(--color-disabled);
+		color: var(--color-disabled-text);
 		cursor: not-allowed;
-		opacity: 0.5;
 	}
 
 	.select__helper {
 		margin: 0;
+		color: var(--color-text-primary);
+		line-height: 1.2;
 	}
 
-	@media (max-width: 600px) {
+	@media (max-width: 959px) {
 		.select {
 			flex-direction: column;
 			align-items: stretch;
-			gap: 8px;
+			gap: 0.75rem;
 		}
 
-		.select__label {
+		.select__label,
+		.select__field {
 			flex: none;
 		}
 
-		.select__control {
-			flex: none;
+		.select__field {
 			width: 100%;
-			max-width: 380px;
-		}
-
-		.select__trigger {
-			width: 100%;
-			box-sizing: border-box;
+			max-width: 20rem;
 		}
 	}
 </style>

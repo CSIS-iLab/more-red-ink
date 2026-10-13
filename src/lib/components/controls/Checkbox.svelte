@@ -5,45 +5,56 @@
 <label class="checkbox" class:disabled>
 	<input type="checkbox" {checked} {disabled} {onchange} {...restProps} />
 
-	<span class="text-body-2-regular">{label}</span>
+	<span class="checkbox__label text-body-3-regular">{label}</span>
 </label>
 
 <style>
 	.checkbox {
 		display: inline-flex;
-		align-items: center;
-		gap: 0.75rem;
+		align-items: flex-start;
+		gap: 0.625rem;
 		cursor: pointer;
 	}
 
 	input {
 		appearance: none;
-		width: 15px;
-		height: 15px;
-		margin: 0;
 		flex-shrink: 0;
-		border: 1px solid var(--color-neutral-500);
-		border-radius: 1px;
-		background: var(--color-white);
+		width: 1.5rem;
+		height: 1.5rem;
+		margin: 0;
+		border: 1px solid var(--color-checkbox-enabled-border);
+		border-radius: 2px;
+		background: var(--color-surface-primary);
 		cursor: pointer;
 	}
 
 	input:checked {
 		border: 0;
-		background: url('/icons/check.svg') center / 15px 15px no-repeat;
+		background: url('/icons/checkbox-checked.svg') center / 1.5rem 1.75rem no-repeat;
 	}
 
 	input:focus-visible {
-		outline: 2px solid currentColor;
+		outline: 2px solid var(--color-dropdown-focus-border);
 		outline-offset: 2px;
+	}
+
+	.checkbox__label {
+		padding-top: 0.125rem;
+		color: var(--color-text-secondary);
+		line-height: 1.2;
 	}
 
 	.checkbox.disabled {
 		cursor: not-allowed;
-		opacity: 0.5;
 	}
 
 	.checkbox.disabled input {
+		border-color: var(--color-disabled-text);
+		background-color: var(--color-disabled);
 		cursor: not-allowed;
+	}
+
+	.checkbox.disabled .checkbox__label {
+		color: var(--color-disabled-text);
 	}
 </style>

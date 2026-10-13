@@ -43,7 +43,7 @@ const initialState = {
 
 	cumulative: {
 		unit: 'pct_gdp',
-		showComponents: false
+		showComponents: true
 	},
 
 	yearSpecific: {
@@ -56,7 +56,7 @@ const initialState = {
 	economySpecific: {
 		economy: 'China',
 		unit: 'pct_gdp',
-		showComponents: false
+		showComponents: true
 	}
 };
 

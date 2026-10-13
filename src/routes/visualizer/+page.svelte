@@ -8,6 +8,8 @@
 	import YearSpecificChart from '$lib/components/charts/YearSpecificChart.svelte';
 	import EconomySpecificChart from '$lib/components/charts/EconomySpecificChart.svelte';
 	import Receipt from '$lib/components/charts/receipt/Receipt.svelte';
+	import BackLink from '$lib/components/controls/BackLink.svelte';
+	import Button from '$lib/components/controls/Button.svelte';
 	import { calculateEstimate } from '$lib/data/calculateEstimate.js';
 	import { loadData } from '$lib/data/loadData.js';
 	import { buildShareUrl } from '$lib/sharing/buildShareUrl.js';
@@ -17,20 +19,18 @@
 	let loading = $state(true);
 	let error = $state(null);
 
-	const handleShare = async (chartType) => {
+	// Share URL for one chart's current estimate and settings. The Share
+	// buttons link to it (opening a new tab) and update as settings change.
+	const shareUrl = (chartType) => {
 		const state = $calculatorState;
 
-		const payload = {
+		return buildShareUrl({
 			mode: state.mode,
 			assumptions:
 				state.mode === 'fastTrack' ? state.fastTrackChoice : { ...state.userDrivenChoices },
 			chartType,
 			displaySettings: { ...state[chartType] }
-		};
-
-		// buildShareUrl() builds its path with resolve('/share').
-		// eslint-disable-next-line svelte/no-navigation-without-resolve
-		await goto(buildShareUrl(payload));
+		});
 	};
 
 	onMount(async () => {
@@ -62,15 +62,32 @@
 		}
 	});
 
+	// Back returns to the assumptions form for an active estimate, or Home
+	// when there's no active session.
+	// (BackLink resolves the path itself.)
+	let backHref = $derived(
+		$calculatorState.mode === 'fastTrack'
+			? '/fast-track'
+			: $calculatorState.mode === 'userDriven'
+				? '/user-driven'
+				: '/'
+	);
+
 	const handleNewEstimate = async () => {
 		calculatorState.reset();
 		await goto(resolve('/'));
 	};
 </script>
 
+<svelte:head>
+	<title>Visualizer | More Red Ink Calculator</title>
+</svelte:head>
+
 <div class="visualizer">
 	<aside class="visualizer__summary">
 		<div class="visualizer__summary-inner">
+			<BackLink href={backHref} />
+
 			<Receipt
 				mode={$calculatorState.mode}
 				assumptions={$calculatorState.mode === 'fastTrack'
@@ -78,17 +95,17 @@
 					: $calculatorState.userDrivenChoices}
 			/>
 
-			<button class="visualizer__new-estimate" type="button" onclick={handleNewEstimate}>
-				Create a new estimate
-			</button>
+			<div class="visualizer__new-estimate">
+				<Button variant="ghost" onclick={handleNewEstimate}>Create a new estimate</Button>
+			</div>
 		</div>
 	</aside>
 
-	<main class="visualizer__charts">
+	<div class="visualizer__charts">
 		{#if loading}
-			<p class="visualizer__status">Loading charts…</p>
+			<p class="visualizer__status text-body-2-regular" role="status">Loading charts…</p>
 		{:else if error}
-			<p class="visualizer__status">{error}</p>
+			<p class="visualizer__status text-body-2-regular" role="alert">{error}</p>
 		{:else}
 			<HistoricalSpendingChart
 				data={resolvedData}
@@ -96,7 +113,7 @@
 				onUnitChange={(value) => {
 					calculatorState.updateChartSettings('historical', { unit: value });
 				}}
-				share={() => handleShare('historical')}
+				share={shareUrl('historical')}
 			/>
 
 			<CumulativeSpendingChart
@@ -109,7 +126,7 @@
 				onShowComponentsChange={(value) => {
 					calculatorState.updateChartSettings('cumulative', { showComponents: value });
 				}}
-				share={() => handleShare('cumulative')}
+				share={shareUrl('cumulative')}
 			/>
 
 			<YearSpecificChart
@@ -130,7 +147,7 @@
 				onScaleTo100Change={(value) => {
 					calculatorState.updateChartSettings('yearSpecific', { scaleTo100: value });
 				}}
-				share={() => handleShare('yearSpecific')}
+				share={shareUrl('yearSpecific')}
 			/>
 
 			<EconomySpecificChart
@@ -147,50 +164,73 @@
 				onShowComponentsChange={(value) => {
 					calculatorState.updateChartSettings('economySpecific', { showComponents: value });
 				}}
-				share={() => handleShare('economySpecific')}
+				share={shareUrl('economySpecific')}
 			/>
 		{/if}
-	</main>
+	</div>
 </div>
 
 <style>
 	.visualizer {
 		display: grid;
-		grid-template-columns: 392px minmax(0, 1fr);
-		align-items: stretch;
+		/* Sidebar: Figma's 576px at 1440px, scaling down to 416px so the
+		   charts keep enough room on smaller laptops. */
+		grid-template-columns: clamp(26rem, 40vw, 36rem) minmax(0, 1fr);
+		align-items: start;
 		width: 100%;
 	}
 
+	/* The sidebar stays in view while the charts scroll; the Receipt table
+	   scrolls inside it. */
 	.visualizer__summary {
+		position: sticky;
+		top: 0;
 		min-width: 0;
+		height: 100vh;
 		background-color: var(--color-page);
 	}
 
 	.visualizer__summary-inner {
-		position: sticky;
-		top: 0;
 		display: flex;
 		flex-direction: column;
-		gap: 2rem;
-		padding: 2.5rem;
+		gap: 1.5rem;
+		height: 100%;
+		padding: 2.5rem 1.75rem;
 	}
 
-	.visualizer__new-estimate {
-		align-self: flex-start;
-		padding: 0.75rem 1rem;
-		border: 1px solid currentColor;
-		border-radius: 3px;
-		background: transparent;
-		font: inherit;
+	.visualizer__summary-inner :global(.receipt) {
+		flex: 1;
+		min-height: 0;
+	}
+
+	.visualizer__summary-inner :global(.receipt__table-scroll) {
+		flex: 1;
+		overflow-y: auto;
+	}
+
+	/* The rows scroll under a fixed header; space for the scrollbar is
+	   kept beside both so their columns line up. */
+	.visualizer__summary-inner :global(.receipt__table) {
+		flex: 1;
+	}
+
+	.visualizer__summary-inner :global(.receipt__table-scroll) {
+		scrollbar-gutter: stable;
+	}
+
+	/* The header reserves the same scrollbar space without drawing one. */
+	.visualizer__summary-inner :global(.receipt__head-scroll) {
+		overflow-y: hidden;
+		scrollbar-gutter: stable;
 	}
 
 	.visualizer__charts {
 		display: flex;
 		min-width: 0;
+		min-height: 100vh;
 		flex-direction: column;
-		align-items: center;
 		gap: 2rem;
-		padding: 2rem;
+		padding: 2rem 2.5rem;
 		background-color: var(--color-surface-secondary);
 	}
 
@@ -198,24 +238,77 @@
 		margin: 0;
 	}
 
-	@media (max-width: 900px) {
+	/* Below 1200px the Receipt section sits above the charts. */
+	@media (max-width: 1199px) {
 		.visualizer {
 			grid-template-columns: minmax(0, 1fr);
 		}
 
-		.visualizer__summary-inner {
+		.visualizer__summary {
 			position: static;
-			padding: 1.5rem;
+			height: auto;
+		}
+
+		/* The Receipt column is centered and maxes out at 45.75rem
+		   (plus side padding). */
+		.visualizer__summary-inner {
+			--summary-padding-x: 3rem;
+
+			width: 100%;
+			max-width: calc(45.75rem + 2 * var(--summary-padding-x));
+			gap: 2.25rem;
+			margin: 0 auto;
+			padding: 2.5rem var(--summary-padding-x);
+		}
+
+		/* The text above the Receipt is centered and maxes out at 39.75rem,
+		   matching the content width of the other pages. */
+		.visualizer__summary-inner :global(.receipt__intro) {
+			width: 100%;
+			max-width: 39.75rem;
+			margin: 0 auto;
+		}
+
+		.visualizer__summary-inner :global(.receipt__table-scroll) {
+			overflow: visible;
+			scrollbar-gutter: auto;
+		}
+
+		.visualizer__summary-inner :global(.receipt__head-scroll) {
+			overflow: visible;
+			scrollbar-gutter: auto;
+		}
+
+		.visualizer__new-estimate {
+			display: flex;
+			justify-content: center;
 		}
 
 		.visualizer__charts {
-			padding: 1.5rem;
+			min-height: 0;
+			padding: 2rem;
 		}
 	}
 
-	@media (max-width: 600px) {
-		.visualizer__summary-inner,
+	@media (max-width: 959px) {
+		.visualizer__summary-inner {
+			--summary-padding-x: 2rem;
+
+			padding-top: 2.25rem;
+			padding-bottom: 2.25rem;
+		}
+	}
+
+	@media (max-width: 639px) {
+		.visualizer__summary-inner {
+			--summary-padding-x: 1rem;
+
+			padding-top: 2rem;
+			padding-bottom: 2rem;
+		}
+
 		.visualizer__charts {
+			gap: 1rem;
 			padding: 1rem;
 		}
 	}

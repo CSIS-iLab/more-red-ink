@@ -2,41 +2,41 @@
 	import Highcharts from 'highcharts';
 
 	import ChartContainer from './ChartContainer.svelte';
+	import ControlRow from '$lib/components/controls/ControlRow.svelte';
 	import Select from '$lib/components/controls/Select.svelte';
 	import { CHART_YEARS, UNIT_OPTIONS, getUnitOption } from '$lib/utils/chartOptions.js';
 	import { formatChartAxisValue, formatChartValue } from '$lib/utils/formatters.js';
+	import { hoverPanel } from '$lib/utils/chartHover.js';
+	import { createChartOptions, getCountryColor, wholePercentTicks } from '$lib/utils/chartTheme.js';
 
-	let {
-		data = [],
-		unit = 'pct_gdp',
-		onUnitChange = () => {},
-		share = () => {},
-		frozen = false
-	} = $props();
-
-	const COUNTRY_COLORS = {
-		China: '#c3453d',
-		Taiwan: '#b88d3b',
-		'United States': '#1d58a0',
-		'South Korea': '#bb5b7e',
-		France: '#c55e2f',
-		Germany: '#60d4fa',
-		Japan: '#79478d',
-		Brazil: '#5abe81'
-	};
+	let { data = [], unit = 'pct_gdp', onUnitChange = () => {}, share, frozen = false } = $props();
 
 	let chartElement;
+
+	// Shown above the chart by ChartContainer.
+	let chartTitle = $derived('Annual Industrial Policy Spending by Economy, 2019 - 2024');
+	let chartSubtitle = $derived(getUnitOption(unit)?.subtitle ?? '');
 
 	let filteredData = $derived(
 		data.filter((row) => row.unit === unit && CHART_YEARS.includes(row.year))
 	);
 
-	let countries = $derived([...new Set(filteredData.map((row) => row.country))]);
+	// Alphabetical, so the legend lists economies A–Z.
+	let countries = $derived(
+		[...new Set(filteredData.map((row) => row.country))].sort((a, b) => a.localeCompare(b))
+	);
 
 	let series = $derived(
 		countries.map((country) => ({
 			name: country,
-			color: COUNTRY_COLORS[country],
+			color: getCountryColor(country),
+			custom: { defocusColor: getCountryColor(country, 'defocus') },
+			// Hover dot glow in the country's color.
+			states: {
+				hover: {
+					halo: { size: 11, opacity: 1, attributes: { fill: getCountryColor(country, 'glow') } }
+				}
+			},
 			data: CHART_YEARS.map((year) => {
 				const row = filteredData.find((row) => row.country === country && row.year === year);
 
@@ -54,90 +54,68 @@
 			return;
 		}
 
-		const chart = Highcharts.chart(chartElement, {
-			chart: {
-				type: 'spline',
-				backgroundColor: 'transparent',
-				marginTop: 100
-			},
-
-			credits: {
-				enabled: false
-			},
-
-			title: {
-				text: 'Annual Industrial Policy Spending by Economy, 2019 - 2024',
-				align: 'left',
-				style: {
-					fontFamily: 'Roboto, sans-serif',
-					fontSize: '25.1px',
-					fontWeight: '500'
-				}
-			},
-
-			subtitle: {
-				text: getUnitOption(unit)?.subtitle ?? '',
-				align: 'left',
-				className: 'text-heading-3'
-			},
-			xAxis: {
-				categories: CHART_YEARS,
-				title: {
-					text: null
-				}
-			},
-
-			yAxis: {
-				min: 0,
-				title: {
-					text: null
+		const chart = Highcharts.chart(
+			chartElement,
+			createChartOptions({
+				chart: {
+					// Straight segments between data points (approved design).
+					type: 'line'
 				},
-				labels: {
-					formatter() {
-						return formatChartAxisValue(this.value, unit);
+
+				xAxis: {
+					categories: CHART_YEARS,
+					title: {
+						text: null
 					}
-				}
-			},
+				},
 
-			tooltip: {
-				shared: true,
-				useHTML: true,
-				formatter() {
-					const year = CHART_YEARS[this.x];
-					const lines = [`<strong>${year}</strong>`];
-
-					for (const point of this.points ?? []) {
-						lines.push(
-							`<span style="color: ${point.color}"><strong>${point.series.name}:</strong> ${formatChartValue(point.y, unit)}</span>`
-						);
-					}
-
-					return lines.join('<br>');
-				}
-			},
-
-			legend: {
-				enabled: true
-			},
-
-			plotOptions: {
-				spline: {
-					legendSymbol: 'rectangle',
-					marker: {
-						enabled: false,
-						symbol: 'circle',
-						states: {
-							hover: {
-								enabled: true
-							}
+				yAxis: {
+					tickPositioner: unit === 'pct_gdp' ? wholePercentTicks : undefined,
+					labels: {
+						formatter() {
+							return formatChartAxisValue(this.value, unit);
 						}
-					},
-					lineWidth: 2
-				}
-			},
+					}
+				},
 
-			series
-		});
+				tooltip: {
+					shared: true,
+					formatter() {
+						// Economies listed alphabetically, matching the legend.
+						const rows = [...(this.points ?? [])]
+							.sort((a, b) => a.series.name.localeCompare(b.series.name))
+							.map((point) => ({
+								color: point.color,
+								name: point.series.name,
+								value: formatChartValue(point.y, unit)
+							}));
+
+						return hoverPanel(CHART_YEARS[this.x], rows, 'line');
+					}
+				},
+
+				legend: {
+					enabled: true
+				},
+
+				plotOptions: {
+					line: {
+						lineWidth: 2,
+						// Dots appear only on hover, for every economy in that year.
+						marker: {
+							enabled: false,
+							symbol: 'circle',
+							states: {
+								hover: { enabled: true, radius: 4, lineWidth: 1, lineColor: '#ffffff' }
+							}
+						},
+						states: { hover: { lineWidthPlus: 0 } }
+					}
+				},
+
+				series
+			})
+		);
 
 		return () => {
 			chart.destroy();
@@ -147,14 +125,16 @@
 
 <ChartContainer
 	title="Chart 1: Historical Spending, 2019-2024"
+	{chartTitle}
+	{chartSubtitle}
 	controls={frozen ? undefined : chartControls}
 	share={frozen ? undefined : share}
 	{frozen}
 >
 	{#snippet chartControls()}
-		<div class="historical-spending-chart__controls">
-			<Select label="Unit" options={UNIT_OPTIONS} value={unit} onchange={handleUnitChange} />
-		</div>
+		<ControlRow label="Unit">
+			<Select options={UNIT_OPTIONS} value={unit} onchange={handleUnitChange} />
+		</ControlRow>
 	{/snippet}
 
 	<div class="historical-spending-chart__chart" bind:this={chartElement}></div>
@@ -163,7 +143,5 @@
 <style>
 	.historical-spending-chart__chart {
 		width: 100%;
-		max-width: 822px;
-		height: 677px;
 	}
 </style>

@@ -17,6 +17,7 @@
 	import { getEstimateState } from '$lib/sharing/sharePayload.js';
 	import { calculatorState } from '$lib/stores/calculatorState.js';
 	import { REPORT_URL } from '$lib/utils/links.js';
+	import { receiptContent } from '$lib/utils/receiptContent.js';
 
 	let payload = $state(null);
 	let resolvedData = $state([]);
@@ -144,7 +145,12 @@
 				</div>
 
 				<div class="share-page__receipt">
-					<Receipt mode={payload.mode} assumptions={payload.assumptions} {showComponentColors} />
+					<Receipt
+						mode={payload.mode}
+						assumptions={payload.assumptions}
+						intro={receiptContent.shareIntro}
+						{showComponentColors}
+					/>
 				</div>
 			</div>
 

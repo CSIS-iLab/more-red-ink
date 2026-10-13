@@ -19,7 +19,7 @@ function formatNumber(value, decimals) {
 }
 
 function getPercentage(value) {
-	return Math.round(value * 1000) / 10;
+	return Math.round(value * 100);
 }
 
 export function formatChartValue(value, unit) {
@@ -32,11 +32,12 @@ export function formatChartValue(value, unit) {
 	return `$${formatNumber(value, 1)}M`;
 }
 
+// Axis labels use whole numbers only (approved chart design).
 export function formatChartAxisValue(value, unit) {
 	if (unit === 'pct_gdp') {
 		const percentage = getPercentage(value);
 
-		return `${formatNumber(percentage, 1)}%`;
+		return `${formatNumber(percentage, 0)}%`;
 	}
 
 	return `$${formatNumber(value, 0)}M`;

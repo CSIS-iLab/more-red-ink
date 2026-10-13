@@ -18,6 +18,7 @@
 		aria-disabled={disabled || undefined}
 		class:primary={variant === 'primary'}
 		class:secondary={variant === 'secondary'}
+		class:ghost={variant === 'ghost'}
 		class:disabled
 		class="action text-label-large"
 		{...restProps}
@@ -32,6 +33,7 @@
 		{onclick}
 		class:primary={variant === 'primary'}
 		class:secondary={variant === 'secondary'}
+		class:ghost={variant === 'ghost'}
 		class="action text-label-large"
 		{...restProps}
 	>
@@ -49,7 +51,9 @@
 		padding: 0 1.25rem;
 		border: 1px solid transparent;
 		border-radius: 0.25rem;
-		font: inherit;
+		/* Figma: buttons use IBM Plex Sans Medium (text-label-large is semibold). */
+		font-weight: var(--font-weight-medium);
+		line-height: 1.2;
 		text-decoration: none;
 		cursor: pointer;
 		transition:
@@ -74,6 +78,28 @@
 		border-color: currentColor;
 		background: transparent;
 		color: inherit;
+	}
+
+	.ghost {
+		border-color: var(--color-ghost-button-enabled-border);
+		background: var(--color-ghost-button-enabled);
+		color: var(--color-ghost-button-text);
+	}
+
+	.ghost:hover:not(:disabled, .disabled, [aria-disabled='true']) {
+		border-color: var(--color-ghost-button-hover-border);
+		background: var(--color-ghost-button-hover);
+	}
+
+	.ghost:active:not(:disabled, .disabled, [aria-disabled='true']) {
+		border-color: var(--color-ghost-button-pressed-border);
+		background: var(--color-ghost-button-pressed);
+	}
+
+	.action.ghost:focus-visible {
+		outline: 2px solid var(--color-ghost-button-focus-border);
+		outline-offset: 2px;
+		box-shadow: none;
 	}
 
 	.action:disabled,
