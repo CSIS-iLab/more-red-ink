@@ -107,23 +107,27 @@ const getGovernmentProcurement = (row, assumptions) => {
 };
 
 /**
- * Resolve China's three "Other" components: SOE Net Payables, Land,
- * and Debt-Equity Swaps.
+ * Resolve an individually selectable China-specific spending component.
  *
  * These components do not apply to non-China economies, so those rows
- * return null. For China, excluding the components returns zero because
- * they apply but are intentionally omitted from the estimate.
+ * return null. For China, each component is independently included or
+ * excluded based on its corresponding User Driven assumption.
+ * Excluded components return zero.
  */
-const getChinaOther = (row, assumptions, field) => {
+const getChinaSpecificComponent = (row, choice, field) => {
 	if (!isChina(row)) {
 		return null;
 	}
 
-	if (assumptions.chinaOther === 'excludeAll') {
+	if (choice === 'include') {
+		return row[field];
+	}
+
+	if (choice === 'exclude') {
 		return 0;
 	}
 
-	return row[field];
+	return null;
 };
 
 /**
@@ -146,10 +150,19 @@ const resolveUserDrivenRow = (row, assumptions) => {
 	const belowMarketCredit = getBelowMarketCredit(row, assumptions);
 	const stateInvestmentFunds = getStateInvestmentFunds(row, assumptions);
 	const governmentProcurement = getGovernmentProcurement(row, assumptions);
-	const soeNetPayables = getChinaOther(row, assumptions, 'soe_net_payables');
-	const land = getChinaOther(row, assumptions, 'land');
-	const debtEquitySwaps = getChinaOther(row, assumptions, 'debt_equity_swaps');
+	const soeNetPayables = getChinaSpecificComponent(
+		row,
+		assumptions.soeNetPayables,
+		'soe_net_payables'
+	);
 
+	const land = getChinaSpecificComponent(row, assumptions.land, 'land');
+
+	const debtEquitySwaps = getChinaSpecificComponent(
+		row,
+		assumptions.debtEquitySwaps,
+		'debt_equity_swaps'
+	);
 	const components = [
 		directSubsidies,
 		otherTaxIncentives,
