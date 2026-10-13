@@ -2,7 +2,6 @@
 	import { onMount } from 'svelte';
 	import { resolve } from '$app/paths';
 	import Button from '$lib/components/controls/Button.svelte';
-	import Credits from '$lib/components/layout/Credits.svelte';
 	import { getHomeContent } from '$lib/data/loadHomeContent';
 
 	let homeContent = $state('');
@@ -105,7 +104,7 @@
 			align-items: center;
 			min-width: 1440px;
 			/* gap: 64px; */
-      padding: var(--global-spacing-section-vertical-padding-medium, 80px) 0;
+			padding: var(--global-spacing-section-vertical-padding-medium, 80px) 0;
 		}
 	}
 	.text-header-block {
@@ -122,11 +121,11 @@
 			align-self: stretch;
 			gap: var(--text-components-report-title-block-gap, 40px);
 			align-self: stretch;
-      padding: 0 80px;
+			padding: 0 80px;
 
-      h1 {
-        margin: 0;
-      }
+			h1 {
+				margin: 0;
+			}
 		}
 	}
 
@@ -139,20 +138,52 @@
 		font-size: var(--text-style-specs-hero-1-size, 45px);
 		font-style: normal;
 		font-weight: 600;
-		line-height: 110%; /* 49.5px */
+		line-height: 110%;
+
+		@media (width >= 1280px) {
+			font-size: var(--text-style-specs-hero-1-size, 50px);
+		}
 	}
 
+	.byline {
+		color: var(--text-secondary, #1d293d);
+		font-family: var(--font-label, 'IBM Plex Sans');
+		font-size: var(--text-style-specs-label-medium-size, 16px);
+		font-style: normal;
+		font-weight: 500;
+		line-height: 120%;
+
+		@media (width >= 1280px) {
+			font-size: var(--text-style-specs-label-medium-size, 18px);
+			line-height: 120%;
+		}
+	}
 	.byline__author:not(:last-child)::after {
 		content: ', ';
+	}
+
+	.header-footer {
+		time {
+			color: var(--text-helper, #62748e);
+			font-family: var(--font-label, 'IBM Plex Sans');
+			font-size: var(--text-style-specs-label-small-size, 15px);
+			font-style: normal;
+			font-weight: 400;
+			line-height: 120%;
+
+			@media (width >= 1280px) {
+				font-size: var(--text-style-specs-label-small-size, 16px);
+			}
+		}
 	}
 
 	.img-header {
 		margin: 0;
 
-    @media (width >= 1440px) {
-      width: 100%;
-      padding: var(--global-spacing-section-vertical-padding-medium, 80px) 40px;
-    }
+		@media (width >= 1440px) {
+			width: 100%;
+			padding: var(--global-spacing-section-vertical-padding-medium, 80px) 40px;
+		}
 
 		img {
 			display: block;
