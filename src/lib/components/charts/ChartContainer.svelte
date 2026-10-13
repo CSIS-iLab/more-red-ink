@@ -82,7 +82,7 @@
 		width: 100%;
 		margin: 0;
 		border: 0;
-		border-top: 1px solid var(--color-border-subtle);
+		border-top: 1px solid var(--color-border-strong);
 	}
 
 	.chart-container__content {
@@ -133,8 +133,10 @@
 		white-space: nowrap;
 	}
 
+	/* Figma: 12/16/12/20 with no border; less 1px for the button's
+	   transparent border so it stays 48px tall. */
 	.chart-container__actions :global(.action) {
-		padding: 0.75rem 1rem 0.75rem 1.25rem;
+		padding: calc(0.75rem - 1px) 1rem calc(0.75rem - 1px) 1.25rem;
 	}
 
 	.chart-container--frozen {
@@ -202,7 +204,7 @@
 			justify-content: center;
 			margin: 0 1.25rem;
 			padding: 1.25rem 0;
-			border-top: 1px solid var(--color-border-subtle);
+			border-top: 1px solid var(--color-border-strong);
 		}
 	}
 </style>

@@ -164,10 +164,15 @@
 
 	/* ---------------------------- intro ---------------------------- */
 
+	/* 12px from the heading to the text; a blank line between paragraphs. */
 	.receipt__intro {
 		display: flex;
 		flex-direction: column;
-		gap: 1.2em;
+		gap: 0.75rem;
+	}
+
+	.receipt__intro p + p {
+		margin-top: 1.2em;
 	}
 
 	.receipt__heading {
@@ -304,7 +309,7 @@
 	.receipt__cards {
 		display: none;
 		flex-direction: column;
-		gap: 1rem;
+		gap: 0.75rem;
 		margin: 0;
 		padding: 0;
 		list-style: none;

@@ -51,6 +51,8 @@
 		padding: 0 1.25rem;
 		border: 1px solid transparent;
 		border-radius: 0.25rem;
+		/* Figma: buttons use IBM Plex Sans Medium (text-label-large is semibold). */
+		font-weight: var(--font-weight-medium);
 		line-height: 1.2;
 		text-decoration: none;
 		cursor: pointer;

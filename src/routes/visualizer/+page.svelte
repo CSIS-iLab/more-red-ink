@@ -249,12 +249,16 @@
 			height: auto;
 		}
 
-		/* The Receipt column is centered and maxes out at 45.75rem. */
+		/* The Receipt column is centered and maxes out at 45.75rem
+		   (plus side padding). */
 		.visualizer__summary-inner {
+			--summary-padding-x: 3rem;
+
 			width: 100%;
-			max-width: calc(45.75rem + 3rem);
+			max-width: calc(45.75rem + 2 * var(--summary-padding-x));
+			gap: 2.25rem;
 			margin: 0 auto;
-			padding: 2.5rem 1.5rem;
+			padding: 2.5rem var(--summary-padding-x);
 		}
 
 		/* The text above the Receipt is centered and maxes out at 39.75rem,
@@ -282,13 +286,25 @@
 
 		.visualizer__charts {
 			min-height: 0;
-			padding: 1.5rem;
+			padding: 2rem;
+		}
+	}
+
+	@media (max-width: 959px) {
+		.visualizer__summary-inner {
+			--summary-padding-x: 2rem;
+
+			padding-top: 2.25rem;
+			padding-bottom: 2.25rem;
 		}
 	}
 
 	@media (max-width: 639px) {
 		.visualizer__summary-inner {
-			padding: 2rem 1rem;
+			--summary-padding-x: 1rem;
+
+			padding-top: 2rem;
+			padding-bottom: 2rem;
 		}
 
 		.visualizer__charts {
