@@ -59,16 +59,16 @@
 				<div class="options">
 					<div class="mode-options">
 						<a class="mode-option" href={resolve('/fast-track')}>
-							<span class="text-heading-3">Fast Track</span>
-							<span class="text-body-3-regular">
-								Short description about the option and why the user might want to pick this.
+							<span class="mode-option__title">Fast Track</span>
+							<span class="mode-option__desc">
+								Select this mode to see either the lowest or highest estimates.
 							</span>
 						</a>
 
 						<a class="mode-option" href={resolve('/user-driven')}>
-							<span class="text-heading-3">User Driven</span>
-							<span class="text-body-3-regular">
-								Short description about the option and why the user might want to pick this.
+							<span class="mode-option__title">User Driven</span>
+							<span class="mode-option__desc">
+								Select this mode to have more granular control over the assumptions about the various tools that produce the estimate.
 							</span>
 						</a>
 					</div>
@@ -83,7 +83,21 @@
 		margin-top: 20px;
 		padding: 0 var(--layout-guide-specs-xs-320-margin-5-vw, 16px)
 			var(--global-spacing-section-vertical-padding-small, 36px);
-    max-width: 320px;
+		min-width: 320px;
+
+		@media (width >= 640px) {
+			padding: var(--global-spacing-section-vertical-padding-small, 36px)
+				var(--layout-guide-specs-s-640-margin-5-vw, 32px);
+		}
+
+		@media (width >= 960px) {
+			padding: var(--global-spacing-section-vertical-padding-small, 36px)
+				var(--layout-guide-specs-m-960-margin-5-vw, 48px);
+		}
+		@media (width >= 1280px) {
+			padding: var(--global-spacing-section-vertical-padding-small, 40px)
+				var(--layout-guide-specs-l-1280-margin-5-vw, 64px);
+		}
 	}
 
 	/* -------------------------------------------------------------------------- */
@@ -103,14 +117,15 @@
 		}
 
 		@media (width >= 1280px) {
-			width: 480px;
+			align-items: flex-start;
+			width: 564px;
+			max-width: none;
 		}
 
 		@media (width >= 1440px) {
 			flex-direction: row;
 			align-items: center;
-			min-width: 1440px;
-			/* gap: 64px; */
+			min-width: 100%;
 			padding: var(--global-spacing-section-vertical-padding-medium, 80px) 0;
 		}
 		.text-header-block {
@@ -122,17 +137,28 @@
 			justify-content: center;
 			gap: var(--text-components-report-title-block-gap, 36px);
 
+			@media (width >= 1280px) {
+				max-width: 480px;
+			}
 			@media (width>= 1440px) {
-				min-width: 480px;
+				min-width: 640px;
 				align-self: stretch;
 				gap: var(--text-components-report-title-block-gap, 40px);
 				align-self: stretch;
 				padding: 0 80px;
 
+        .title {
+          max-width: 480px;
+        }
+
 				h1 {
 					margin: 0;
 				}
 			}
+
+      @media (width >= 1920px) {
+        min-width: 800px;
+      }
 		}
 
 		.header-footer p {
@@ -188,7 +214,12 @@
 
 			@media (width >= 1440px) {
 				width: 100%;
-				padding: var(--global-spacing-section-vertical-padding-medium, 80px) 40px;
+				padding: 0 40px;
+			}
+			@media (width >= 1920px) {
+        min-width: 880px;
+				width: 100%;
+				padding: 0 40px;
 			}
 
 			img {
@@ -203,12 +234,21 @@
 	/*                                HOME CONTENT                                */
 	/* -------------------------------------------------------------------------- */
 	.home__content {
-    margin-block: var(--global-spacing-section-vertical-padding-small, 36px);
+		margin-block: var(--global-spacing-section-vertical-padding-small, 36px);
 
-    @media (width>= 640px) {
-      max-width: 480px;
-      margin-inline: auto;
-    }
+		@media (width>= 640px) {
+			max-width: 480px;
+			margin-inline: auto;
+		}
+		@media (width>= 1280px) {
+			margin-block: var(--global-spacing-section-vertical-padding-small, 40px);
+			width: 564px;
+			max-width: none;
+		}
+		@media (width>= 1440px) {
+			margin-block: var(--global-spacing-section-vertical-padding-small, 40px);
+			width: 636px;
+		}
 		p {
 			margin: 0;
 			margin-bottom: var(--text-style-specs-body-long-regular-size, 18px);
@@ -220,17 +260,21 @@
 			font-weight: 400;
 			line-height: 150%;
 
+			@media (width >= 1280px) {
+				font-size: var(--text-style-specs-body-long-regular-size, 20px);
+			}
 			&:last-of-type {
 				margin-block-end: 0;
 			}
 		}
 
 		.instructions {
-			padding: var(--text-components-heading-2-top-padding, 65px) 0
-				var(--heading-2-bottom-padding, 18px) 0;
+			/* padding: var(--text-components-heading-2-top-padding, 65px) 0
+				0 0; */
 
 			h2 {
 				margin: 0;
+				margin-block-start: var(--text-components-heading-2-top-padding, 65px);
 				margin-block-end: var(--heading-2-bottom-padding, 18px);
 
 				color: var(--text-primary, #020618);
@@ -239,38 +283,60 @@
 				font-style: normal;
 				font-weight: 500;
 				line-height: 110%;
-			}
 
-			p {
-				color: var(--text-secondary, #1d293d);
-				font-family: var(--font-body, 'IBM Plex Sans');
-				font-size: var(--text-style-specs-body-long-regular-size, 18px);
-				font-style: normal;
-				font-weight: 400;
-				line-height: 150%;
+				@media (width >= 1280px) {
+					margin-block-start: var(--text-components-heading-2-top-padding, 72px);
+				}
 			}
 		}
 
+		.options {
+			margin-block: var(--global-spacing-section-vertical-padding-small, 36px);
+		}
 		.mode-options {
 			display: grid;
-			/* grid-template-columns: repeat(2, minmax(0, 1fr)); */
-			gap: 1.5rem;
-			margin-top: 3rem;
+			gap: 24px;
+
+			@media (width >= 1280px) {
+				grid-template-columns: repeat(2, minmax(0, 1fr));
+			}
 		}
 
 		.mode-option {
 			display: flex;
 			flex-direction: column;
-			gap: 1rem;
-			min-height: 9.75rem;
-			padding: 1.5rem;
-			border-radius: 0.5rem;
-			background: var(--color-cta-enabled);
+			gap: 16px;
+			padding: 24px;
+			border-radius: 8px;
+			background: var(--CTA-button-enabled, #1d293d);
 			color: var(--color-cta-text-primary);
 			text-decoration: none;
-			transition: background-color 0.3s ease;
-		}
+			transition: background-color 0.3s ease-in-out;
 
+			.mode-option__title {
+				color: var(--CTA-button-text-primary, #fff);
+				font-family: var(--font-label, 'IBM Plex Sans');
+				font-size: var(--text-style-specs-label-large-size, 18px);
+				font-style: normal;
+				font-weight: 500;
+				line-height: 120%;
+
+        @media (width >= 1280px) {
+          font-size: var(--text-style-specs-label-large-size, 20px);
+        }
+			}
+			.mode-option__desc {
+				color: var(--CTA-button-text-secondary, #f8fafc);
+				font-family: var(--font-label, 'IBM Plex Sans');
+				font-size: var(--text-style-specs-label-small-size, 15px);
+				font-style: normal;
+				font-weight: 400;
+				line-height: 120%;
+        @media (width >= 1280px) {
+          font-size: var(--text-style-specs-label-small-size, 16px);
+        }
+			}
+		}
 		.mode-option:hover {
 			background: var(--color-cta-hover);
 		}
