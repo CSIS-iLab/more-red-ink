@@ -345,9 +345,9 @@
 			background: var(--color-cta-pressed);
 		}
 
-		.mode-option:focus-visible {
-			outline: 1px solid var(--color-white);
-			outline-offset: -2px;
+		.mode-option:focus-visible {  
+			outline: 2px solid var(--color-white);
+			outline-offset: -4px;
 			box-shadow: 0 0 0 1px var(--color-neutral-600);
 		}
 	}
