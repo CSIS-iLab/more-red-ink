@@ -40,6 +40,12 @@
 </header>
 
 <style>
+  header {
+    position: sticky;
+    top: 0;
+    z-index: 9999;
+    background: var(--color-sky-50);
+  }
 	.app-header {
 		width: 100%;
 		height: 64px;
