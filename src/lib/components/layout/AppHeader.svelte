@@ -6,7 +6,9 @@
 <header class="app-header">
 	<div class="app-header__inner">
 		<div class="app-header__titles">
-			<a href={resolve('/')} class="app-header__app-name text-logo"> Industrial Policy Spending Calculator </a>
+			<a href={resolve('/')} class="app-header__app-name text-logo">
+				Industrial Policy Spending Calculator
+			</a>
 
 			{#if pageName}
 				<div class="app-header__divider" aria-hidden="true"></div>
@@ -40,8 +42,13 @@
 </header>
 
 <style>
+	header {
+		position: sticky;
+		top: 0;
+		background: var(--bg-page, #f0f9ff);
+    z-index: 99999;
+	}
 	.app-header {
-		width: 100%;
 		height: 64px;
 		border-bottom: 1px solid var(--color-border-subtle);
 		color: var(--color-text-primary);
