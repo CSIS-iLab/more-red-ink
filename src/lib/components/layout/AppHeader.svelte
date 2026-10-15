@@ -6,13 +6,15 @@
 <header class="app-header">
 	<div class="app-header__inner">
 		<div class="app-header__titles">
-			<a href={resolve('/')} class="app-header__app-name text-logo"> Industrial Policy Spending Calculator </a>
+			<a href={resolve('/')} class="app-header__app-name">
+				Industrial Policy Spending Calculator
+			</a>
 
 			{#if pageName}
 				<div class="app-header__divider" aria-hidden="true"></div>
-				<div class="app-header__page-name text-label-x-large">
+				<p class="app-header__page-name text-label-x-large">
 					{pageName}
-				</div>
+				</p>
 			{/if}
 		</div>
 
@@ -40,12 +42,12 @@
 </header>
 
 <style>
-  header {
-    position: sticky;
-    top: 0;
-    z-index: 9999;
-    background: var(--color-sky-50);
-  }
+	header {
+		position: sticky;
+		top: 0;
+		z-index: 9999;
+		background: var(--color-sky-50);
+	}
 	.app-header {
 		width: 100%;
 		height: 64px;
@@ -70,6 +72,14 @@
 		flex: 1;
 	}
 
+	.app-header__titles > a {
+		color: var(--color-navbar-text);
+		font-family: var(--font-hero);
+		font-size: 16px;
+		font-style: normal;
+		font-weight: 600;
+		line-height: 100%;
+	}
 	.app-header__app-name {
 		flex: 0 0 134px;
 		width: 134px;
