@@ -48,31 +48,49 @@ export function getTotalColor() {
 }
 
 /**
- * Plot-area height as a share of its width, by viewport width
- * (approved chart ratios: 1:1 below 640px, 3:4 up to 1440px, 16:9 above).
+ * True for a Share page chart in its wide layout, beside the Receipt
+ * (1200px and up; see shareChartOptions).
  */
-function getPlotRatio() {
+function isBesideReceipt(chart) {
+	return window.innerWidth >= 1200 && Boolean(chart.userOptions.custom?.share);
+}
+
+/**
+ * Plot-area height as a share of its width, by viewport width
+ * (approved chart ratios: 1:1 below 640px, 3:4 up to 1440px, 16:9 above,
+ * and 16:9 on the Share page beside the Receipt).
+ */
+function getPlotRatio(chart) {
 	const width = window.innerWidth;
 
 	if (width < 640) return 1;
-	if (width <= 1440) return 3 / 4;
+	if (width <= 1440 && !isBesideReceipt(chart)) return 3 / 4;
 	return 9 / 16;
 }
 
 /**
- * When the legend sits under the chart, size its items so they form two
- * columns (approved mobile legend). Returns true if the legend changed.
+ * How many columns the legend forms under the chart, or 0 when it sits
+ * beside the chart: two below 960px, and three on the Share page beside
+ * the Receipt.
+ */
+function getLegendColumns(chart) {
+	if (window.innerWidth < 960) return 2;
+	if (isBesideReceipt(chart)) return 3;
+	return 0;
+}
+
+/**
+ * When the legend sits under the chart, size its items so they form
+ * columns (approved designs). Returns true if the legend changed.
  */
 function fitLegendColumns(chart) {
 	const { legend } = chart;
 
 	if (!legend.display) return false;
 
+	const columns = getLegendColumns(chart);
 	const padding = legend.options.padding ?? 0;
-	const itemWidth =
-		legend.options.layout === 'horizontal'
-			? Math.floor((chart.chartWidth - padding * 2) / 2)
-			: undefined;
+	const itemWidth = columns ? Math.floor((chart.chartWidth - padding * 2) / columns) : undefined;
 
 	if (legend.options.itemWidth === itemWidth) return false;
 
@@ -83,7 +101,7 @@ function fitLegendColumns(chart) {
 
 /**
  * After each render, finish the responsive layout:
- * - put an under-chart legend into two columns, then
+ * - put an under-chart legend into columns, then
  * - resize the chart's height so the plot area keeps the approved ratio,
  *   whatever space the title and legend take, growing it further if a
  *   legend beside the chart would otherwise overlap the title.
@@ -99,7 +117,7 @@ function finishLayout() {
 
 	// Height that gives the plot area the approved ratio.
 	const ratioHeight =
-		this.chartHeight + Math.round(this.plotWidth * getPlotRatio()) - this.plotHeight;
+		this.chartHeight + Math.round(this.plotWidth * getPlotRatio(this)) - this.plotHeight;
 
 	// A legend beside the chart must fit below the title and subtitle; if it
 	// doesn't, make the chart taller rather than overlap them.
@@ -113,6 +131,15 @@ function finishLayout() {
 		this.setSize(undefined, height, false);
 	}
 }
+
+/**
+ * Options for charts on the Share page. Beside the Receipt (1200px and up)
+ * the chart is 16:9 with its legend underneath in three columns
+ * (approved design).
+ */
+export const shareChartOptions = {
+	custom: { share: true }
+};
 
 /**
  * Y-axis ticks at whole percentages for values stored as fractions of GDP
@@ -250,8 +277,12 @@ export function createChartOptions(...optionSets) {
 		responsive: {
 			rules: [
 				{
-					// Below 960px the legend moves under the chart in two columns.
-					condition: { callback: () => window.innerWidth < 960 },
+					// The legend moves under the chart, in columns (see getLegendColumns).
+					condition: {
+						callback() {
+							return getLegendColumns(this) > 0;
+						}
+					},
 					chartOptions: {
 						legend: {
 							layout: 'horizontal',

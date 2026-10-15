@@ -1,5 +1,5 @@
 <script>
-	import { onMount } from 'svelte';
+	import { getContext, onMount } from 'svelte';
 	import { goto } from '$app/navigation';
 	import { resolve } from '$app/paths';
 	import { page } from '$app/state';
@@ -22,12 +22,39 @@
 	let payload = $state(null);
 	let resolvedData = $state([]);
 	let loading = $state(true);
+	// 'link' (missing, invalid, or unusable share link) or 'data' (couldn't load).
 	let error = $state(null);
 
-	// Only charts that color spending components use the receipt as a legend.
-	let showComponentColors = $derived(
-		Boolean(payload) && payload.chartType !== 'historical' && payload.displaySettings.showComponents
-	);
+	// TODO: the 'data' copy is a draft; the approved design only covers 'link'.
+	const ERROR_CONTENT = {
+		link: {
+			heading: 'Page not found.',
+			text: 'The link may be incorrect or incomplete.'
+		},
+		data: {
+			heading: 'Something went wrong.',
+			text: "The data for this chart couldn't be loaded. Please try again later."
+		}
+	};
+
+	let errorContent = $derived(ERROR_CONTENT[error ?? 'link']);
+
+	// The header names the broken-link state "Invalid URL" (approved design).
+	const pageNameOverride = getContext('pageNameOverride');
+
+	$effect(() => {
+		pageNameOverride.value = error === 'link' ? 'Invalid URL' : null;
+
+		return () => {
+			pageNameOverride.value = null;
+		};
+	});
+
+	// Show the broken-link message, logging the specific reason for debugging.
+	const failLink = (reason) => {
+		console.warn(`Share link can't be displayed: ${reason}`);
+		error = 'link';
+	};
 
 	let copyStatus = $state(null);
 
@@ -36,7 +63,7 @@
 			const { payload: parsedPayload, error: payloadError } = parseShareUrl(page.url.searchParams);
 
 			if (payloadError) {
-				error = payloadError;
+				failLink(payloadError);
 				return;
 			}
 
@@ -46,21 +73,21 @@
 				parsedPayload.chartType === 'economySpecific' &&
 				!sourceData.some((row) => row.country === parsedPayload.displaySettings.economy)
 			) {
-				error = 'The shared economy is not available in the source data.';
+				failLink('the shared economy is not available in the source data.');
 				return;
 			}
 
 			resolvedData = calculateEstimate(sourceData, getEstimateState(parsedPayload));
 
 			if (resolvedData.length === 0) {
-				error = 'The shared estimate could not be calculated.';
+				failLink('the shared estimate could not be calculated.');
 				return;
 			}
 
 			payload = parsedPayload;
 		} catch (err) {
 			console.error(err);
-			error = 'Unable to load the data for this chart. Please try again later.';
+			error = 'data';
 		} finally {
 			loading = false;
 		}
@@ -91,125 +118,123 @@
 </script>
 
 <svelte:head>
-	<title>Share | More Red Ink Calculator</title>
+	<title>{error === 'link' ? 'Invalid URL' : 'Share'} | More Red Ink Calculator</title>
 </svelte:head>
 
-<div class="share-page">
-	<h1 class="visually-hidden">Shared chart</h1>
-
+<div class="share-page" class:share-page--error={!loading && !payload}>
 	{#if loading}
 		<p class="share-page__status text-body-2-regular" role="status">Loading shared chart…</p>
-	{:else if error || !payload}
-		<div class="share-page__error" role="alert">
-			<h2 class="text-heading-3">This shared chart can't be displayed</h2>
-			<p class="text-body-2-regular">{error ?? 'Unable to load shared chart.'}</p>
-		</div>
-	{:else}
-		<article class="share-page__card">
-			<div class="share-page__body">
-				<div class="share-page__chart">
-					{#if payload.chartType === 'historical'}
-						<HistoricalSpendingChart
-							data={resolvedData}
-							unit={payload.displaySettings.unit}
-							frozen
-						/>
-					{:else if payload.chartType === 'cumulative'}
-						<CumulativeSpendingChart
-							data={resolvedData}
-							unit={payload.displaySettings.unit}
-							showComponents={payload.displaySettings.showComponents}
-							showLegend={!showComponentColors}
-							frozen
-						/>
-					{:else if payload.chartType === 'yearSpecific'}
-						<YearSpecificChart
-							data={resolvedData}
-							year={payload.displaySettings.year}
-							unit={payload.displaySettings.unit}
-							showComponents={payload.displaySettings.showComponents}
-							scaleTo100={payload.displaySettings.scaleTo100}
-							showLegend={!showComponentColors}
-							frozen
-						/>
-					{:else if payload.chartType === 'economySpecific'}
-						<EconomySpecificChart
-							data={resolvedData}
-							economy={payload.displaySettings.economy}
-							unit={payload.displaySettings.unit}
-							showComponents={payload.displaySettings.showComponents}
-							showLegend={!showComponentColors}
-							frozen
-						/>
-					{/if}
-				</div>
+	{:else if payload}
+		<h1 class="visually-hidden">Shared chart</h1>
 
-				<div class="share-page__receipt">
-					<Receipt
-						mode={payload.mode}
-						assumptions={payload.assumptions}
-						intro={receiptContent.shareIntro}
-						{showComponentColors}
+		<article class="share-page__card">
+			<div class="share-page__chart">
+				{#if payload.chartType === 'historical'}
+					<HistoricalSpendingChart data={resolvedData} unit={payload.displaySettings.unit} frozen />
+				{:else if payload.chartType === 'cumulative'}
+					<CumulativeSpendingChart
+						data={resolvedData}
+						unit={payload.displaySettings.unit}
+						showComponents={payload.displaySettings.showComponents}
+						frozen
 					/>
-				</div>
+				{:else if payload.chartType === 'yearSpecific'}
+					<YearSpecificChart
+						data={resolvedData}
+						year={payload.displaySettings.year}
+						unit={payload.displaySettings.unit}
+						showComponents={payload.displaySettings.showComponents}
+						scaleTo100={payload.displaySettings.scaleTo100}
+						frozen
+					/>
+				{:else if payload.chartType === 'economySpecific'}
+					<EconomySpecificChart
+						data={resolvedData}
+						economy={payload.displaySettings.economy}
+						unit={payload.displaySettings.unit}
+						showComponents={payload.displaySettings.showComponents}
+						frozen
+					/>
+				{/if}
 			</div>
 
-			<footer class="share-page__attribution">
-				<p class="text-label-x-small">
-					This chart was generated by the
-					<a href={resolve('/')}>More Red Ink Calculator</a>, a tool that complements the report
-					<!-- External link, so resolve() doesn't apply. -->
-					<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -->
-					<a href={REPORT_URL} target="_blank" rel="noreferrer">
-						<em
-							>More Red Ink: The Emerging Industrial Policy Spending Arms Race by China and Others</em
-						></a
-					>.
-				</p>
-
-				<img
-					class="share-page__logo"
-					src="/logos/csis-trustee-chair.svg"
-					alt="CSIS Trustee Chair in Chinese Business & Economics"
-					width="249"
-					height="29"
+			<div class="share-page__receipt">
+				<Receipt
+					mode={payload.mode}
+					assumptions={payload.assumptions}
+					intro={receiptContent.shareIntro}
 				/>
-			</footer>
+
+				<footer class="share-page__attribution">
+					<p>
+						This chart was generated by the Industrial Policy Spending Calculator, a tool that
+						complements the report
+						<!-- External link, so resolve() doesn't apply. -->
+						<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -->
+						<a href={REPORT_URL} target="_blank" rel="noreferrer"
+							>More Red Ink: The Emerging Industrial Policy Spending Arms Race by China and Others</a
+						>.
+					</p>
+
+					<img
+						class="share-page__logo"
+						src="/logos/csis-trustee-chair.svg"
+						alt="CSIS Trustee Chair in Chinese Business & Economics"
+						width="249"
+						height="29"
+					/>
+				</footer>
+			</div>
 		</article>
-	{/if}
 
-	<div class="share-page__actions">
-		<Button variant="secondary" onclick={handleNewEstimate}>Create a new estimate</Button>
-
-		<Button variant="secondary" href={REPORT_URL} target="_blank" rel="noreferrer">
-			Read the report
-			<img src="/icons/external-link.svg" alt="" />
-		</Button>
-
-		{#if payload}
-			<Button variant="secondary" onclick={handleCopyLink}>
+		<div class="share-page__actions">
+			<Button variant="ghost" onclick={handleCopyLink}>
 				{copyStatus === 'copied' ? 'Link copied' : 'Copy link'}
 			</Button>
-		{/if}
-	</div>
 
-	<p class="share-page__copy-status text-label-small" aria-live="polite">
-		{#if copyStatus === 'copied'}
-			Link copied to your clipboard.
-		{:else if copyStatus === 'failed'}
-			Couldn't copy the link. Copy it from your browser's address bar instead.
-		{/if}
-	</p>
+			<Button variant="ghost" onclick={handleNewEstimate}>Create a new estimate</Button>
+
+			<Button variant="ghost" href={REPORT_URL} target="_blank" rel="noreferrer">
+				Read the report
+				<img src="/icons/external-link.svg" alt="" />
+				<span class="visually-hidden">(opens in a new tab)</span>
+			</Button>
+		</div>
+
+		<!-- The button label confirms a copy; only a failure needs visible text. -->
+		<p
+			class="share-page__copy-status text-label-small"
+			class:visually-hidden={copyStatus !== 'failed'}
+			aria-live="polite"
+		>
+			{#if copyStatus === 'copied'}
+				Link copied to your clipboard.
+			{:else if copyStatus === 'failed'}
+				Couldn't copy the link. Copy it from your browser's address bar instead.
+			{/if}
+		</p>
+	{:else}
+		<div class="share-page__error" role="alert">
+			<h1 class="share-page__error-heading text-heading-2">{errorContent.heading}</h1>
+			<p class="share-page__error-text text-body-2-regular">{errorContent.text}</p>
+
+			<div class="share-page__error-actions">
+				<Button variant="primary" href={resolve('/')}>Back to home</Button>
+			</div>
+		</div>
+	{/if}
 </div>
 
 <style>
 	.share-page {
+		--share-padding-x: 4.5rem;
+
 		display: flex;
 		flex-direction: column;
 		align-items: center;
-		gap: 1.5rem;
+		gap: 2.5rem;
 		width: 100%;
-		padding: 2.5rem 2rem 4rem;
+		padding: 2.5rem var(--share-padding-x);
 		background: var(--color-page);
 	}
 
@@ -222,56 +247,124 @@
 		white-space: nowrap;
 	}
 
-	.share-page__status,
-	.share-page__error h2,
-	.share-page__error p {
+	.share-page__status {
 		margin: 0;
 	}
 
+	/* ---------------------------- error --------------------------- */
+
+	/* Centered in the space between the header and footer, like Figma's
+	   error frame. */
+	.share-page--error {
+		flex: 1;
+		/* Fills the screen below the 64px header (AppHeader). */
+		min-height: calc(100vh - 64px);
+		justify-content: center;
+		padding-top: 0;
+		padding-bottom: 0;
+	}
+
 	.share-page__error {
+		width: min(100%, 39.75rem);
+	}
+
+	.share-page__error-heading {
+		margin: 0;
+		padding: 4.5rem 0 1.125rem;
+		color: var(--color-text-primary);
+		line-height: 1.1;
+	}
+
+	.share-page__error-text {
+		margin: 0;
+		color: var(--color-text-primary);
+		line-height: 1.5;
+	}
+
+	.share-page__error-actions {
 		display: flex;
-		flex-direction: column;
-		gap: 0.75rem;
-		width: 100%;
-		max-width: 40rem;
-		padding: 2rem;
-		background: var(--color-white);
+		padding: 2.5rem 0;
 	}
 
+	/* ---------------------------- card ---------------------------- */
+
+	/* Chart and Receipt side by side, split by a 1px divider. */
 	.share-page__card {
-		width: 100%;
-		max-width: 1200px;
-		background: var(--color-white);
-	}
-
-	.share-page__body {
 		display: grid;
-		grid-template-columns: minmax(0, 2fr) minmax(300px, 1fr);
-		gap: 2rem;
-		padding: 2rem 2rem 1.5rem;
+		grid-template-columns: minmax(0, 1fr) 30.5rem;
+		width: 100%;
+		max-width: 81rem;
+		background: var(--color-surface-primary);
 	}
 
 	.share-page__chart {
 		min-width: 0;
+		padding: 2.5rem 2.25rem 2.25rem 2.5rem;
+		border-right: 1px solid var(--color-border-subtle);
 	}
 
+	/* The Receipt column takes the chart's height (it doesn't size the
+	   row), and the table rows scroll to fit. */
 	.share-page__receipt {
+		display: flex;
+		flex-direction: column;
+		gap: 1.5rem;
 		min-width: 0;
-		padding-left: 2rem;
-		border-left: 1px solid var(--color-neutral-400);
+		padding: 2.5rem 1.75rem 1.5rem;
+		contain: size;
 	}
+
+	.share-page__receipt :global(.receipt) {
+		flex: 1;
+		min-height: 0;
+	}
+
+	.share-page__receipt :global(.receipt__table) {
+		flex: 1;
+	}
+
+	.share-page__receipt :global(.receipt__table-scroll) {
+		flex: 1;
+		overflow-y: auto;
+		scrollbar-gutter: stable;
+	}
+
+	/* The header reserves the same scrollbar space so the columns line up. */
+	.share-page__receipt :global(.receipt__head-scroll) {
+		overflow-y: hidden;
+		scrollbar-gutter: stable;
+	}
+
+	/* Share intro: a label and one line of text (not the Visualizer heading). */
+	.share-page__receipt :global(.receipt__intro) {
+		gap: 0.5rem;
+	}
+
+	.share-page__receipt :global(.receipt__heading) {
+		font-family: var(--font-label);
+		font-size: var(--font-size-xx-small);
+		font-weight: var(--font-weight-medium);
+		line-height: 1.2;
+	}
+
+	.share-page__receipt :global(.receipt__intro p) {
+		font-size: var(--font-size-xxx-small);
+	}
+
+	/* ------------------------- attribution ------------------------ */
 
 	.share-page__attribution {
 		display: flex;
+		flex-direction: column;
 		align-items: flex-end;
-		justify-content: space-between;
-		gap: 2rem;
-		padding: 1rem 1.25rem;
+		gap: 1rem;
 	}
 
 	.share-page__attribution p {
-		max-width: 48rem;
 		margin: 0;
+		color: var(--color-text-helper);
+		font-family: var(--font-label);
+		font-size: 0.75rem;
 		line-height: 1.2;
 	}
 
@@ -281,9 +374,11 @@
 
 	.share-page__logo {
 		flex-shrink: 0;
-		width: 249px;
+		width: 15.75rem;
 		height: auto;
 	}
+
+	/* --------------------------- actions -------------------------- */
 
 	.share-page__actions {
 		display: flex;
@@ -292,47 +387,121 @@
 		gap: 1.5rem;
 	}
 
+	/* Figma: 12px/20px padding (16px right of an icon), less the 1px border. */
+	.share-page__actions :global(.action) {
+		padding: calc(0.75rem - 1px) calc(1.25rem - 1px);
+	}
+
+	.share-page__actions :global(a.action) {
+		padding-right: calc(1rem - 1px);
+	}
+
+	.share-page__actions :global(.action img) {
+		width: 1.125rem;
+		height: 1.125rem;
+	}
+
 	.share-page__copy-status {
-		min-height: 1.2em;
-		margin: -0.75rem 0 0;
+		margin: -1.5rem 0 0;
 		text-align: center;
 	}
 
-	@media (max-width: 900px) {
-		.share-page__body {
+	@media (max-width: 1439px) {
+		.share-page {
+			--share-padding-x: 4rem;
+		}
+	}
+
+	/* Below 1200px the Receipt sits under the chart, divided by an inset
+	   line, and the table shows every row. */
+	@media (max-width: 1199px) {
+		.share-page {
+			--share-padding-x: 3rem;
+
+			padding-top: 2.25rem;
+			padding-bottom: 2.25rem;
+		}
+
+		.share-page__card {
 			grid-template-columns: minmax(0, 1fr);
+			max-width: 54rem;
+		}
+
+		.share-page__chart {
+			padding: 2.25rem 2.25rem 2.25rem 2.5rem;
+			border-right: 0;
 		}
 
 		.share-page__receipt {
-			padding-top: 2rem;
-			padding-left: 0;
-			border-top: 1px solid var(--color-neutral-400);
-			border-left: 0;
+			margin: 0 1.5rem;
+			padding: 2.5rem 1rem;
+			border-top: 1px solid var(--color-border-subtle);
+			contain: none;
+		}
+
+		.share-page__receipt :global(.receipt__table-scroll),
+		.share-page__receipt :global(.receipt__head-scroll) {
+			overflow: visible;
+			scrollbar-gutter: auto;
+		}
+
+		/* Text on the left, logo on the right. */
+		.share-page__attribution {
+			flex-direction: row;
+			align-items: flex-end;
+			justify-content: space-between;
+			gap: 0.75rem;
+		}
+
+		.share-page__attribution p {
+			max-width: 30.75rem;
+		}
+	}
+
+	@media (max-width: 959px) {
+		.share-page {
+			--share-padding-x: 2rem;
 		}
 
 		.share-page__attribution {
 			flex-direction: column;
-			align-items: flex-start;
 			gap: 1rem;
-			padding: 1rem 2rem 1.5rem;
+		}
+
+		.share-page__attribution p {
+			max-width: none;
+		}
+
+		/* Buttons stack, all the same width. */
+		.share-page__actions {
+			display: grid;
+			grid-auto-rows: auto;
+			gap: 1rem;
 		}
 	}
 
-	@media (max-width: 600px) {
+	/* Phones: one padded column, with Receipt cards. */
+	@media (max-width: 639px) {
 		.share-page {
+			--share-padding-x: 1rem;
+		}
+
+		.share-page__card {
+			gap: 1.75rem;
 			padding: 1rem;
 		}
 
-		.share-page__body {
-			padding: 1rem;
+		.share-page__chart {
+			padding: 0;
 		}
 
-		.share-page__attribution {
-			padding: 1rem;
+		.share-page__receipt {
+			margin: 0;
+			padding: 1.75rem 0 0;
 		}
 
 		.share-page__logo {
-			width: min(249px, 100%);
+			width: min(15.75rem, 100%);
 		}
 	}
 </style>
