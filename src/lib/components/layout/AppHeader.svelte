@@ -12,9 +12,9 @@
 
 			{#if pageName}
 				<div class="app-header__divider" aria-hidden="true"></div>
-				<p class="app-header__page-name text-label-x-large">
+				<span class="app-header__page-name" aria-current="page">
 					{pageName}
-				</p>
+				</span>
 			{/if}
 		</div>
 
@@ -72,14 +72,29 @@
 		flex: 1;
 	}
 
-	.app-header__titles > a {
-		color: var(--color-navbar-text);
-		font-family: var(--font-hero);
-		font-size: 16px;
-		font-style: normal;
-		font-weight: 600;
-		line-height: 100%;
+	.app-header__titles {
+		> a {
+			color: var(--color-navbar-text);
+			font-family: var(--font-hero);
+			font-size: 16px;
+			font-style: normal;
+			font-weight: 600;
+			line-height: 100%;
+		}
+		> span {
+			color: var(--color-navbar-text);
+			font-family: var(--font-label);
+			font-size: 26px;
+			font-style: normal;
+			font-weight: var(--font-weight-medium);
+			line-height: 120%;
+
+      @media (width >= 960px) {
+        font-size: 29px;
+      }
+		}
 	}
+
 	.app-header__app-name {
 		flex: 0 0 134px;
 		width: 134px;
