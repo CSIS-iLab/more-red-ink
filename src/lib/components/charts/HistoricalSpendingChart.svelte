@@ -7,7 +7,12 @@
 	import { CHART_YEARS, UNIT_OPTIONS, getUnitOption } from '$lib/utils/chartOptions.js';
 	import { formatChartAxisValue, formatChartValue } from '$lib/utils/formatters.js';
 	import { hoverPanel } from '$lib/utils/chartHover.js';
-	import { createChartOptions, getCountryColor, wholePercentTicks } from '$lib/utils/chartTheme.js';
+	import {
+		createChartOptions,
+		getCountryColor,
+		shareChartOptions,
+		wholePercentTicks
+	} from '$lib/utils/chartTheme.js';
 
 	let { data = [], unit = 'pct_gdp', onUnitChange = () => {}, share, frozen = false } = $props();
 
@@ -56,65 +61,68 @@
 
 		const chart = Highcharts.chart(
 			chartElement,
-			createChartOptions({
-				chart: {
-					// Straight segments between data points (approved design).
-					type: 'line'
-				},
+			createChartOptions(
+				{
+					chart: {
+						// Straight segments between data points (approved design).
+						type: 'line'
+					},
 
-				xAxis: {
-					categories: CHART_YEARS,
-					title: {
-						text: null
-					}
-				},
-
-				yAxis: {
-					tickPositioner: unit === 'pct_gdp' ? wholePercentTicks : undefined,
-					labels: {
-						formatter() {
-							return formatChartAxisValue(this.value, unit);
+					xAxis: {
+						categories: CHART_YEARS,
+						title: {
+							text: null
 						}
-					}
-				},
+					},
 
-				tooltip: {
-					shared: true,
-					formatter() {
-						// Economies listed alphabetically, matching the legend.
-						const rows = [...(this.points ?? [])]
-							.sort((a, b) => a.series.name.localeCompare(b.series.name))
-							.map((point) => ({
-								color: point.color,
-								name: point.series.name,
-								value: formatChartValue(point.y, unit)
-							}));
-
-						return hoverPanel(CHART_YEARS[this.x], rows, 'line');
-					}
-				},
-
-				legend: {
-					enabled: true
-				},
-
-				plotOptions: {
-					line: {
-						lineWidth: 2,
-						// Dots appear only on hover, for every economy in that year.
-						marker: {
-							enabled: false,
-							symbol: 'circle',
-							states: {
-								hover: { enabled: true, radius: 4, lineWidth: 1, lineColor: '#ffffff' }
+					yAxis: {
+						tickPositioner: unit === 'pct_gdp' ? wholePercentTicks : undefined,
+						labels: {
+							formatter() {
+								return formatChartAxisValue(this.value, unit);
 							}
-						},
-						states: { hover: { lineWidthPlus: 0 } }
-					}
-				},
+						}
+					},
 
-				series
-			})
+					tooltip: {
+						shared: true,
+						formatter() {
+							// Economies listed alphabetically, matching the legend.
+							const rows = [...(this.points ?? [])]
+								.sort((a, b) => a.series.name.localeCompare(b.series.name))
+								.map((point) => ({
+									color: point.color,
+									name: point.series.name,
+									value: formatChartValue(point.y, unit)
+								}));
+
+							return hoverPanel(CHART_YEARS[this.x], rows, 'line');
+						}
+					},
+
+					legend: {
+						enabled: true
+					},
+
+					plotOptions: {
+						line: {
+							lineWidth: 2,
+							// Dots appear only on hover, for every economy in that year.
+							marker: {
+								enabled: false,
+								symbol: 'circle',
+								states: {
+									hover: { enabled: true, radius: 4, lineWidth: 1, lineColor: '#ffffff' }
+								}
+							},
+							states: { hover: { lineWidthPlus: 0 } }
+						}
+					},
+
+					series
+				},
+				frozen ? shareChartOptions : {}
+			)
 		);
 
 		return () => {

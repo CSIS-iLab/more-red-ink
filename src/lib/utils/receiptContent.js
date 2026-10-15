@@ -9,8 +9,7 @@
  *
  * Implementation notes:
  * - Keep presentation copy here, not in Receipt.svelte.
- * - Rows are listed in spendingComponents.js order, which is also the chart
- *   stacking order, so a legend-style Receipt lines up with the charts.
+ * - Rows are listed in spendingComponents.js order.
  * - A cell is either fixed text, or { by, text } where `by` names a choice
  *   ('mode', 'fastTrackChoice', or a User Driven choice) and `text` maps
  *   each value of that choice to more cell content. Use getReceiptText().
@@ -46,7 +45,7 @@ export const receiptContent = {
 	shareIntro: {
 		label: 'Understanding Industrial Policy Spending',
 		description: [
-			'The assumptions below were used to calculate the industrial policy spending estimate represented in the charts.'
+			'The assumptions below were used to calculate the industrial policy spending estimate represented in the chart.'
 		]
 	},
 

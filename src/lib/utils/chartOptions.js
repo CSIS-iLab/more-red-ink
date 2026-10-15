@@ -15,14 +15,6 @@ export const COMPONENT_COLOR_TOKENS = {
 	debtEquitySwaps: '--color-spending-debt-equity-swaps'
 };
 
-/**
- * Spending component colors for use in CSS (e.g. receipt swatches).
- * Highcharts needs resolved values: use getComponentColor() from chartTheme.js.
- */
-export const COMPONENT_COLORS = Object.fromEntries(
-	Object.entries(COMPONENT_COLOR_TOKENS).map(([key, token]) => [key, `var(${token})`])
-);
-
 export const CHART_YEARS = [2019, 2020, 2021, 2022, 2023, 2024];
 
 export const UNIT_OPTIONS = [

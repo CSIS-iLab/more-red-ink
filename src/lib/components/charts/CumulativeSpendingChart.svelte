@@ -11,6 +11,7 @@
 	import {
 		createChartOptions,
 		getComponentColor,
+		shareChartOptions,
 		getTotalColor,
 		wholePercentTicks
 	} from '$lib/utils/chartTheme.js';
@@ -23,8 +24,7 @@
 		onUnitChange = () => {},
 		onShowComponentsChange = () => {},
 		share,
-		frozen = false,
-		showLegend = true
+		frozen = false
 	} = $props();
 
 	let chartElement;
@@ -131,7 +131,7 @@
 						}
 					},
 					legend: {
-						enabled: showLegend && showComponents,
+						enabled: showComponents,
 						// List components top to bottom in the same order as the stack.
 						reversed: true
 					},
@@ -164,7 +164,8 @@
 								}
 							]
 				},
-				showComponents ? stackedBarHover : {}
+				showComponents ? stackedBarHover : {},
+				frozen ? shareChartOptions : {}
 			)
 		);
 

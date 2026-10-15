@@ -1,5 +1,5 @@
 <script>
-	import { onMount } from 'svelte';
+	import { onMount, setContext } from 'svelte';
 	import '../app.css';
 	import { page } from '$app/state';
 	import { loadData } from '$lib/data/loadData.js';
@@ -19,7 +19,12 @@
 		'/share': 'Share'
 	};
 
-	let pageName = $derived(pageNames[page.url.pathname] ?? '');
+	// A page can replace its header name, e.g. the Share page's error state
+	// shows "Invalid URL". Set pageNameOverride.value; clear it with null.
+	const pageNameOverride = $state({ value: null });
+	setContext('pageNameOverride', pageNameOverride);
+
+	let pageName = $derived(pageNameOverride.value ?? pageNames[page.url.pathname] ?? '');
 
 	onMount(() => {
 		loadData().catch((error) => {

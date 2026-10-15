@@ -8,19 +8,16 @@
     User Driven choices.
   - intro: { label, description } shown above the table
     (receiptContent.intro by default; the Share page passes shareIntro).
-  - showComponentColors: add a color swatch to each row and list rows top
-    to bottom in chart stacking order, so the Receipt works as a legend.
 
   Shows a table on wider screens and one card per spending tool on phones.
   All copy comes from receiptContent.js.
 -->
 
 <script>
-	import { COMPONENT_COLORS } from '$lib/utils/chartOptions.js';
 	import { getReceiptText, receiptContent } from '$lib/utils/receiptContent.js';
 	import { spendingComponents } from '$lib/utils/spendingComponents.js';
 
-	let { mode, assumptions, intro = receiptContent.intro, showComponentColors = false } = $props();
+	let { mode, assumptions, intro = receiptContent.intro } = $props();
 
 	const MISSING = '—';
 
@@ -28,8 +25,8 @@
 		mode === 'fastTrack' ? { mode, fastTrackChoice: assumptions } : { mode, ...assumptions }
 	);
 
-	let rows = $derived.by(() => {
-		const resolved = Object.entries(spendingComponents).map(([key, component]) => {
+	let rows = $derived(
+		Object.entries(spendingComponents).map(([key, component]) => {
 			const content = receiptContent.rows[key];
 			const china = getReceiptText(content.china, choices) ?? MISSING;
 			const otherEconomies = getReceiptText(content.otherEconomies, choices) ?? MISSING;
@@ -42,14 +39,11 @@
 				// One merged cell when both columns say the same thing.
 				shared: china === otherEconomies
 			};
-		});
-
-		// As a legend, list components top to bottom like the chart stacks.
-		return showComponentColors ? resolved.slice().reverse() : resolved;
-	});
+		})
+	);
 </script>
 
-<section class="receipt" class:legend={showComponentColors}>
+<section class="receipt">
 	<div class="receipt__intro">
 		<h2 class="receipt__heading">{intro.label}</h2>
 
@@ -88,18 +82,7 @@
 				<tbody>
 					{#each rows as row (row.key)}
 						<tr>
-							<th scope="row">
-								<span class="receipt__component">
-									{#if showComponentColors}
-										<span
-											class="receipt__swatch"
-											style:background-color={COMPONENT_COLORS[row.key]}
-											aria-hidden="true"
-										></span>
-									{/if}
-									{row.label}
-								</span>
-							</th>
+							<th scope="row">{row.label}</th>
 
 							{#if row.shared}
 								<td colspan="2">{row.china}</td>
@@ -126,16 +109,7 @@
 	<ul class="receipt__cards">
 		{#each rows as row (row.key)}
 			<li class="receipt__card">
-				<h3 class="receipt__card-title">
-					{#if showComponentColors}
-						<span
-							class="receipt__swatch"
-							style:background-color={COMPONENT_COLORS[row.key]}
-							aria-hidden="true"
-						></span>
-					{/if}
-					{row.label}
-				</h3>
+				<h3 class="receipt__card-title">{row.label}</h3>
 
 				<dl class="receipt__card-body">
 					<div>
@@ -213,12 +187,6 @@
 		width: 8rem;
 	}
 
-	/* Room for the swatch. (Figma: 200px, which leaves too little room for
-	   the assumption columns in the Share page's narrow Receipt column.) */
-	.receipt.legend .receipt__component-column {
-		width: 8.5rem;
-	}
-
 	.receipt__head th {
 		padding: 4px 8px 4px 4px;
 		color: var(--color-text-helper);
@@ -229,11 +197,6 @@
 		text-align: left;
 		text-transform: uppercase;
 		vertical-align: top;
-	}
-
-	.receipt.legend .receipt__head th {
-		font-family: var(--font-label);
-		text-transform: none;
 	}
 
 	/* The data table's own header row, for screen readers only. */
@@ -272,19 +235,6 @@
 		font-weight: var(--font-weight-regular);
 	}
 
-	.receipt__component {
-		display: flex;
-		align-items: flex-start;
-		gap: 0.5rem;
-	}
-
-	.receipt__swatch {
-		flex-shrink: 0;
-		width: 1.5rem;
-		height: 1rem;
-		margin-top: 2px;
-	}
-
 	/* Custom scrollbar, used when the page limits the table's height. */
 	.receipt__table-scroll {
 		scrollbar-color: var(--color-scrollbar-thumb) var(--color-scrollbar-track);
@@ -320,9 +270,6 @@
 	}
 
 	.receipt__card-title {
-		display: flex;
-		align-items: flex-start;
-		gap: 0.5rem;
 		margin: 0;
 		padding: 10px;
 		background: var(--color-table-row);
