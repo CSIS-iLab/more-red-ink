@@ -106,7 +106,7 @@
 
 					plotOptions: {
 						line: {
-							lineWidth: 2,
+							lineWidth: 3,
 							// Dots appear only on hover, for every economy in that year.
 							marker: {
 								enabled: false,
@@ -151,5 +151,9 @@
 <style>
 	.historical-spending-chart__chart {
 		width: 100%;
+	}
+
+	.historical-spending-chart__chart :global(.highcharts-graph) {
+		stroke-linecap: butt;
 	}
 </style>
