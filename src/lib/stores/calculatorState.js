@@ -43,7 +43,8 @@ const initialState = {
 
 	cumulative: {
 		unit: 'pct_gdp',
-		showComponents: true
+		showComponents: true,
+		scaleTo100: false
 	},
 
 	yearSpecific: {
@@ -56,7 +57,8 @@ const initialState = {
 	economySpecific: {
 		economy: 'China',
 		unit: 'pct_gdp',
-		showComponents: true
+		showComponents: true,
+		scaleTo100: false
 	}
 };
 
@@ -222,20 +224,10 @@ const createCalculatorState = () => {
 				...settings
 			};
 
-			if (chart === 'yearSpecific') {
-				const yearSpecificSettings = {
-					...state.yearSpecific,
-					...settings
-				};
-
-				if (yearSpecificSettings.showComponents === false) {
-					yearSpecificSettings.scaleTo100 = false;
+			if (['cumulative', 'yearSpecific', 'economySpecific'].includes(chart)) {
+				if (nextSettings.showComponents === false) {
+					nextSettings.scaleTo100 = false;
 				}
-
-				return {
-					...state,
-					yearSpecific: yearSpecificSettings
-				};
 			}
 
 			return {

@@ -26,14 +26,18 @@
 		onUnitChange = () => {},
 		onShowComponentsChange = () => {},
 		share,
-		frozen = false
+		frozen = false,
+		scaleTo100 = false,
+		onScaleTo100Change = () => {}
 	} = $props();
 
 	let chartElement;
 
 	// Shown above the chart by ChartContainer.
 	let chartTitle = $derived(`Industrial Policy Spending in ${economy}, 2019 - 2024`);
-	let chartSubtitle = $derived(getUnitOption(unit)?.subtitle ?? '');
+	let chartSubtitle = $derived(
+		scaleTo100 ? 'Share of total industrial policy spending' : (getUnitOption(unit)?.subtitle ?? '')
+	);
 
 	const componentEntries = Object.entries(spendingComponents);
 
@@ -62,7 +66,9 @@
 			data: CHART_YEARS.map((year) => {
 				const row = filteredData.find((row) => row.year === year);
 
-				return row?.[key] ?? 0;
+				const value = row?.[key] ?? 0;
+
+				return scaleTo100 && row?.total ? (value / row.total) * 100 : scaleTo100 ? 0 : value;
 			})
 		}))
 	);
@@ -76,7 +82,16 @@
 	}
 
 	function handleComponentsChange(event) {
-		onShowComponentsChange(event.currentTarget.checked);
+		const checked = event.currentTarget.checked;
+		onShowComponentsChange(checked);
+
+		if (!checked && scaleTo100) {
+			onScaleTo100Change(false);
+		}
+	}
+
+	function handleScaleChange(event) {
+		onScaleTo100Change(event.currentTarget.checked);
 	}
 
 	$effect(() => {
@@ -100,17 +115,22 @@
 					},
 
 					yAxis: {
-						tickPositioner: unit === 'pct_gdp' ? wholePercentTicks : undefined,
+						max: scaleTo100 ? 100 : undefined,
+						tickPositioner: unit === 'pct_gdp' && !scaleTo100 ? wholePercentTicks : undefined,
 						// Stack the first component (Direct Subsidies) at the bottom.
 						reversedStacks: false,
 						stackLabels: {
-							enabled: showComponents,
+							enabled: showComponents && !scaleTo100,
 							formatter() {
 								return formatChartValue(this.total, unit);
 							}
 						},
 						labels: {
 							formatter() {
+								if (scaleTo100) {
+									return `${this.value}%`;
+								}
+
 								return formatChartAxisValue(this.value, unit);
 							}
 						}
@@ -124,7 +144,9 @@
 							const rows = [...(this.points ?? [])].reverse().map((point) => ({
 								color: point.color,
 								name: point.series.name,
-								value: formatChartValue(point.y, unit)
+								value: scaleTo100
+									? `${Highcharts.numberFormat(point.y, 1)}%`
+									: formatChartValue(point.y, unit)
 							}));
 
 							return hoverPanel(CHART_YEARS[this.x], rows);
@@ -196,7 +218,13 @@
 		</ControlRow>
 
 		<ControlRow label="Unit">
-			<Select options={UNIT_OPTIONS} value={unit} onchange={handleUnitChange} />
+			<Select
+				options={UNIT_OPTIONS}
+				value={unit}
+				disabled={scaleTo100}
+				helper={scaleTo100 ? 'Unit is not applicable when “Scale to 100%” is selected' : undefined}
+				onchange={handleUnitChange}
+			/>
 		</ControlRow>
 
 		<ControlRow label="Options">
@@ -205,6 +233,10 @@
 				checked={showComponents}
 				onchange={handleComponentsChange}
 			/>
+			<!-- Scale to 100% only applies to spending components (approved design). -->
+			{#if showComponents}
+				<Checkbox label="Scale to 100%" checked={scaleTo100} onchange={handleScaleChange} />
+			{/if}
 		</ControlRow>
 	{/snippet}
 
