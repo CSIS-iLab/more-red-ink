@@ -47,8 +47,8 @@ export function hoverPanel(title, rows, swatch = 'square') {
 
 	const swatchStyle =
 		swatch === 'line'
-			? 'width: 16px; height: 3px; margin: 0 2px;'
-			: 'width: 12px; height: 12px; margin: 0 2px;';
+			? 'width: 16px; height: 3px; margin: 0 2px; border-radius: 0;'
+			: 'width: 12px; height: 12px; margin: 0 2px; border-radius: 0;';
 
 	const items = rows
 		.map(
@@ -132,6 +132,9 @@ export function focusSeries(chart, focused) {
 	if (!chart?.yAxis) return;
 
 	const { primary, helper } = colors();
+
+	// Bring the focused line above overlapping series.
+	focused.group?.toFront();
 
 	for (const series of liveSeries(chart)) {
 		const isFocused = series === focused;
