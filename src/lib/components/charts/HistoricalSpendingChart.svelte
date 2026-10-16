@@ -87,9 +87,9 @@
 					tooltip: {
 						shared: true,
 						formatter() {
-							// Economies listed alphabetically, matching the legend.
+							// Economies ordered by spending, highest to lowest, for the hovered year.
 							const rows = [...(this.points ?? [])]
-								.sort((a, b) => a.series.name.localeCompare(b.series.name))
+								.sort((a, b) => b.y - a.y)
 								.map((point) => ({
 									color: point.color,
 									name: point.series.name,
