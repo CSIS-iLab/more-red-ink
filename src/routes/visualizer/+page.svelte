@@ -120,6 +120,10 @@
 				data={resolvedData}
 				unit={$calculatorState.cumulative.unit}
 				showComponents={$calculatorState.cumulative.showComponents}
+				scaleTo100={$calculatorState.cumulative.scaleTo100}
+				onScaleTo100Change={(value) => {
+					calculatorState.updateChartSettings('cumulative', { scaleTo100: value });
+				}}
 				onUnitChange={(value) => {
 					calculatorState.updateChartSettings('cumulative', { unit: value });
 				}}
@@ -155,6 +159,10 @@
 				economy={$calculatorState.economySpecific.economy}
 				unit={$calculatorState.economySpecific.unit}
 				showComponents={$calculatorState.economySpecific.showComponents}
+				scaleTo100={$calculatorState.economySpecific.scaleTo100}
+				onScaleTo100Change={(value) => {
+					calculatorState.updateChartSettings('economySpecific', { scaleTo100: value });
+				}}
 				onEconomyChange={(value) => {
 					calculatorState.updateChartSettings('economySpecific', { economy: value });
 				}}
