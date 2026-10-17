@@ -11,7 +11,8 @@
 		createChartOptions,
 		getCountryColor,
 		shareChartOptions,
-		wholePercentTicks
+		wholePercentTicks,
+		finishLayout
 	} from '$lib/utils/chartTheme.js';
 
 	let { data = [], unit = 'pct_gdp', onUnitChange = () => {}, share, frozen = false } = $props();
@@ -54,6 +55,37 @@
 		onUnitChange(value);
 	}
 
+	function alignYAxisLabels(chart) {
+		const axis = chart.yAxis[0];
+		if (!axis) return;
+		for (const tick of Object.values(axis.ticks)) {
+			const label = tick.label;
+			if (!label?.element) continue;
+			const box = label.element.getBBox();
+			const tickY = axis.toPixels(tick.pos);
+			// Position the bottom of the label 2px above the gridline.
+			label.attr({
+				y: tickY - 2 - box.y - box.height + Number(label.attr('y'))
+			});
+			// Extend the gridline leftward beneath the label.
+			if (tick.gridLine) {
+				const labelBox = label.getBBox();
+				const leftEdge = labelBox.x;
+				tick.gridLine.attr({
+					d: ['M', leftEdge, tickY, 'L', chart.plotLeft + chart.plotWidth, tickY]
+				});
+			}
+		}
+	}
+	function alignLastXAxisLabel(chart) {
+		const axis = chart.xAxis[0];
+		const lastTick = axis.ticks[CHART_YEARS.length - 1];
+		if (!lastTick?.label) return;
+		lastTick.label.attr({
+			align: 'right'
+		});
+	}
+
 	$effect(() => {
 		if (!chartElement) {
 			return;
@@ -65,11 +97,25 @@
 				{
 					chart: {
 						// Straight segments between data points (approved design).
-						type: 'line'
+						type: 'line',
+						spacingTop: 18,
+						events: {
+							render() {
+								finishLayout.call(this);
+								alignYAxisLabels(this);
+								alignLastXAxisLabel(this);
+							}
+						}
 					},
 
 					xAxis: {
+						tickmarkPlacement: 'on',
 						categories: CHART_YEARS,
+						minPadding: 0,
+						maxPadding: 0,
+						min: 0,
+						max: CHART_YEARS.length - 1,
+						lineWidth: 0,
 						title: {
 							text: null
 						}
@@ -101,11 +147,21 @@
 					},
 
 					legend: {
-						enabled: true
+						enabled: true,
+						layout: 'vertical',
+						align: 'right',
+						verticalAlign: 'bottom',
+						y: -25,
+						padding: 12,
+						itemMarginTop: 0,
+						itemMarginBottom: 2,
+						symbolWidth: 15,
+						symbolPadding: 8
 					},
 
 					plotOptions: {
 						line: {
+              pointPlacement: 'on',
 							lineWidth: 3,
 							// Dots appear only on hover, for every economy in that year.
 							marker: {

@@ -107,7 +107,7 @@ function fitLegendColumns(chart) {
  *   legend beside the chart would otherwise overlap the title.
  * Each change triggers one more render, which then finds nothing to change.
  */
-function finishLayout() {
+export function finishLayout() {
 	bindLegendFocus(this);
 
 	if (fitLegendColumns(this)) {
