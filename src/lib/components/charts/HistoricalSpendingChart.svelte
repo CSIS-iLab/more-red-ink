@@ -12,7 +12,8 @@
 		getCountryColor,
 		shareChartOptions,
 		wholePercentTicks,
-		finishLayout
+		finishLayout,
+    alignYAxisLabels
 	} from '$lib/utils/chartTheme.js';
 
 	let { data = [], unit = 'pct_gdp', onUnitChange = () => {}, share, frozen = false } = $props();
@@ -55,28 +56,6 @@
 		onUnitChange(value);
 	}
 
-	function alignYAxisLabels(chart) {
-		const axis = chart.yAxis[0];
-		if (!axis) return;
-		for (const tick of Object.values(axis.ticks)) {
-			const label = tick.label;
-			if (!label?.element) continue;
-			const box = label.element.getBBox();
-			const tickY = axis.toPixels(tick.pos);
-			// Position the bottom of the label 2px above the gridline.
-			label.attr({
-				y: tickY - 2 - box.y - box.height + Number(label.attr('y'))
-			});
-			// Extend the gridline leftward beneath the label.
-			if (tick.gridLine) {
-				const labelBox = label.getBBox();
-				const leftEdge = labelBox.x;
-				tick.gridLine.attr({
-					d: ['M', leftEdge, tickY, 'L', chart.plotLeft + chart.plotWidth, tickY]
-				});
-			}
-		}
-	}
 	function alignLastXAxisLabel(chart) {
 		const axis = chart.xAxis[0];
 		const lastTick = axis.ticks[CHART_YEARS.length - 1];

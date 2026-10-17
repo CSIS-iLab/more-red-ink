@@ -133,6 +133,41 @@ export function finishLayout() {
 }
 
 /**
+ * Align Y-axis labels and gridlines with the approved chart design.
+ *
+ * Position each label 2px above its gridline and extend the gridline
+ * leftward beneath the label. Called after Highcharts renders so the
+ * final tick positions and label dimensions are available.
+ */
+export function alignYAxisLabels(chart) {
+	const axis = chart.yAxis[0];
+	if (!axis) return;
+
+	for (const tick of Object.values(axis.ticks)) {
+		const label = tick.label;
+		if (!label?.element) continue;
+
+		const box = label.element.getBBox();
+		const tickY = axis.toPixels(tick.pos);
+
+		// Position the bottom of the label 2px above the gridline.
+		label.attr({
+			y: tickY - 2 - box.y - box.height + Number(label.attr('y'))
+		});
+
+		// Extend the gridline leftward beneath the label.
+		if (tick.gridLine) {
+			const labelBox = label.getBBox();
+			const leftEdge = labelBox.x;
+
+			tick.gridLine.attr({
+				d: ['M', leftEdge, tickY, 'L', chart.plotLeft + chart.plotWidth, tickY]
+			});
+		}
+	}
+}
+
+/**
  * Options for charts on the Share page. Beside the Receipt (1200px and up)
  * the chart is 16:9 with its legend underneath in three columns
  * (approved design).
