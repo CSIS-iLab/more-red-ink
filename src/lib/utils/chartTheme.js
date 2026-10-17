@@ -107,7 +107,7 @@ function fitLegendColumns(chart) {
  *   legend beside the chart would otherwise overlap the title.
  * Each change triggers one more render, which then finds nothing to change.
  */
-function finishLayout() {
+export function finishLayout() {
 	bindLegendFocus(this);
 
 	if (fitLegendColumns(this)) {
@@ -129,6 +129,62 @@ function finishLayout() {
 
 	if (Math.abs(height - this.chartHeight) > 1) {
 		this.setSize(undefined, height, false);
+	}
+}
+
+/**
+ * Align Y-axis labels and gridlines with the approved chart design.
+ *
+ * Position each label 2px above its gridline and extend the gridline
+ * leftward beneath the label. Called after Highcharts renders so the
+ * final tick positions and label dimensions are available.
+ */
+export function alignYAxisLabels(chart) {
+	const axis = chart.yAxis[0];
+	if (!axis) return;
+
+	for (const tick of Object.values(axis.ticks)) {
+		const label = tick.label;
+		if (!label?.element) continue;
+
+		const box = label.element.getBBox();
+		const tickY = axis.toPixels(tick.pos);
+
+		// Position the bottom of the label 2px above the gridline.
+		label.attr({
+			y: tickY - 2 - box.y - box.height + Number(label.attr('y'))
+		});
+
+		// Extend the gridline leftward beneath the label.
+		if (tick.gridLine) {
+			const labelBox = label.getBBox();
+			const leftEdge = labelBox.x;
+
+			tick.gridLine.attr({
+				d: ['M', leftEdge, tickY, 'L', chart.plotLeft + chart.plotWidth, tickY]
+			});
+		}
+	}
+}
+
+/**
+ * Keep a consistent gap between columns across viewport sizes.
+ * Use 12px below 640px and 16px at larger widths.
+ */
+export function setColumnSpacing(chart) {
+	const axis = chart.xAxis[0];
+	const series = chart.series.find((s) => s.type === 'column');
+
+	if (!axis || !series || !axis.transA) return;
+
+	const categoryWidth = Math.abs(axis.transA);
+	const gap = window.innerWidth < 640 ? 12 : 16;
+	const pointWidth = Math.max(1, Math.floor(categoryWidth - gap));
+
+	if (series.options.pointWidth !== pointWidth) {
+		chart.series.filter((s) => s.type === 'column').forEach((s) => s.update({ pointWidth }, false));
+
+		chart.redraw(false);
 	}
 }
 

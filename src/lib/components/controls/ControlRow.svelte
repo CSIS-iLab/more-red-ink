@@ -45,7 +45,7 @@
 	.control-row__controls {
 		display: flex;
 		flex-direction: column;
-		gap: 0.5rem;
+		gap: 0.75rem;
 		min-width: 0;
 		flex: 1;
 	}

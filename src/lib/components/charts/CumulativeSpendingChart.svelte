@@ -13,7 +13,10 @@
 		getComponentColor,
 		shareChartOptions,
 		getTotalColor,
-		wholePercentTicks
+		wholePercentTicks,
+		finishLayout,
+		alignYAxisLabels,
+		setColumnSpacing
 	} from '$lib/utils/chartTheme.js';
 	import { spendingComponents } from '$lib/utils/spendingComponents.js';
 
@@ -106,11 +109,20 @@
 			createChartOptions(
 				{
 					chart: {
-						type: 'column'
+						type: 'column',
+						spacingTop: 28,
+						events: {
+							render() {
+								finishLayout.call(this);
+								alignYAxisLabels(this);
+								setColumnSpacing(this);
+							}
+						}
 					},
 
 					xAxis: {
 						categories: cumulativeData.map((row) => row.country),
+						lineWidth: 0,
 						title: {
 							text: null
 						}
@@ -162,8 +174,8 @@
 						column: {
 							stacking: showComponents ? 'normal' : undefined,
 							borderRadius: 0,
-							pointPadding: 0.05,
-							groupPadding: 0.1,
+							pointPadding: 0,
+							groupPadding: 0,
 							dataLabels: {
 								enabled: !showComponents,
 								inside: false,

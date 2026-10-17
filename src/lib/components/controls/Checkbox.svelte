@@ -14,6 +14,7 @@
 		align-items: flex-start;
 		gap: 0.625rem;
 		cursor: pointer;
+    min-height: 1.75rem;
 	}
 
 	input {
