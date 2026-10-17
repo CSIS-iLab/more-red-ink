@@ -15,7 +15,8 @@
 		getTotalColor,
 		wholePercentTicks,
 		finishLayout,
-		alignYAxisLabels
+		alignYAxisLabels,
+		setColumnSpacing
 	} from '$lib/utils/chartTheme.js';
 	import { spendingComponents } from '$lib/utils/spendingComponents.js';
 
@@ -112,6 +113,7 @@
 							render() {
 								finishLayout.call(this);
 								alignYAxisLabels(this);
+								setColumnSpacing(this);
 							}
 						}
 					},

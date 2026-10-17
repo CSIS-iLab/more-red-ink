@@ -168,6 +168,27 @@ export function alignYAxisLabels(chart) {
 }
 
 /**
+ * Keep a consistent gap between columns across viewport sizes.
+ * Use 12px below 640px and 16px at larger widths.
+ */
+export function setColumnSpacing(chart) {
+	const axis = chart.xAxis[0];
+	const series = chart.series.find((s) => s.type === 'column');
+
+	if (!axis || !series || !axis.transA) return;
+
+	const categoryWidth = Math.abs(axis.transA);
+	const gap = window.innerWidth < 640 ? 12 : 16;
+	const pointWidth = Math.max(1, Math.floor(categoryWidth - gap));
+
+	if (series.options.pointWidth !== pointWidth) {
+		chart.series.filter((s) => s.type === 'column').forEach((s) => s.update({ pointWidth }, false));
+
+		chart.redraw(false);
+	}
+}
+
+/**
  * Options for charts on the Share page. Beside the Receipt (1200px and up)
  * the chart is 16:9 with its legend underneath in three columns
  * (approved design).
