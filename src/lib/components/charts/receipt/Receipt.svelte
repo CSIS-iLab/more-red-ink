@@ -179,8 +179,22 @@
 	.receipt__grid {
 		width: 100%;
 		border-collapse: separate;
-		border-spacing: 2px 4px;
+		border-spacing: 0 4px;
 		table-layout: fixed;
+	}
+
+.receipt__grid th:nth-child(1),
+.receipt__grid td:nth-child(1),
+.receipt__grid th:nth-child(2),
+.receipt__grid td:nth-child(2):not([colspan]) {
+  border-right: 2px solid var(--color-page);
+}
+
+	/* Align the separate header table with the scrollable body table.
+   The body loses 24px to the custom scrollbar; the header wrapper
+   already reserves 15px, leaving a 9px difference to compensate for. */
+	.receipt__head-scroll {
+		padding-right: 9px;
 	}
 
 	.receipt__component-column {
@@ -237,7 +251,7 @@
 
 	/* Custom scrollbar, used when the page limits the table's height. */
 	.receipt__table-scroll {
-		scrollbar-color: var(--color-scrollbar-thumb) var(--color-scrollbar-track);
+		scrollbar-width: auto;
 	}
 
 	.receipt__table-scroll::-webkit-scrollbar {
