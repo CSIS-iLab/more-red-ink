@@ -73,10 +73,10 @@
 				: '/'
 	);
 
-	const handleNewEstimate = async () => {
-		calculatorState.reset();
-		await goto(resolve('/'));
-	};
+const handleNewEstimate = async () => {
+  await goto(resolve('/'));
+  calculatorState.reset();
+};
 </script>
 
 <svelte:head>
