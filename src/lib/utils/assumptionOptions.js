@@ -87,7 +87,7 @@ export const assumptionOptions = {
 		]
 	},
 	land: {
-		label: 'Land',
+		label: 'Below-market Land',
 		description:
 			'Below-market land refers to the preferential sale of land to industrial firms at below-market prices. In concrete terms, the calculator uses the difference in price between industrial land sold at competitive auction versus land sold through less competitive agreements.',
 		chinaOnly: true,
