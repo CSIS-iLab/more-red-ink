@@ -25,11 +25,18 @@ function getPercentage(value) {
 export function formatChartValue(value, unit) {
 	if (unit === 'pct_gdp') {
 		const percentage = value * 100;
-
 		return `${formatNumber(percentage, 2)}%`;
 	}
 
-	return `$${formatNumber(value, 1)}M`;
+	if (Math.abs(value) >= 1_000_000) {
+		return `$${formatNumber(value / 1_000_000, 2)}T`;
+	}
+
+	if (Math.abs(value) >= 1000) {
+		return `$${formatNumber(value / 1000, 2)}B`;
+	}
+
+	return `$${formatNumber(value, 2)}M`;
 }
 
 // Axis labels use whole numbers only (approved chart design).
@@ -40,5 +47,5 @@ export function formatChartAxisValue(value, unit) {
 		return `${formatNumber(percentage, 0)}%`;
 	}
 
-	return `$${formatNumber(value, 0)}M`;
+	return `$${formatNumber(value / 1000, 0)}B`;
 }
