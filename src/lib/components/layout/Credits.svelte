@@ -60,16 +60,10 @@
 
 			<!-- Acknowledgments -->
 			<div class="acknowledgments">
-				<h2 class="text-heading-3">Acknowledgments</h2>
+				<h2 class="text-heading-3">Special Thanks</h2>
 
 				<p class="text-body-2-regular">
-					Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt
-					ut labore et dolore magna aliqua.
-				</p>
-
-				<p class="text-body-2-regular">
-					Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
-					commodo consequat.
+					We are grateful to Trustee Chair Deputy Director Ilaria Mazzocco and former CSIS colleagues Gerard DiPippo and Matthew P. Goodman, as well as a cohort of research interns, for the pathbreaking work they did for the 2022 report which contributed to the calculator. The research behind the calculator was supported by three research interns – Andy Yang, Antonio Tintoré Vicent, and Eleanor Randoph – who helped find and assemble data about industrial policy spending from a diverse array of sources. Finally, the calculator would not have been possible without the support of the Dracopoulos iDeas Lab. Special thanks goes to iDeas Lab staff -  Shannon Yeung, Mariel de la Garza, Emma Cantlay, and Lindsay Allison – for their attention to detail, professionalism, and patience. 
 				</p>
 			</div>
 		</div>
