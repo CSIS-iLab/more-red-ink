@@ -15,10 +15,9 @@
 import { csv } from 'd3-fetch';
 
 const DATA_URL =
-	'https://docs.google.com/spreadsheets/d/e/2PACX-1vRLonylYgcQ2GAFWBxA4ftew_2ugPbOFkAPNeIugaD8a2YcrOr7H9Vf-xWn5gceHmeFwdS8ccTQjkYH/pub?output=csv';
+	'https://docs.google.com/spreadsheets/d/e/2PACX-1vRLonylYgcQ2GAFWBxA4ftew_2ugPbOFkAPNeIugaD8a2YcrOr7H9Vf-xWn5gceHmeFwdS8ccTQjkYH/pub?gid=1389104480&single=true&output=csv';
 
 const NUMERIC_FIELDS = new Set([
-	'year',
 	'direct_subsidies',
 	'other_tax_incentives',
 	'r_d_tax_incentives',
@@ -28,7 +27,6 @@ const NUMERIC_FIELDS = new Set([
 	'land',
 	'soe_net_payables',
 	'debt_equity_swaps',
-	'below_market_credit_flow',
 	'below_market_credit_soe_vs_private',
 	'direct_subsidies_soe_vs_private',
 	'other_tax_incentives_soe_vs_private',
@@ -43,6 +41,10 @@ function normalizeValue(field, value) {
 
 	if (trimmedValue === '') {
 		return null;
+	}
+
+	if (field === 'year') {
+		return trimmedValue === 'Cumulative' ? 'Cumulative' : Number(trimmedValue);
 	}
 
 	if (NUMERIC_FIELDS.has(field)) {
