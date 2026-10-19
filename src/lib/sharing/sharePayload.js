@@ -10,7 +10,7 @@
  *   {
  *     mode: 'fastTrack' | 'userDriven',
  *     assumptions: 'minimum' | 'maximum'        // Fast Track
- *                | { ...all seven choices },     // User Driven
+ *                | { ...all six choices },       // User Driven
  *     chartType: 'historical' | 'cumulative' | 'yearSpecific' | 'economySpecific',
  *     displaySettings: { ...settings for that chart }
  *   }
