@@ -138,6 +138,8 @@
 						showComponents={payload.displaySettings.showComponents}
 						scaleTo100={payload.displaySettings.scaleTo100}
 						frozen
+						mode={payload.mode}
+						assumptions={payload.assumptions}
 					/>
 				{:else if payload.chartType === 'yearSpecific'}
 					<YearSpecificChart
@@ -147,6 +149,8 @@
 						showComponents={payload.displaySettings.showComponents}
 						scaleTo100={payload.displaySettings.scaleTo100}
 						frozen
+						mode={payload.mode}
+						assumptions={payload.assumptions}
 					/>
 				{:else if payload.chartType === 'economySpecific'}
 					<EconomySpecificChart
@@ -156,6 +160,8 @@
 						showComponents={payload.displaySettings.showComponents}
 						scaleTo100={payload.displaySettings.scaleTo100}
 						frozen
+						mode={payload.mode}
+						assumptions={payload.assumptions}
 					/>
 				{/if}
 			</div>

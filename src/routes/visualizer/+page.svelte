@@ -131,6 +131,10 @@
 					calculatorState.updateChartSettings('cumulative', { showComponents: value });
 				}}
 				share={shareUrl('cumulative')}
+				mode={$calculatorState.mode}
+				assumptions={$calculatorState.mode === 'fastTrack'
+					? $calculatorState.fastTrackChoice
+					: $calculatorState.userDrivenChoices}
 			/>
 
 			<YearSpecificChart
@@ -152,6 +156,10 @@
 					calculatorState.updateChartSettings('yearSpecific', { scaleTo100: value });
 				}}
 				share={shareUrl('yearSpecific')}
+				mode={$calculatorState.mode}
+				assumptions={$calculatorState.mode === 'fastTrack'
+					? $calculatorState.fastTrackChoice
+					: $calculatorState.userDrivenChoices}
 			/>
 
 			<EconomySpecificChart
@@ -173,6 +181,10 @@
 					calculatorState.updateChartSettings('economySpecific', { showComponents: value });
 				}}
 				share={shareUrl('economySpecific')}
+				mode={$calculatorState.mode}
+				assumptions={$calculatorState.mode === 'fastTrack'
+					? $calculatorState.fastTrackChoice
+					: $calculatorState.userDrivenChoices}
 			/>
 		{/if}
 	</div>

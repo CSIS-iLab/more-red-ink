@@ -211,6 +211,37 @@ export function wholePercentTicks() {
 }
 
 /**
+ * Return spending components included in the selected estimate.
+ *
+ * Excluded tools are omitted from chart series, legends, and tooltips.
+ * The resolved estimate and Receipt remain unchanged.
+ */
+export function getVisibleSpendingComponents(components, mode, assumptions) {
+	const excluded = new Set();
+
+	if (mode === 'fastTrack' && assumptions === 'minimum') {
+		excluded.add('governmentProcurement');
+		excluded.add('land');
+		excluded.add('debtEquitySwaps');
+		excluded.add('soeNetPayables');
+	}
+
+	if (mode === 'userDriven') {
+		if (assumptions?.procurementCoverage === 'excludeAll') {
+			excluded.add('governmentProcurement');
+		}
+
+		for (const key of ['land', 'debtEquitySwaps', 'soeNetPayables']) {
+			if (assumptions?.[key] === 'exclude') {
+				excluded.add(key);
+			}
+		}
+	}
+
+	return Object.entries(components).filter(([key]) => !excluded.has(key));
+}
+
+/**
  * Build chart options: the shared theme merged with one or more sets of
  * chart-specific options (later sets win).
  */
