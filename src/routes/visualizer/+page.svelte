@@ -193,7 +193,7 @@
 	.visualizer__summary-inner {
 		display: flex;
 		flex-direction: column;
-		gap: 1.5rem;
+		/* gap: 1.5rem; */
 		height: 100%;
 		padding: 2.5rem 1.75rem;
 	}
