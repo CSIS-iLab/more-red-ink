@@ -29,9 +29,9 @@ import { CHART_YEARS, getUnitOption } from '$lib/utils/chartOptions.js';
  */
 export const SHARE_CHART_SETTINGS = {
 	historical: ['unit'],
-	cumulative: ['unit', 'showComponents'],
+	cumulative: ['unit', 'showComponents', 'scaleTo100'],
 	yearSpecific: ['year', 'unit', 'showComponents', 'scaleTo100'],
-	economySpecific: ['economy', 'unit', 'showComponents']
+	economySpecific: ['economy', 'unit', 'showComponents', 'scaleTo100']
 };
 
 const SETTING_VALIDATORS = {
