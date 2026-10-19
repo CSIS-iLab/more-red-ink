@@ -13,7 +13,7 @@
 		shareChartOptions,
 		wholePercentTicks,
 		finishLayout,
-    alignYAxisLabels
+		alignYAxisLabels
 	} from '$lib/utils/chartTheme.js';
 
 	let { data = [], unit = 'pct_gdp', onUnitChange = () => {}, share, frozen = false } = $props();
@@ -65,6 +65,31 @@
 		});
 	}
 
+	function alignLastDataPoints(chart) {
+		const axis = chart.xAxis[0];
+		const lastIndex = CHART_YEARS.length - 1;
+		const label = axis.ticks[lastIndex]?.label;
+
+		if (!label) return;
+
+		// Shift the final points left by half the width of the 2024 label.
+		const offset = label.getBBox().width / 2;
+		const targetX = axis.toValue(axis.toPixels(lastIndex) - offset);
+
+		let changed = false;
+
+		for (const series of chart.series) {
+			const point = series.points.find((point) => point.index === lastIndex);
+
+			if (point && Math.abs(point.x - targetX) > 0.0001) {
+				point.update({ x: targetX }, false);
+				changed = true;
+			}
+		}
+
+		if (changed) chart.redraw(false);
+	}
+
 	$effect(() => {
 		if (!chartElement) {
 			return;
@@ -83,6 +108,7 @@
 								finishLayout.call(this);
 								alignYAxisLabels(this);
 								alignLastXAxisLabel(this);
+								alignLastDataPoints(this);
 							}
 						}
 					},
@@ -121,7 +147,7 @@
 									value: formatChartValue(point.y, unit)
 								}));
 
-							return hoverPanel(CHART_YEARS[this.x], rows, 'line');
+							return hoverPanel(CHART_YEARS[Math.round(this.x)], rows, 'line');
 						}
 					},
 
@@ -140,7 +166,7 @@
 
 					plotOptions: {
 						line: {
-              pointPlacement: 'on',
+							pointPlacement: 'on',
 							lineWidth: 3,
 							// Dots appear only on hover, for every economy in that year.
 							marker: {
