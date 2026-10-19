@@ -131,6 +131,10 @@
 					calculatorState.updateChartSettings('cumulative', { showComponents: value });
 				}}
 				share={shareUrl('cumulative')}
+				mode={$calculatorState.mode}
+				assumptions={$calculatorState.mode === 'fastTrack'
+					? $calculatorState.fastTrackChoice
+					: $calculatorState.userDrivenChoices}
 			/>
 
 			<YearSpecificChart

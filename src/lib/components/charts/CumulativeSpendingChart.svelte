@@ -16,7 +16,8 @@
 		wholePercentTicks,
 		finishLayout,
 		alignYAxisLabels,
-		setColumnSpacing
+		setColumnSpacing,
+		getVisibleSpendingComponents
 	} from '$lib/utils/chartTheme.js';
 	import { spendingComponents } from '$lib/utils/spendingComponents.js';
 
@@ -29,7 +30,9 @@
 		onShowComponentsChange = () => {},
 		onScaleTo100Change = () => {},
 		share,
-		frozen = false
+		frozen = false,
+		mode = null,
+		assumptions = null
 	} = $props();
 
 	let chartElement;
@@ -39,7 +42,7 @@
 	let chartSubtitle = $derived(
 		scaleTo100 ? 'Share of total industrial policy spending' : (getUnitOption(unit)?.subtitle ?? '')
 	);
-	const componentEntries = Object.entries(spendingComponents);
+	const componentEntries = getVisibleSpendingComponents(spendingComponents, mode, assumptions);
 
 	let cumulativeData = $derived(
 		data
