@@ -63,6 +63,11 @@
 		background: var(--color-surface-primary);
 	}
 
+	.chart-container:not(.chart-container--frozen) {
+		max-width: 1264px;
+		margin-inline: auto;
+	}
+
 	.chart-container__title {
 		margin: 0;
 		color: var(--color-text-primary);
