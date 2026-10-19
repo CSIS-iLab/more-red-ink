@@ -18,7 +18,7 @@
 			</a>
 
 			<div class="credits-group">
-				<p class="text-label-small-emphasized">Written by</p>
+				<p class="text-label-small-emphasized">Authors</p>
 				<div class="credits-bios">
 					<p class="text-body-2-regular">
 						<CreditsLink href="https://www.csis.org/people/scott-kennedy">Scott Kennedy</CreditsLink
