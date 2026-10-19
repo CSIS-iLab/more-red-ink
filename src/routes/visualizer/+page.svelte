@@ -1,6 +1,6 @@
 <script>
 	import { onMount } from 'svelte';
-	import { goto } from '$app/navigation';
+	import { goto, beforeNavigate } from '$app/navigation';
 	import { resolve } from '$app/paths';
 
 	import HistoricalSpendingChart from '$lib/components/charts/HistoricalSpendingChart.svelte';
@@ -18,6 +18,12 @@
 	let resolvedData = $state([]);
 	let loading = $state(true);
 	let error = $state(null);
+
+	beforeNavigate(({ to }) => {
+		if (to?.route?.id === '/fast-track' || to?.route?.id === '/user-driven') {
+			calculatorState.resetChartSettings();
+		}
+	});
 
 	// Share URL for one chart's current estimate and settings. The Share
 	// buttons link to it (opening a new tab) and update as settings change.
@@ -73,10 +79,10 @@
 				: '/'
 	);
 
-const handleNewEstimate = async () => {
-  await goto(resolve('/'));
-  calculatorState.reset();
-};
+	const handleNewEstimate = async () => {
+		await goto(resolve('/'));
+		calculatorState.reset();
+	};
 </script>
 
 <svelte:head>
@@ -208,7 +214,7 @@ const handleNewEstimate = async () => {
 		min-width: 0;
 		height: 100vh;
 		background-color: var(--color-page);
-    border-right: 1px solid var(--color-border-subtle);
+		border-right: 1px solid var(--color-border-subtle);
 	}
 
 	.visualizer__summary-inner {
