@@ -237,7 +237,7 @@
 
 	/* Custom scrollbar, used when the page limits the table's height. */
 	.receipt__table-scroll {
-		scrollbar-color: var(--color-scrollbar-thumb) var(--color-scrollbar-track);
+		scrollbar-width: auto;
 	}
 
 	.receipt__table-scroll::-webkit-scrollbar {
