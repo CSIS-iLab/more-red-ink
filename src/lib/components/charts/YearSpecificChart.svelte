@@ -136,6 +136,8 @@
 						reversedStacks: false,
 						stackLabels: {
 							enabled: showComponents && !scaleTo100,
+							crop: false,
+							overflow: 'allow',
 							formatter() {
 								return formatChartValue(this.total, unit);
 							}
