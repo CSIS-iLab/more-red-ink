@@ -180,7 +180,7 @@
 		flex-direction: column;
 		/* min-height: 0; */
     max-height: 380px;
-    margin-block-end: 12px;
+    margin-block-end: 24px;
 	}
 
 	.receipt__table-scroll {
