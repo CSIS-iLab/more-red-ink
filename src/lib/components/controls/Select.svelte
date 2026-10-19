@@ -214,11 +214,6 @@
 		outline: none;
 	}
 
-	.select__option.selected {
-		background: var(--color-menu-pressed);
-		box-shadow: inset 0 0 0 1px var(--color-menu-pressed-border);
-	}
-
 	.select__option:disabled {
 		color: var(--color-disabled-text);
 		cursor: not-allowed;

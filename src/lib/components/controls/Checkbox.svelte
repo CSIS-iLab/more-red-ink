@@ -22,7 +22,7 @@
 		flex-shrink: 0;
 		width: 1.5rem;
 		height: 1.5rem;
-		margin: 0;
+    margin: 0.125rem 0;
 		border: 1px solid var(--color-checkbox-enabled-border);
 		border-radius: 2px;
 		background: var(--color-surface-primary);
@@ -40,7 +40,7 @@
 	}
 
 	.checkbox__label {
-		padding-top: 0.125rem;
+    padding: 0.125rem 0;
 		color: var(--color-text-secondary);
 		line-height: 1.2;
 	}

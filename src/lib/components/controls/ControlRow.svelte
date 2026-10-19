@@ -32,14 +32,8 @@
 
 	.control-row__label {
 		flex: 0 0 5rem;
-		/* Line the label up with the first line of text in the control. */
-		padding-top: 0.875rem;
 		color: var(--color-text-secondary);
 		line-height: 1;
-	}
-
-	.control-row:has(:global(input[type='checkbox'])) .control-row__label {
-		padding-top: 0.25rem;
 	}
 
 	.control-row__controls {
