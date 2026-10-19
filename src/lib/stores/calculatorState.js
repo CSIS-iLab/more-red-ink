@@ -237,6 +237,22 @@ const createCalculatorState = () => {
 	};
 
 	/**
+	 * Reset all chart display settings to their defaults without
+	 * changing the active mode or assumption choices.
+	 */
+	const resetChartSettings = () => {
+		const defaults = getInitialState();
+
+		update((state) => ({
+			...state,
+			historical: defaults.historical,
+			cumulative: defaults.cumulative,
+			yearSpecific: defaults.yearSpecific,
+			economySpecific: defaults.economySpecific
+		}));
+	};
+
+	/**
 	 * Reset calculator choices and chart settings to their initial values.
 	 *
 	 * Initialization status remains unchanged during a runtime reset.
@@ -259,6 +275,7 @@ const createCalculatorState = () => {
 		reset,
 		isChoiceValid,
 		isEstimateComplete,
+    resetChartSettings,
 
 		get initialized() {
 			return initialized;
