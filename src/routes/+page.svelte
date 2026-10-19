@@ -24,10 +24,9 @@
 					<h1 class="title">{content.title}</h1>
 					<div class="header-footer">
 						<p class="byline">
-							By
-							{#each content.authors as author (author)}
-								<span class="byline__author">{author}</span>
-							{/each}
+							By {content.authors
+								.join(', ')
+								.replace(/, ([^,]*)$/, content.authors.length === 2 ? ' and $1' : ', and $1')}
 						</p>
 						<time datetime={content.published_date.iso}>{content.published_date.label}</time>
 					</div>
@@ -68,7 +67,8 @@
 						<a class="mode-option" href={resolve('/user-driven')}>
 							<span class="mode-option__title">User Driven</span>
 							<span class="mode-option__desc">
-								Select this mode to have more granular control over the assumptions about the various tools that produce the estimate.
+								Select this mode to have more granular control over the assumptions about the
+								various tools that produce the estimate.
 							</span>
 						</a>
 					</div>
@@ -147,18 +147,18 @@
 				align-self: stretch;
 				padding: 0 80px;
 
-        .title {
-          max-width: 480px;
-        }
+				.title {
+					max-width: 480px;
+				}
 
 				h1 {
 					margin: 0;
 				}
 			}
 
-      @media (width >= 1920px) {
-        min-width: 800px;
-      }
+			@media (width >= 1920px) {
+				min-width: 800px;
+			}
 		}
 
 		.header-footer p {
@@ -190,9 +190,6 @@
 				line-height: 120%;
 			}
 		}
-		.byline__author:not(:last-child)::after {
-			content: ', ';
-		}
 
 		.header-footer {
 			time {
@@ -217,7 +214,7 @@
 				padding: 0 40px;
 			}
 			@media (width >= 1920px) {
-        min-width: 880px;
+				min-width: 880px;
 				width: 100%;
 				padding: 0 40px;
 			}
@@ -321,9 +318,9 @@
 				font-weight: 500;
 				line-height: 120%;
 
-        @media (width >= 1280px) {
-          font-size: var(--text-style-specs-label-large-size, 20px);
-        }
+				@media (width >= 1280px) {
+					font-size: var(--text-style-specs-label-large-size, 20px);
+				}
 			}
 			.mode-option__desc {
 				color: var(--CTA-button-text-secondary, #f8fafc);
@@ -332,9 +329,9 @@
 				font-style: normal;
 				font-weight: 400;
 				line-height: 120%;
-        @media (width >= 1280px) {
-          font-size: var(--text-style-specs-label-small-size, 16px);
-        }
+				@media (width >= 1280px) {
+					font-size: var(--text-style-specs-label-small-size, 16px);
+				}
 			}
 		}
 		.mode-option:hover {
@@ -345,7 +342,7 @@
 			background: var(--color-cta-pressed);
 		}
 
-		.mode-option:focus-visible {  
+		.mode-option:focus-visible {
 			outline: 2px solid var(--color-white);
 			outline-offset: -4px;
 			box-shadow: 0 0 0 1px var(--color-neutral-600);
