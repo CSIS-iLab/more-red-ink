@@ -208,6 +208,7 @@
 		min-width: 0;
 		height: 100vh;
 		background-color: var(--color-page);
+    border-right: 1px solid var(--color-border-subtle);
 	}
 
 	.visualizer__summary-inner {
