@@ -26,12 +26,12 @@ export const UNIT_OPTIONS = [
 	{
 		value: 'usd_market',
 		label: 'US$ (Market Exchange Rates)',
-		subtitle: 'US$, millions'
+		subtitle: 'US$, billions'
 	},
 	{
 		value: 'usd_ppp',
 		label: 'US$ (purchasing power parity)',
-		subtitle: 'US$, millions (purchasing power parity)'
+		subtitle: 'US$, billions (purchasing power parity)'
 	}
 ];
 
