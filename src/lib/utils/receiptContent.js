@@ -15,16 +15,12 @@
  *   each value of that choice to more cell content. Use getReceiptText().
  * - When a row's China and Other Economies text match, the Receipt shows
  *   them as one merged cell.
- *
- * TODO: Receipt copy is under program review. Text from the approved Figma
- * design is used as-is; text marked "Draft" covers combinations the design
- * doesn't show and was adapted from assumptionOptions.js.
  */
 
 const WTO_AND_BUDGETS = 'Data from reports to the WTO and national budgets.';
 const OECD = 'Data provided by the OECD, supplemented by national data for some economies.';
 const EXCLUDED = 'Excluded from the estimate.';
-const LESS_COMMON = 'Assumed far less common in the other economies.';
+const NOT_INCLUDED = 'Not included in estimate.';
 
 export const receiptContent = {
 	/**
@@ -34,7 +30,7 @@ export const receiptContent = {
 		label: 'Your Industrial Policy Spending Estimates',
 		description: [
 			'The charts report your estimates of industrial policy spending for each economy based on the assumptions you made. The totals for each year are the sum of the various tools listed in the table below.',
-			'The table below lists the assumptions behind your current estimates. Adjusting the assumptions affects the estimated final totals. If you change the assumptions, the Calculator will update the table and charts.'
+			'The table below describes the methodology and assumptions behind your current estimates. Adjusting the assumptions affects the estimated final totals. If you change the assumptions, the calculator will update the table and charts.'
 		]
 	},
 
@@ -51,8 +47,8 @@ export const receiptContent = {
 
 	columns: {
 		component: 'Spending Tool',
-		china: 'Assumptions for China',
-		otherEconomies: 'Assumptions for Other Economies'
+		china: 'Descriptions for China',
+		otherEconomies: 'Descriptions for the Other Economies'
 	},
 
 	/**
@@ -67,9 +63,8 @@ export const receiptContent = {
 					userDriven: {
 						by: 'chinaEstimationApproach',
 						text: {
-							// Draft
 							industryBased:
-								'Industry-Based: Listed-firm subsidy data scaled up to all industrial firms based on average subsidies by industry.',
+								'Industry-Based: Listed-firm subsidy data, scaled up to all industrial firms based on average subsidies received by industry.',
 							soeAdvantage:
 								'SOE Advantage: Listed-firm subsidy data scaled up to all industrial firms based on state ownership.'
 						}
@@ -77,9 +72,10 @@ export const receiptContent = {
 					fastTrack: {
 						by: 'fastTrackChoice',
 						text: {
-							// Draft
-							minimum: 'Minimum: The lower of the Industry-Based and SOE Advantage estimates.',
-							maximum: 'Maximum: The higher of the Industry-Based and SOE Advantage estimates.'
+							minimum:
+								'SOE Advantage: Listed-firm subsidy data scaled up to all industrial firms based on state ownership.',
+							maximum:
+								'Industry-Based: Listed-firm subsidy data, scaled up to all industrial firms based on average subsidies received by industry.'
 						}
 					}
 				}
@@ -94,19 +90,19 @@ export const receiptContent = {
 					userDriven: {
 						by: 'chinaEstimationApproach',
 						text: {
-							// Draft
 							industryBased:
-								'Industry-Based: Listed-firm tax incentive data scaled up to all industrial firms based on average tax incentives by industry.',
+								'Industry-Based: Listed-firm subsidy data scaled up to all industrial firms based on average tax incentives by industry.',
 							soeAdvantage:
-								'SOE Advantage: Listed-firm subsidy data scaled up to all industrial firms based on average tax incentives by ownership category. Assumes unlisted private firms are subsidized at half the rate as their listed peers.'
+								'SOE Advantage: Listed-firm subsidy data scaled up to all industrial firms based on average tax incentives by ownership category; assumes unlisted private firms are subsidized at half the rate as their listed peers.'
 						}
 					},
 					fastTrack: {
 						by: 'fastTrackChoice',
 						text: {
-							// Draft
-							minimum: 'Minimum: The lower of the Industry-Based and SOE Advantage estimates.',
-							maximum: 'Maximum: The higher of the Industry-Based and SOE Advantage estimates.'
+							minimum:
+								'SOE Advantage: Listed-firm subsidy data scaled up to all industrial firms based on average tax incentives by ownership category; assumes unlisted private firms are subsidized at half the rate as their listed peers.',
+							maximum:
+								'Industry-Based: Listed-firm subsidy data scaled up to all industrial firms based on average tax incentives by industry.'
 						}
 					}
 				}
@@ -125,73 +121,30 @@ export const receiptContent = {
 		},
 
 		belowMarketCredit: {
-			label: {
-				by: 'mode',
-				text: {
-					userDriven: {
-						by: 'belowMarketCredit',
-						text: {
-							stock: 'Below-Market Credit - Stock',
-							flow: 'Below-Market Credit - Flow'
-						}
-					},
-					fastTrack: 'Below-Market Credit'
-				}
-			},
+			label: 'Below-Market Credit (Stock)',
 			china: {
 				by: 'mode',
 				text: {
 					userDriven: {
-						by: 'belowMarketCredit',
+						by: 'chinaEstimationApproach',
 						text: {
-							stock: {
-								by: 'chinaEstimationApproach',
-								text: {
-									// Draft
-									industryBased:
-										'Industry-Based: Estimate based on the proportion of loans below the loan prime rate, a benchmark lending rate within China.',
-									soeAdvantage:
-										'SOE Advantage: Estimate based on outstanding credit to SOEs, including loans and bonds.'
-								}
-							},
-							// Draft
-							flow: 'New Lending: Interest savings on new lending by state-backed financial institutions.'
+							industryBased: 'Industry-Based: Total loans issued below loan prime rate.',
+							soeAdvantage:
+								'SOE Advantage: Estimate based on outstanding credit to SOEs, including loans and bonds.'
 						}
 					},
 					fastTrack: {
 						by: 'fastTrackChoice',
 						text: {
-							// Draft
 							minimum:
-								'Minimum: The lowest of the outstanding credit, SOE Advantage, and new lending estimates.',
-							maximum:
-								'Maximum: The highest of the outstanding credit, SOE Advantage, and new lending estimates.'
+								'SOE Advantage: Estimate based on outstanding credit to SOEs, including loans and bonds.',
+							maximum: 'Industry-Based: Total loans issued below loan prime rate.'
 						}
 					}
 				}
 			},
-			otherEconomies: {
-				by: 'mode',
-				text: {
-					userDriven: {
-						by: 'belowMarketCredit',
-						text: {
-							stock:
-								'Outstanding Credit: Interest savings on all outstanding state-backed credit, measured as the spread between state and market rates.',
-							// Draft
-							flow: 'New Lending: Interest savings on new lending by state-backed financial institutions.'
-						}
-					},
-					fastTrack: {
-						by: 'fastTrackChoice',
-						text: {
-							// Draft
-							minimum: 'Minimum: The lower of the outstanding credit and new lending estimates.',
-							maximum: 'Maximum: The higher of the outstanding credit and new lending estimates.'
-						}
-					}
-				}
-			}
+			otherEconomies:
+				'Outstanding Credit: Interest savings on all outstanding state-backed credit, measured as the spread between state and market rates.'
 		},
 
 		stateInvestmentFunds: {
@@ -202,14 +155,12 @@ export const receiptContent = {
 						by: 'stateInvestmentFunds',
 						text: {
 							tenPercent: '10% of equity funding from state institutions.',
-							// Draft
 							oneHundredPercent: '100% of equity funding from state institutions.'
 						}
 					},
 					fastTrack: {
 						by: 'fastTrackChoice',
 						text: {
-							// Draft
 							minimum: '10% of equity funding from state institutions.',
 							maximum: '100% of equity funding from state institutions.'
 						}
@@ -223,14 +174,12 @@ export const receiptContent = {
 						by: 'stateInvestmentFunds',
 						text: {
 							tenPercent: '10% of equity funding from state institutions.',
-							// Draft
 							oneHundredPercent: '100% of equity funding from state institutions.'
 						}
 					},
 					fastTrack: {
 						by: 'fastTrackChoice',
 						text: {
-							// Draft
 							minimum: '10% of equity funding from state institutions.',
 							maximum: '100% of equity funding from state institutions.'
 						}
@@ -246,24 +195,21 @@ export const receiptContent = {
 					userDriven: {
 						by: 'procurementCoverage',
 						text: {
-							// Draft
 							allItems:
-								'All items: Includes all procurement reported to the WTO (or national sources where unavailable).',
-							// Draft
+								'Total: Includes all procurement reported to the WTO (or national sources where unavailable) including goods, services, and construction.',
 							totalGoods:
-								'Total goods: Includes all goods procurement reported to the WTO (or national sources where unavailable).',
+								'Total Goods: Includes all goods procurement reported to the WTO (or national sources where unavailable).',
 							centralGoods:
-								'Central goods: Includes all goods procurement at the central government level reported to the WTO (or national sources where unavailable).',
-							excludeAll: EXCLUDED
+								'Central Goods: Includes all goods procurement at the central government level reported to the WTO (or national sources where unavailable).',
+							excludeAll: 'Excluded: procurement not counted.'
 						}
 					},
 					fastTrack: {
 						by: 'fastTrackChoice',
 						text: {
-							minimum: EXCLUDED,
-							// Draft
+							minimum: 'Excluded: procurement not counted.',
 							maximum:
-								'Maximum: The largest of the all items, total goods, and central goods estimates.'
+								'Total: Includes all procurement reported to the WTO (or national sources where unavailable) including goods, services, and construction.'
 						}
 					}
 				}
@@ -274,24 +220,21 @@ export const receiptContent = {
 					userDriven: {
 						by: 'procurementCoverage',
 						text: {
-							// Draft
 							allItems:
-								'All items: Includes all procurement reported to the WTO (or national sources where unavailable).',
-							// Draft
+								'Total: Includes all procurement reported to the WTO (or national sources where unavailable) including goods, services, and construction.',
 							totalGoods:
-								'Total goods: Includes all goods procurement reported to the WTO (or national sources where unavailable).',
+								'Total Goods: Includes all goods procurement reported to the WTO (or national sources where unavailable).',
 							centralGoods:
-								'Central goods: Includes all goods procurement at the central government level reported to the WTO (or national sources where unavailable).',
-							excludeAll: EXCLUDED
+								'Central Goods: Includes all goods procurement at the central government level reported to the WTO (or national sources where unavailable).',
+							excludeAll: 'Excluded: procurement not counted.'
 						}
 					},
 					fastTrack: {
 						by: 'fastTrackChoice',
 						text: {
-							minimum: EXCLUDED,
-							// Draft
+							minimum: 'Excluded: procurement not counted.',
 							maximum:
-								'Maximum: The largest of the all items, total goods, and central goods estimates.'
+								'Total: Includes all procurement reported to the WTO (or national sources where unavailable) including goods, services, and construction.'
 						}
 					}
 				}
@@ -318,7 +261,7 @@ export const receiptContent = {
 					}
 				}
 			},
-			otherEconomies: LESS_COMMON
+			otherEconomies: NOT_INCLUDED
 		},
 
 		land: {
@@ -341,7 +284,7 @@ export const receiptContent = {
 					}
 				}
 			},
-			otherEconomies: LESS_COMMON
+			otherEconomies: NOT_INCLUDED
 		},
 
 		debtEquitySwaps: {
@@ -366,7 +309,7 @@ export const receiptContent = {
 					}
 				}
 			},
-			otherEconomies: LESS_COMMON
+			otherEconomies: NOT_INCLUDED
 		}
 	}
 };
