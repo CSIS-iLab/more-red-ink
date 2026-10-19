@@ -32,7 +32,6 @@ const initialState = {
 		land: null,
 		debtEquitySwaps: null,
 		soeNetPayables: null,
-		belowMarketCredit: null,
 		stateInvestmentFunds: null,
 		procurementCoverage: null
 	},

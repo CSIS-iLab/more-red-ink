@@ -86,10 +86,6 @@ export const USER_DRIVEN_CHOICES = {
 		param: 'np',
 		...codeMap({ include: 'in', exclude: 'x' })
 	},
-	belowMarketCredit: {
-		param: 'bc',
-		...codeMap({ stock: 's', flow: 'f' })
-	},
 	stateInvestmentFunds: {
 		param: 'sf',
 		...codeMap({ tenPercent: '10', oneHundredPercent: '100' })

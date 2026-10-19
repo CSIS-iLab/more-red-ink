@@ -136,6 +136,7 @@
 						data={resolvedData}
 						unit={payload.displaySettings.unit}
 						showComponents={payload.displaySettings.showComponents}
+						scaleTo100={payload.displaySettings.scaleTo100}
 						frozen
 					/>
 				{:else if payload.chartType === 'yearSpecific'}
@@ -153,6 +154,7 @@
 						economy={payload.displaySettings.economy}
 						unit={payload.displaySettings.unit}
 						showComponents={payload.displaySettings.showComponents}
+						scaleTo100={payload.displaySettings.scaleTo100}
 						frozen
 					/>
 				{/if}

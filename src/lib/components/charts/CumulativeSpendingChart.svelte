@@ -5,7 +5,7 @@
 	import Checkbox from '$lib/components/controls/Checkbox.svelte';
 	import ControlRow from '$lib/components/controls/ControlRow.svelte';
 	import Select from '$lib/components/controls/Select.svelte';
-	import { CHART_YEARS, UNIT_OPTIONS, getUnitOption } from '$lib/utils/chartOptions.js';
+	import { UNIT_OPTIONS, getUnitOption } from '$lib/utils/chartOptions.js';
 	import { formatChartAxisValue, formatChartValue } from '$lib/utils/formatters.js';
 	import { hoverPanel, stackedBarHover } from '$lib/utils/chartHover.js';
 	import {
@@ -41,34 +41,11 @@
 	);
 	const componentEntries = Object.entries(spendingComponents);
 
-	let filteredData = $derived(
-		data.filter((row) => row.unit === unit && CHART_YEARS.includes(row.year))
+	let cumulativeData = $derived(
+		data
+			.filter((row) => row.unit === unit && row.year === 'Cumulative')
+			.sort((a, b) => a.total - b.total)
 	);
-
-	let cumulativeData = $derived.by(() => {
-		const totals = {};
-
-		for (const row of filteredData) {
-			if (!totals[row.country]) {
-				totals[row.country] = {
-					country: row.country,
-					total: 0
-				};
-
-				for (const [key] of componentEntries) {
-					totals[row.country][key] = 0;
-				}
-			}
-
-			totals[row.country].total += row.total ?? 0;
-
-			for (const [key] of componentEntries) {
-				totals[row.country][key] += row[key] ?? 0;
-			}
-		}
-
-		return Object.values(totals).sort((a, b) => a.total - b.total);
-	});
 
 	let componentSeries = $derived(
 		componentEntries.map(([key, metadata]) => ({

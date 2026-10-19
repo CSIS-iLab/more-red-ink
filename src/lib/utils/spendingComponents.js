@@ -38,7 +38,7 @@ export const spendingComponents = {
 		label: 'SOE Net Payables'
 	},
 	land: {
-		label: 'Land'
+		label: 'Below-Market Land'
 	},
 	debtEquitySwaps: {
 		label: 'Debt-Equity Swaps'

@@ -10,7 +10,7 @@
  *   {
  *     mode: 'fastTrack' | 'userDriven',
  *     assumptions: 'minimum' | 'maximum'        // Fast Track
- *                | { ...all seven choices },     // User Driven
+ *                | { ...all six choices },       // User Driven
  *     chartType: 'historical' | 'cumulative' | 'yearSpecific' | 'economySpecific',
  *     displaySettings: { ...settings for that chart }
  *   }
@@ -29,9 +29,9 @@ import { CHART_YEARS, getUnitOption } from '$lib/utils/chartOptions.js';
  */
 export const SHARE_CHART_SETTINGS = {
 	historical: ['unit'],
-	cumulative: ['unit', 'showComponents'],
+	cumulative: ['unit', 'showComponents', 'scaleTo100'],
 	yearSpecific: ['year', 'unit', 'showComponents', 'scaleTo100'],
-	economySpecific: ['economy', 'unit', 'showComponents']
+	economySpecific: ['economy', 'unit', 'showComponents', 'scaleTo100']
 };
 
 const SETTING_VALIDATORS = {
