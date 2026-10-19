@@ -112,8 +112,8 @@
 	};
 
 	const handleNewEstimate = async () => {
-		calculatorState.reset();
 		await goto(resolve('/'));
+		calculatorState.reset();
 	};
 </script>
 

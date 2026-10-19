@@ -1,15 +1,9 @@
 <script>
-	import { onMount } from 'svelte';
-	import { resolve } from '$app/paths';
-	// import Button from '$lib/components/controls/Button.svelte';
-	import { getHomeContent } from '$lib/data/loadHomeContent';
+  import { resolve } from '$app/paths';
 
-	let homeContent = $state('');
-	onMount(async () => {
-		const homeDataRes = await getHomeContent();
-		homeContent = homeDataRes;
-		console.log(homeContent);
-	});
+  let { data } = $props();
+
+  let homeContent = $derived(data.homeContent);
 </script>
 
 <svelte:head>
