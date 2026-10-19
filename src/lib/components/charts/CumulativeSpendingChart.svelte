@@ -42,7 +42,9 @@
 	let chartSubtitle = $derived(
 		scaleTo100 ? 'Share of total industrial policy spending' : (getUnitOption(unit)?.subtitle ?? '')
 	);
-	const componentEntries = getVisibleSpendingComponents(spendingComponents, mode, assumptions);
+	let componentEntries = $derived(
+		getVisibleSpendingComponents(spendingComponents, mode, assumptions)
+	);
 
 	let cumulativeData = $derived(
 		data
