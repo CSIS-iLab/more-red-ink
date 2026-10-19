@@ -52,21 +52,16 @@ const getOtherTaxIncentives = (row, assumptions) => {
 /**
  * Resolve Below-Market Credit.
  *
- * Flow uses the same flow-based source field for all economies.
- * For Stock, China's SOE Advantage approach uses the SOE-vs-private
- * estimate; China's Industry-Based approach and all non-China economies
- * use the standard stock-based field.
+ * China's SOE Advantage approach uses the SOE-vs-private estimate.
+ * China's Industry-Based approach and all non-China economies use
+ * the standard below-market credit field.
  */
 const getBelowMarketCredit = (row, assumptions) => {
-	if (assumptions.belowMarketCredit === 'flow') {
-		return row.below_market_credit_flow;
-	}
+  if (isChina(row) && assumptions.chinaEstimationApproach === 'soeAdvantage') {
+    return row.below_market_credit_soe_vs_private;
+  }
 
-	if (isChina(row) && assumptions.chinaEstimationApproach === 'soeAdvantage') {
-		return row.below_market_credit_soe_vs_private;
-	}
-
-	return row.below_market_credit;
+  return row.below_market_credit;
 };
 
 /**
@@ -197,120 +192,33 @@ const resolveUserDrivenRow = (row, assumptions) => {
 };
 
 /**
- * Select the smallest or largest available value for a Fast Track component.
- *
- * Fast Track resolves each configurable spending component independently
- * using its lowest or highest available methodology value. Null values are
- * ignored so missing or non-applicable source values do not affect the
- * comparison. If no candidate values are available, the component remains null.
- */
-const getMinOrMax = (values, choice) => {
-	const availableValues = values.filter((value) => value != null);
-
-	if (availableValues.length === 0) {
-		return null;
-	}
-
-	return choice === 'maximum' ? Math.max(...availableValues) : Math.min(...availableValues);
-};
-
-/**
  * Resolve one source row for the Fast Track workflow.
  *
- * Fast Track does not represent a fixed set of User-Driven choices.
- * Instead, Minimum selects the smallest available value for each
- * configurable spending component and Maximum selects the largest.
- *
- * China has additional methodology-specific candidates for Direct
- * Subsidies, Other Tax Incentives, and Below-Market Credit. R&D Tax
- * Incentives and R&D Support remain constant in both estimates.
- *
- * Minimum excludes Government Procurement and China's three "Other"
- * components. Maximum includes the largest available procurement value
- * and includes the China-only components. Those components remain null
- * for non-China economies because they do not apply.
- *
- * The returned row uses the same canonical component structure as a
- * User-Driven row so downstream charts do not need to know which
- * calculator workflow produced the estimate.
+ * Minimum and Maximum use predefined combinations of the
+ * User Driven assumptions, based on the approved methodology.
+ * Both workflows therefore produce the same canonical components.
  */
 const resolveFastTrackRow = (row, choice) => {
-	const directSubsidies = isChina(row)
-		? getMinOrMax([row.direct_subsidies, row.direct_subsidies_soe_vs_private], choice)
-		: row.direct_subsidies;
+  const presets = {
+    minimum: {
+      chinaEstimationApproach: 'soeAdvantage',
+      stateInvestmentFunds: 'tenPercent',
+      procurementCoverage: 'excludeAll',
+      land: 'exclude',
+      debtEquitySwaps: 'exclude',
+      soeNetPayables: 'exclude'
+    },
+    maximum: {
+      chinaEstimationApproach: 'industryBased',
+      stateInvestmentFunds: 'oneHundredPercent',
+      procurementCoverage: 'allItems',
+      land: 'include',
+      debtEquitySwaps: 'include',
+      soeNetPayables: 'include'
+    }
+  };
 
-	const otherTaxIncentives = isChina(row)
-		? getMinOrMax([row.other_tax_incentives, row.other_tax_incentives_soe_vs_private], choice)
-		: row.other_tax_incentives;
-
-	const rdTaxIncentives = row.r_d_tax_incentives;
-	const rdSupport = row.govt_support_for_r_d;
-
-	const belowMarketCredit = getMinOrMax(
-		isChina(row)
-			? [
-					row.below_market_credit,
-					row.below_market_credit_soe_vs_private,
-					row.below_market_credit_flow
-				]
-			: [row.below_market_credit, row.below_market_credit_flow],
-		choice
-	);
-
-	const stateInvestmentFunds = getMinOrMax(
-		[row.state_investment_funds, row.total_state_investment_funds],
-		choice
-	);
-
-	const governmentProcurement =
-		choice === 'maximum'
-			? getMinOrMax(
-					[
-						row.govt_procurement_total,
-						row.govt_procurement_goods,
-						row.govt_procurement_central_goods
-					],
-					'maximum'
-				)
-			: 0;
-
-	const soeNetPayables = isChina(row) ? (choice === 'maximum' ? row.soe_net_payables : 0) : null;
-
-	const land = isChina(row) ? (choice === 'maximum' ? row.land : 0) : null;
-
-	const debtEquitySwaps = isChina(row) ? (choice === 'maximum' ? row.debt_equity_swaps : 0) : null;
-
-	const components = [
-		directSubsidies,
-		otherTaxIncentives,
-		rdTaxIncentives,
-		rdSupport,
-		belowMarketCredit,
-		stateInvestmentFunds,
-		governmentProcurement,
-		soeNetPayables,
-		land,
-		debtEquitySwaps
-	];
-
-	const total = components.reduce((sum, value) => sum + (value ?? 0), 0);
-
-	return {
-		country: row.country,
-		year: row.year,
-		unit: row.unit,
-		directSubsidies,
-		otherTaxIncentives,
-		rdTaxIncentives,
-		rdSupport,
-		belowMarketCredit,
-		stateInvestmentFunds,
-		governmentProcurement,
-		soeNetPayables,
-		land,
-		debtEquitySwaps,
-		total
-	};
+  return resolveUserDrivenRow(row, presets[choice]);
 };
 
 /**
