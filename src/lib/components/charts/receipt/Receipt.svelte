@@ -132,8 +132,8 @@
 		display: flex;
 		flex-direction: column;
 		gap: 1.5rem;
-		width: 100%;
-		min-width: 0;
+		/* width: 100%;
+		min-width: 0; */
 	}
 
 	/* ---------------------------- intro ---------------------------- */
@@ -142,15 +142,24 @@
 	.receipt__intro {
 		display: flex;
 		flex-direction: column;
-		gap: 0.75rem;
+		gap: 0;
+
+    p:last-of-type {
+      margin-block-start: 18px;
+    }
 	}
 
+
+
 	.receipt__intro p + p {
-		margin-top: 1.2em;
+		/* margin-top: 1.2em; */
 	}
+
+
 
 	.receipt__heading {
 		margin: 0;
+    margin-block: 12px;
 		color: var(--color-text-primary);
 		font-family: var(--font-heading);
 		font-size: var(--font-size-small);
@@ -169,7 +178,9 @@
 	.receipt__table {
 		display: flex;
 		flex-direction: column;
-		min-height: 0;
+		/* min-height: 0; */
+    max-height: 380px;
+    margin-block-end: 12px;
 	}
 
 	.receipt__table-scroll {

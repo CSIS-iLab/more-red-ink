@@ -199,7 +199,7 @@
 	}
 
 	.visualizer__summary-inner :global(.receipt) {
-		flex: 1;
+		/* flex: 1; */
 		min-height: 0;
 	}
 
