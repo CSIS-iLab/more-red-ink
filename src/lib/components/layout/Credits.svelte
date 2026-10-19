@@ -19,11 +19,42 @@
 
 			<div class="credits-group">
 				<p class="text-label-small-emphasized">Written by</p>
-				<div class="credits-names">
-					<CreditsLink href="https://www.csis.org/people/scott-kennedy">Scott Kennedy</CreditsLink>
-					<CreditsLink href="https://www.csis.org/people/ryan-featherston">
-						Ryan Featherston
-					</CreditsLink>
+				<div class="credits-bios">
+					<p class="text-body-2-regular">
+						<CreditsLink href="https://www.csis.org/people/scott-kennedy">Scott Kennedy</CreditsLink
+						> is senior adviser and trustee chair in Chinese Business and Economics at the Center for
+						Strategic and International Studies (CSIS). A leading authority on Chinese economic policy
+						and U.S.-China commercial relations, Kennedy has been traveling to China for 38 years. His
+						ongoing areas of focus include China’s innovation drive, Chinese industrial policy, U.S.-China
+						relations, and global economic governance. His articles have appeared in a wide array of policy,
+						popular, and academic venues, including the New York Times, the Wall Street Journal, Foreign
+						Affairs, Foreign Policy, and China Quarterly. His recent major publications include The Power
+						of Innovation: The Strategic Value of China’s High-Tech Drive (CSIS, March 2026); Managing
+						U.S.-China Tensions over the Global Economic Order: Tentative Proposals (CSIS, November 2024);
+						(with Wang Jisi) Breaking the Ice: The Role of Scholarly Exchange in Stabilizing U.S.-China
+						Relations (CSIS, 2023); and China’s Uneven High-Tech Drive: Implications for the United States
+						(CSIS, 2020). Kennedy hosts the China Field Notes podcast, which features voices from on the
+						ground in China. From 2000 to 2014, Kennedy was a professor at Indiana University (IU), where
+						he established the Research Center for Chinese Politics and Business and was the founding
+						academic director of IU’s China Office. Kennedy received a PhD in political science from George
+						Washington University, an MA from Johns Hopkins School of Advanced International Studies,
+						and a BA from the University of Virginia.
+					</p>
+					<p class="text-body-2-regular">
+						<CreditsLink href="https://www.csis.org/people/ryan-featherston">
+							Ryan Featherston
+						</CreditsLink> is an associate fellow with the Trustee Chair in Chinese Business and Economics
+						at the Center for Strategic and International Studies (CSIS). His research interests include
+						industrial policy, China’s global trade, and the impact of the Chinese domestic economy on
+						the rest of the world. His recent publications include The Global EV Shift: The Role of China
+						and Industrial Policy in Emerging Economies, Wins and Losses: Chinese Industrial Policy’s
+						Uneven Success, and Is Your Refrigerator Running? China’s Trade-In Programs and Plans to Boost
+						Consumption. Prior to joining CSIS, he was a research analyst at Rhodium Group, a private
+						research firm, where he researched China’s macroeconomy, industrial subsidies, and green tech
+						trade. Featherston received an MA in China studies with an emphasis in economics and management
+						from the Yenching Academy at Peking University. He holds a BA in economics and Chinese language
+						from Arizona State University.
+					</p>
 				</div>
 			</div>
 
@@ -120,6 +151,12 @@
 		flex-direction: column;
 		align-items: flex-start;
 		gap: 4px;
+	}
+
+	.credits-bios {
+		display: flex;
+		flex-direction: column;
+		gap: 24px;
 	}
 
 	.credits-col > h2,
