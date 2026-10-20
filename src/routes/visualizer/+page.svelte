@@ -212,7 +212,9 @@
 		position: sticky;
 		top: 0;
 		min-width: 0;
-		height: 100vh;
+		height: calc(100vh - 64px);
+    max-height: calc(100vh - 64px); /* fallback for older browsers */
+    max-height: calc(100dvh - 64px);
 		background-color: var(--color-page);
 		border-right: 1px solid var(--color-border-subtle);
 	}
