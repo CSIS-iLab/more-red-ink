@@ -1,15 +1,8 @@
 <script>
-	import { onMount } from 'svelte';
-	import { resolve } from '$app/paths';
-	// import Button from '$lib/components/controls/Button.svelte';
-	import { getHomeContent } from '$lib/data/loadHomeContent';
+  import { resolve } from '$app/paths';
 
-	let homeContent = $state('');
-	onMount(async () => {
-		const homeDataRes = await getHomeContent();
-		homeContent = homeDataRes;
-		console.log(homeContent);
-	});
+  let { data } = $props();
+  let homeContent = $derived(data.homeContent);
 </script>
 
 <svelte:head>
@@ -24,10 +17,9 @@
 					<h1 class="title">{content.title}</h1>
 					<div class="header-footer">
 						<p class="byline">
-							By
-							{#each content.authors as author (author)}
-								<span class="byline__author">{author}</span>
-							{/each}
+							By {content.authors
+								.join(', ')
+								.replace(/, ([^,]*)$/, content.authors.length === 2 ? ' and $1' : ', and $1')}
 						</p>
 						<time datetime={content.published_date.iso}>{content.published_date.label}</time>
 					</div>
@@ -219,9 +211,6 @@
 				font-size: var(--text-style-specs-label-medium-size, 18px);
 				line-height: 120%;
 			}
-		}
-		.byline__author:not(:last-child)::after {
-			content: ', ';
 		}
 
 		.header-footer {
