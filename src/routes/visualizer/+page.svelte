@@ -204,6 +204,11 @@
 		grid-template-columns: clamp(26rem, 40vw, 36rem) minmax(0, 1fr);
 		align-items: start;
 		width: 100%;
+		@media (width >= 1280px) {
+			grid-template-rows: minmax(0, 1fr);
+			height: calc(100dvh - 64px);
+			overflow: hidden;
+		}
 	}
 
 	/* The sidebar stays in view while the charts scroll; the Receipt table
@@ -213,10 +218,16 @@
 		top: 0;
 		min-width: 0;
 		height: calc(100vh - 64px);
-    max-height: calc(100vh - 64px); /* fallback for older browsers */
-    max-height: calc(100dvh - 64px);
+		max-height: calc(100vh - 64px); /* fallback for older browsers */
+		max-height: calc(100dvh - 64px);
 		background-color: var(--color-page);
 		border-right: 1px solid var(--color-border-subtle);
+
+		@media (width >= 1280px) {
+			position: static;
+			min-height: 0;
+			overflow: hidden;
+		}
 	}
 
 	.visualizer__summary-inner {
@@ -261,6 +272,15 @@
 		gap: 2rem;
 		padding: 2rem 2.5rem;
 		background-color: var(--color-surface-secondary);
+
+		@media (width >= 1280px) {
+			position: relative;
+			overflow-y: auto;
+			overscroll-behavior: contain;
+			min-height: calc(100vh - 64px); /* fall back to older browsers */
+			min-height: calc(100dvh - 64px);
+			height: calc(100dvh - 64px);
+		}
 	}
 
 	.visualizer__status {
