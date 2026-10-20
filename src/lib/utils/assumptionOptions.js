@@ -82,7 +82,7 @@ export const assumptionOptions = {
 				value: 'soeAdvantage',
 				label: 'State-Owned Enterprise Advantage',
 				description:
-					'Definition: The “SOE advantage” approach assumes SOEs are beneficiaries of industrial policy relative to unlisted private firms. The calculator applies this insight to two tools: 1) Unlisted private firms are assumed to receive half the support in terms of subsidies and other tax incentives compared to their listed counterparts while unlisted SOEs receive the same level of support as listed SOEs; and 2) The estimate for below market credit measures the savings SOEs receive based on lower interest rates on their borrowing and bond issuance.'
+					'The “SOE advantage” approach assumes SOEs are beneficiaries of industrial policy relative to unlisted private firms. The calculator applies this insight to two tools: 1) Unlisted private firms are assumed to receive half the support in terms of subsidies and other tax incentives compared to their listed counterparts while unlisted SOEs receive the same level of support as listed SOEs; and 2) The estimate for below market credit measures the savings SOEs receive based on lower interest rates on their borrowing and bond issuance.'
 			}
 		]
 	},
