@@ -70,17 +70,24 @@ function getPlotRatio(chart) {
 
 /**
  * How many columns the legend forms under the chart, or 0 when it sits
- * beside the chart: two below 960px, and three on the Share page beside
- * the Receipt.
+ * beside the chart. On the Visualizer, legends move below at 1067px
+ * and under to prioritize horizontal x-axis labels.
  */
 function getLegendColumns(chart) {
-    if (window.innerWidth < 960) return 2;
-    if (isBesideReceipt(chart)) return 3;
+  const width = window.innerWidth;
+  const isShare = Boolean(chart.userOptions.custom?.share);
 
-    // On Share, the Historical Spending legend stays below the chart.
-    if (chart.userOptions.custom?.share && chart.userOptions.custom?.historical) return 3;
+  if (width < 960) return 2;
 
-    return 0;
+  // On the Visualizer, all legends move below at 1067px and under.
+  if (!isShare && width <= 1067) return 2;
+
+  if (isBesideReceipt(chart)) return 3;
+
+  // On Share, the Historical Spending legend stays below the chart.
+  if (isShare && chart.userOptions.custom?.historical) return 3;
+
+  return 0;
 }
 
 /**
