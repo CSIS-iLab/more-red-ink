@@ -56,38 +56,35 @@
 		onUnitChange(value);
 	}
 
-	function alignLastXAxisLabel(chart) {
-		const axis = chart.xAxis[0];
-		const lastTick = axis.ticks[CHART_YEARS.length - 1];
-		if (!lastTick?.label) return;
-		lastTick.label.attr({
-			align: 'right'
-		});
-	}
-
-	function alignLastDataPoints(chart) {
-		const axis = chart.xAxis[0];
+	function extendGridLines(chart) {
+		const xAxis = chart.xAxis[0];
+		const yAxis = chart.yAxis[0];
 		const lastIndex = CHART_YEARS.length - 1;
-		const label = axis.ticks[lastIndex]?.label;
+		const lastLabel = xAxis.ticks[lastIndex]?.label;
 
-		if (!label) return;
+		if (!lastLabel) return;
 
-		// Shift the final points left by half the width of the 2024 label.
-		const offset = label.getBBox().width / 2;
-		const targetX = axis.toValue(axis.toPixels(lastIndex) - offset);
+		// The 2024 label is centered beneath its data points.
+		// Extend the gridlines to its right edge.
+		const extension = lastLabel.getBBox().width / 2;
 
-		let changed = false;
+		for (const tick of Object.values(yAxis.ticks)) {
+			const gridLine = tick.gridLine?.element;
 
-		for (const series of chart.series) {
-			const point = series.points.find((point) => point.index === lastIndex);
+			if (!gridLine) continue;
 
-			if (point && Math.abs(point.x - targetX) > 0.0001) {
-				point.update({ x: targetX }, false);
-				changed = true;
+			const d = gridLine.getAttribute('d');
+			if (!d) continue;
+
+			const updated = d.replace(
+				/L\s*([\d.]+)\s+([\d.]+)\s*$/,
+				(_, x, y) => `L ${chart.plotLeft + chart.plotWidth + extension} ${y}`
+			);
+
+			if (updated !== d) {
+				gridLine.setAttribute('d', updated);
 			}
 		}
-
-		if (changed) chart.redraw(false);
 	}
 
 	$effect(() => {
@@ -103,12 +100,12 @@
 						// Straight segments between data points (approved design).
 						type: 'line',
 						spacingTop: 18,
+						...(frozen ? { marginRight: 20 } : {}),
 						events: {
 							render() {
 								finishLayout.call(this);
 								alignYAxisLabels(this);
-								alignLastXAxisLabel(this);
-								alignLastDataPoints(this);
+								extendGridLines(this);
 							}
 						}
 					},
@@ -121,6 +118,9 @@
 						min: 0,
 						max: CHART_YEARS.length - 1,
 						lineWidth: 0,
+						labels: {
+							align: 'center'
+						},
 						title: {
 							text: null
 						}
@@ -156,6 +156,8 @@
 						layout: 'vertical',
 						align: 'right',
 						verticalAlign: 'bottom',
+						margin: 25,
+						width: 133, // Test instead of inherited 180
 						y: -25,
 						padding: 12,
 						itemMarginTop: 0,
