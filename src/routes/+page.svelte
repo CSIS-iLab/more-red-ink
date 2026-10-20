@@ -2,7 +2,6 @@
   import { resolve } from '$app/paths';
 
   let { data } = $props();
-
   let homeContent = $derived(data.homeContent);
 </script>
 
@@ -73,24 +72,28 @@
 </div>
 
 <style>
+	:root {
+		--navbar-height: 64px;
+	}
 	.home-page {
-		margin-top: 20px;
-		padding: 0 var(--layout-guide-specs-xs-320-margin-5-vw, 16px)
-			var(--global-spacing-section-vertical-padding-small, 36px);
 		min-width: 320px;
+		padding-inline: var(--layout-guide-specs-xs-320-margin-5-vw, 16px);
+		padding-block-end: var(--global-spacing-section-vertical-padding-small, 36px);
 
 		@media (width >= 640px) {
-			padding: var(--global-spacing-section-vertical-padding-small, 36px)
-				var(--layout-guide-specs-s-640-margin-5-vw, 32px);
+			padding-inline: var(--layout-guide-specs-s-640-margin-5-vw, 32px);
 		}
 
 		@media (width >= 960px) {
-			padding: var(--global-spacing-section-vertical-padding-small, 36px)
-				var(--layout-guide-specs-m-960-margin-5-vw, 48px);
+			padding-inline: var(--layout-guide-specs-m-960-margin-5-vw, 48px);
 		}
+
 		@media (width >= 1280px) {
-			padding: var(--global-spacing-section-vertical-padding-small, 40px)
-				var(--layout-guide-specs-l-1280-margin-5-vw, 64px);
+			padding-inline: var(--layout-guide-specs-l-1280-margin-5-vw, 64px);
+		}
+
+		@media (width >= 1440px) {
+			padding-inline: var(--layout-guide-specs-l-1280-margin-5-vw, 80px);
 		}
 	}
 
@@ -102,15 +105,20 @@
 		flex-direction: column;
 		justify-content: center;
 		align-items: center;
-		padding-block-end: var(--global-spacing-section-vertical-padding-small, 36px);
-
+		min-height: calc(100vh - 64px); /* fallback for older browsers */
+		min-height: calc(100dvh - var(--navbar-height, 64px));
+		padding-block: var(--global-spacing-section-vertical-padding-small, 36px);
 		@media (width >= 640px) {
-			/* width: 428px; */
 			max-width: 480px;
 			margin-inline: auto;
 		}
 
+		@media (width >= 960px) {
+			max-width: 480px;
+		}
+
 		@media (width >= 1280px) {
+			padding-block: var(--global-spacing-section-vertical-padding-small, 40px);
 			align-items: flex-start;
 			width: 564px;
 			max-width: none;
@@ -120,7 +128,7 @@
 			flex-direction: row;
 			align-items: center;
 			min-width: 100%;
-			padding: var(--global-spacing-section-vertical-padding-medium, 80px) 0;
+			padding-block: var(--global-spacing-section-vertical-padding-medium, 80px);
 		}
 		.text-header-block {
 			display: flex;
@@ -131,15 +139,28 @@
 			justify-content: center;
 			gap: var(--text-components-report-title-block-gap, 36px);
 
+			h1 {
+				margin: 0;
+			}
+
+			@media (width >= 640px) {
+				padding: 0 0 var(--text-components-report-title-block-bottom-padding, 36px) 0;
+			}
+
+      @media (width >= 960px) {
+        padding-block: 36px;
+
+			}
 			@media (width >= 1280px) {
 				max-width: 480px;
+				padding-block: var(--text-components-report-title-block-top-padding, 40px);
 			}
 			@media (width>= 1440px) {
 				min-width: 640px;
-				align-self: stretch;
+				width: 50vw;
 				gap: var(--text-components-report-title-block-gap, 40px);
 				align-self: stretch;
-				padding: 0 80px;
+				padding-inline: 80px;
 
 				.title {
 					max-width: 480px;
@@ -148,10 +169,17 @@
 				h1 {
 					margin: 0;
 				}
+
+				.header-footer {
+					max-width: 480px;
+				}
 			}
 
 			@media (width >= 1920px) {
-				min-width: 800px;
+				min-width: 50vw;
+				max-width: 50vw;
+				align-content: center;
+				flex-wrap: wrap;
 			}
 		}
 
@@ -204,13 +232,10 @@
 			margin: 0;
 
 			@media (width >= 1440px) {
-				width: 100%;
 				padding: 0 40px;
+				max-width: 50vw;
 			}
 			@media (width >= 1920px) {
-				min-width: 880px;
-				width: 100%;
-				padding: 0 40px;
 			}
 
 			img {
@@ -260,9 +285,6 @@
 		}
 
 		.instructions {
-			/* padding: var(--text-components-heading-2-top-padding, 65px) 0
-				0 0; */
-
 			h2 {
 				margin: 0;
 				margin-block-start: var(--text-components-heading-2-top-padding, 65px);
