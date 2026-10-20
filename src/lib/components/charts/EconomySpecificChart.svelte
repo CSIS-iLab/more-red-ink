@@ -33,8 +33,8 @@
 		frozen = false,
 		scaleTo100 = false,
 		onScaleTo100Change = () => {},
-    mode = null,
-    assumptions = null
+		mode = null,
+		assumptions = null
 	} = $props();
 
 	let chartElement;
@@ -135,14 +135,14 @@
 						tickPositioner: unit === 'pct_gdp' && !scaleTo100 ? wholePercentTicks : undefined,
 						// Stack the first component (Direct Subsidies) at the bottom.
 						reversedStacks: false,
-stackLabels: {
-  enabled: showComponents && !scaleTo100,
-  crop: false,
-  overflow: 'allow',
-  formatter() {
-    return formatChartValue(this.total, unit);
-  }
-},
+						stackLabels: {
+							enabled: showComponents && !scaleTo100,
+							crop: false,
+							overflow: 'allow',
+							formatter() {
+								return formatChartValue(this.total, unit);
+							}
+						},
 						labels: {
 							formatter() {
 								if (scaleTo100) {

@@ -183,12 +183,12 @@
 		table-layout: fixed;
 	}
 
-.receipt__grid th:nth-child(1),
-.receipt__grid td:nth-child(1),
-.receipt__grid th:nth-child(2),
-.receipt__grid td:nth-child(2):not([colspan]) {
-  border-right: 2px solid var(--color-page);
-}
+	.receipt__grid th:nth-child(1),
+	.receipt__grid td:nth-child(1),
+	.receipt__grid th:nth-child(2),
+	.receipt__grid td:nth-child(2):not([colspan]) {
+		border-right: 2px solid var(--receipt-divider-color, var(--color-page));
+	}
 
 	/* Align the separate header table with the scrollable body table.
    The body loses 24px to the custom scrollbar; the header wrapper

@@ -336,11 +336,20 @@
 		overflow-y: auto;
 		scrollbar-gutter: stable;
 	}
-
-	/* The header reserves the same scrollbar space so the columns line up. */
 	.share-page__receipt :global(.receipt__head-scroll) {
-		overflow-y: hidden;
-		scrollbar-gutter: stable;
+		padding-right: 0;
+	}
+
+	@media (min-width: 1200px) {
+		.share-page__receipt :global(.receipt__head-scroll) {
+			overflow-y: hidden;
+			scrollbar-gutter: auto;
+			padding-right: 24px;
+		}
+	}
+
+	.share-page__receipt {
+		--receipt-divider-color: var(--color-surface-primary);
 	}
 
 	/* Share intro: a label and one line of text (not the Visualizer heading). */

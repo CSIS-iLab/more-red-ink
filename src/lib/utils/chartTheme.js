@@ -74,9 +74,13 @@ function getPlotRatio(chart) {
  * the Receipt.
  */
 function getLegendColumns(chart) {
-	if (window.innerWidth < 960) return 2;
-	if (isBesideReceipt(chart)) return 3;
-	return 0;
+    if (window.innerWidth < 960) return 2;
+    if (isBesideReceipt(chart)) return 3;
+
+    // On Share, the Historical Spending legend stays below the chart.
+    if (chart.userOptions.custom?.share && chart.userOptions.custom?.historical) return 3;
+
+    return 0;
 }
 
 /**
