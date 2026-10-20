@@ -184,7 +184,12 @@
 
 					series
 				},
-				frozen ? shareChartOptions : {}
+				frozen
+					? {
+							...shareChartOptions,
+							custom: { share: true, historical: true }
+						}
+					: {}
 			)
 		);
 
