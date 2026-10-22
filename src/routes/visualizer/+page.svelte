@@ -9,7 +9,7 @@
 	import EconomySpecificChart from '$lib/components/charts/EconomySpecificChart.svelte';
 	import Receipt from '$lib/components/charts/receipt/Receipt.svelte';
 	import BackLink from '$lib/components/controls/BackLink.svelte';
-	import Button from '$lib/components/controls/Button.svelte';
+	import TextLink from '$lib/components/controls/TextLink.svelte';
 	import { calculateEstimate } from '$lib/data/calculateEstimate.js';
 	import { loadData } from '$lib/data/loadData.js';
 	import { buildShareUrl } from '$lib/sharing/buildShareUrl.js';
@@ -79,8 +79,15 @@
 				: '/'
 	);
 
-	const handleNewEstimate = async () => {
-		await goto(resolve('/'));
+	// A new estimate starts at Home's "Using the Calculator" section: people
+	// coming from here have already read the introduction.
+	const newEstimateHref = `${resolve('/')}#using-the-calculator`;
+
+	const handleNewEstimate = async (event) => {
+		event.preventDefault();
+		// Built from resolve('/'); the lint rule doesn't allow for the hash.
+		// eslint-disable-next-line svelte/no-navigation-without-resolve
+		await goto(newEstimateHref);
 		calculatorState.reset();
 	};
 </script>
@@ -92,7 +99,13 @@
 <div class="visualizer">
 	<aside class="visualizer__summary">
 		<div class="visualizer__summary-inner">
-			<BackLink href={backHref} />
+			<nav class="visualizer__nav" aria-label="Estimate">
+				<BackLink href={backHref} />
+
+				<TextLink href={newEstimateHref} onclick={handleNewEstimate}>
+					Create a new estimate
+				</TextLink>
+			</nav>
 
 			<Receipt
 				mode={$calculatorState.mode}
@@ -100,10 +113,6 @@
 					? $calculatorState.fastTrackChoice
 					: $calculatorState.userDrivenChoices}
 			/>
-
-			<div class="visualizer__new-estimate">
-				<Button variant="ghost" onclick={handleNewEstimate}>Create a new estimate</Button>
-			</div>
 		</div>
 	</aside>
 
@@ -204,29 +213,23 @@
 		grid-template-columns: clamp(26rem, 40vw, 36rem) minmax(0, 1fr);
 		align-items: start;
 		width: 100%;
-		@media (width >= 1280px) {
-			grid-template-rows: minmax(0, 1fr);
-			height: calc(100dvh - 64px);
-			overflow: hidden;
-		}
 	}
 
-	/* The sidebar stays in view while the charts scroll; the Receipt table
+	/* The sidebar sticks below the 64px header (AppHeader) while the page
+	   scrolls the charts, until the footer pushes it up; the Receipt table
 	   scrolls inside it. */
 	.visualizer__summary {
 		position: sticky;
-		top: 0;
+		top: 64px;
 		min-width: 0;
 		height: calc(100vh - 64px);
 		max-height: calc(100vh - 64px); /* fallback for older browsers */
 		max-height: calc(100dvh - 64px);
 		background-color: var(--color-page);
-		border-right: 1px solid var(--color-border-subtle);
 
-		@media (width >= 1280px) {
-			position: static;
-			min-height: 0;
-			overflow: hidden;
+		/* Divides the sidebar from the charts. */
+		@media (width >= 1200px) {
+			border-right: 1px solid var(--color-border-subtle);
 		}
 	}
 
@@ -235,7 +238,15 @@
 		flex-direction: column;
 		gap: 1.5rem;
 		height: 100%;
-		padding: 2.5rem 1.75rem;
+		padding: 1.75rem;
+	}
+
+	/* Back on the left, "Create a new estimate" on the right. */
+	.visualizer__nav {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 1rem;
 	}
 
 	.visualizer__summary-inner :global(.receipt) {
@@ -267,55 +278,57 @@
 	.visualizer__charts {
 		display: flex;
 		min-width: 0;
-		min-height: 100vh;
+		min-height: calc(100vh - 64px);
 		flex-direction: column;
 		gap: 2rem;
 		padding: 2rem 2.5rem;
 		background-color: var(--color-surface-secondary);
-
-		@media (width >= 1280px) {
-			position: relative;
-			overflow-y: auto;
-			overscroll-behavior: contain;
-			min-height: calc(100vh - 64px); /* fall back to older browsers */
-			min-height: calc(100dvh - 64px);
-			height: calc(100dvh - 64px);
-		}
 	}
 
 	.visualizer__status {
 		margin: 0;
 	}
 
-	/* Below 1200px the Receipt section sits above the charts. */
+	/* Below 1200px the Receipt section sits above the charts, on the page
+	   grid (5vw margins): the text column (with Back and "Create a new
+	   estimate") spans 6 columns and the table 8 of 12, centered; below
+	   960px the table runs full width, and below 640px so does the text. */
 	@media (max-width: 1199px) {
 		.visualizer {
 			grid-template-columns: minmax(0, 1fr);
 		}
 
+		/* Full height when stacked: the sidebar's viewport-height limit
+		   only applies beside the charts. */
 		.visualizer__summary {
 			position: static;
 			height: auto;
+			max-height: none;
 		}
 
-		/* The Receipt column is centered and maxes out at 45.75rem
-		   (plus side padding). */
 		.visualizer__summary-inner {
-			--summary-padding-x: 3rem;
+			--grid-columns: 12;
+			--grid-gutter: 1.5rem;
+			/* Width of one grid column (resolved against each element's container). */
+			--grid-column: calc(
+				(100% - (var(--grid-columns) - 1) * var(--grid-gutter)) / var(--grid-columns)
+			);
+			--text-width: calc(6 * var(--grid-column) + 5 * var(--grid-gutter));
+			--table-width: calc(8 * var(--grid-column) + 7 * var(--grid-gutter));
 
-			width: 100%;
-			max-width: calc(45.75rem + 2 * var(--summary-padding-x));
 			gap: 2.25rem;
-			margin: 0 auto;
-			padding: 2.5rem var(--summary-padding-x);
+			padding: 2.5rem 5vw;
 		}
 
-		/* The text above the Receipt is centered and maxes out at 39.75rem,
-		   matching the content width of the other pages. */
+		.visualizer__nav,
 		.visualizer__summary-inner :global(.receipt__intro) {
-			width: 100%;
-			max-width: 39.75rem;
-			margin: 0 auto;
+			width: var(--text-width);
+			margin-inline: auto;
+		}
+
+		.visualizer__summary-inner :global(.receipt__table) {
+			width: var(--table-width);
+			margin-inline: auto;
 		}
 
 		.visualizer__summary-inner :global(.receipt__table-scroll) {
@@ -328,20 +341,17 @@
 			scrollbar-gutter: auto;
 		}
 
-		.visualizer__new-estimate {
-			display: flex;
-			justify-content: center;
-		}
-
 		.visualizer__charts {
 			min-height: 0;
-			padding: 2rem;
+			padding: 2rem 5vw;
 		}
 	}
 
 	@media (max-width: 959px) {
 		.visualizer__summary-inner {
-			--summary-padding-x: 2rem;
+			--grid-columns: 8;
+			--grid-gutter: 1rem;
+			--table-width: 100%;
 
 			padding-top: 2.25rem;
 			padding-bottom: 2.25rem;
@@ -350,7 +360,7 @@
 
 	@media (max-width: 639px) {
 		.visualizer__summary-inner {
-			--summary-padding-x: 1rem;
+			--text-width: 100%;
 
 			padding-top: 2rem;
 			padding-bottom: 2rem;
@@ -358,7 +368,7 @@
 
 		.visualizer__charts {
 			gap: 1rem;
-			padding: 1rem;
+			padding: 1rem 5vw;
 		}
 	}
 </style>
