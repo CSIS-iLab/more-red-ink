@@ -39,7 +39,8 @@
 					<img src="/icons/external-link.svg" alt="" />
 				</Button> -->
 
-				<section class="instructions">
+				<!-- The Visualizer's "Create a new estimate" link scrolls here. -->
+				<section id="using-the-calculator" class="instructions">
 					<h2>Using the Calculator</h2>
 					{#each content.how_to as paragraph, i (i)}
 						<p>
@@ -292,6 +293,10 @@
 		}
 
 		.instructions {
+			/* When scrolled to, sit 40px below the sticky header. (The heading's
+			   top margin collapses outside the section, so it doesn't add space.) */
+			scroll-margin-top: calc(var(--navbar-height) + 2.5rem);
+
 			h2 {
 				margin: 0;
 				margin-block-start: var(--text-components-heading-2-top-padding, 65px);
