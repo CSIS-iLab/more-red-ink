@@ -3,14 +3,14 @@ name: Change Request
 about: Propose a change to existing functionality, design, content, or requirements.
 ---
 
-### Requested Change
+## Requested Change
 *What should be added, removed, or changed?*
 
 ## Expected result
 ### What should it look like or do?
 *Describe the intended result. Include a Figma link or screenshot if applicable*
 
-### Scope
+## Scope
 *Where should the change apply?*
 
 **Affected area(s):**
