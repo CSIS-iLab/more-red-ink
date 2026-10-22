@@ -6,7 +6,7 @@
 	import ControlRow from '$lib/components/controls/ControlRow.svelte';
 	import Select from '$lib/components/controls/Select.svelte';
 	import { CHART_YEARS, UNIT_OPTIONS, getUnitOption } from '$lib/utils/chartOptions.js';
-	import { formatChartAxisValue, formatChartValue } from '$lib/utils/formatters.js';
+	import { formatChartAxisValue, formatChartValue, possessive } from '$lib/utils/formatters.js';
 	import { hoverPanel, stackedBarHover } from '$lib/utils/chartHover.js';
 	import {
 		createChartOptions,
@@ -40,7 +40,12 @@
 	let chartElement;
 
 	// Shown above the chart by ChartContainer.
-	let chartTitle = $derived(`Industrial Policy Spending in ${economy}, 2019 - 2024`);
+	// "Composition" when the bars show spending components.
+	let chartTitle = $derived(
+		showComponents
+			? `${possessive(economy)} Industrial Policy Spending Composition, 2019–2024`
+			: `${possessive(economy)} Industrial Policy Spending, 2019–2024`
+	);
 	let chartSubtitle = $derived(
 		scaleTo100 ? 'Share of total industrial policy spending' : (getUnitOption(unit)?.subtitle ?? '')
 	);
@@ -167,7 +172,12 @@
 									: formatChartValue(point.y, unit)
 							}));
 
-							return hoverPanel(CHART_YEARS[this.x], rows);
+							// The bar's total, as printed above it (scaled bars show no total).
+							const total = scaleTo100
+								? undefined
+								: formatChartValue(this.points?.[0]?.total ?? 0, unit);
+
+							return hoverPanel(CHART_YEARS[this.x], rows, { total });
 						}
 					},
 
@@ -223,7 +233,7 @@
 </script>
 
 <ChartContainer
-	title="Chart 4: Economy-Specific Spending, 2019-2024"
+	title="Chart 4: Economy-Specific Spending, 2019–2024"
 	{chartTitle}
 	{chartSubtitle}
 	controls={frozen ? undefined : chartControls}

@@ -39,10 +39,13 @@ const escapeHtml = (text) =>
 /**
  * HTML for the hover data panel (use with tooltip.useHTML).
  *
- * rows: [{ color, name, value }]; swatch: 'square' for bar charts, 'line'
- * for line charts.
+ * rows: [{ color, name, value }].
+ * Options:
+ * - swatch: 'square' for bar charts (default), 'line' for line charts.
+ * - total: formatted total shown beside the title, after a divider
+ *   (stacked bar charts).
  */
-export function hoverPanel(title, rows, swatch = 'square') {
+export function hoverPanel(title, rows, { swatch = 'square', total } = {}) {
 	const { primary, secondary } = colors();
 
 	const swatchStyle =
@@ -60,11 +63,21 @@ export function hoverPanel(title, rows, swatch = 'square') {
 		)
 		.join('');
 
+	const heading = `<span style="color: ${primary}; font-size: 16px; font-weight: 500;">${escapeHtml(title)}</span>`;
+
+	// With a total: "Title | Total: value", 12px above the rows.
+	const header =
+		total === undefined
+			? `<div style="margin-bottom: 6px;">${heading}</div>`
+			: `<div style="display: flex; align-items: stretch; gap: 8px; margin-bottom: 12px;">
+					${heading}
+					<span style="width: 1px; background: ${readToken('--color-border-subtle')};"></span>
+					<span style="align-self: center;">Total: <span style="font-weight: 500;">${escapeHtml(total)}</span></span>
+				</div>`;
+
 	return `
 		<div style="color: ${secondary}; font-size: 14px; line-height: 1.2;">
-			<div style="margin-bottom: 6px; color: ${primary}; font-size: 16px; font-weight: 500;">
-				${escapeHtml(title)}
-			</div>
+			${header}
 			<div style="display: flex; flex-direction: column; gap: 2px;">${items}</div>
 		</div>`;
 }

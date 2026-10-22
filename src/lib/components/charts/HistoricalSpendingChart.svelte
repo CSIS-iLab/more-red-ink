@@ -21,7 +21,7 @@
 	let chartElement;
 
 	// Shown above the chart by ChartContainer.
-	let chartTitle = $derived('Annual Industrial Policy Spending by Economy, 2019 - 2024');
+	let chartTitle = $derived('Annual Industrial Policy Spending by Economy, 2019–2024');
 	let chartSubtitle = $derived(getUnitOption(unit)?.subtitle ?? '');
 
 	let filteredData = $derived(
@@ -147,7 +147,7 @@
 									value: formatChartValue(point.y, unit)
 								}));
 
-							return hoverPanel(CHART_YEARS[Math.round(this.x)], rows, 'line');
+							return hoverPanel(CHART_YEARS[Math.round(this.x)], rows, { swatch: 'line' });
 						}
 					},
 
@@ -200,7 +200,7 @@
 </script>
 
 <ChartContainer
-	title="Chart 1: Historical Spending, 2019-2024"
+	title="Chart 1: Historical Spending, 2019–2024"
 	{chartTitle}
 	{chartSubtitle}
 	controls={frozen ? undefined : chartControls}

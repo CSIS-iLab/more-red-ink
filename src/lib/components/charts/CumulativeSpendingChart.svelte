@@ -38,7 +38,12 @@
 	let chartElement;
 
 	// Shown above the chart by ChartContainer.
-	let chartTitle = $derived('Cumulative Industrial Policy Spending by Economy, 2019 - 2024');
+	// "Composition" when the bars show spending components.
+	let chartTitle = $derived(
+		showComponents
+			? 'Cumulative Industrial Policy Spending Composition by Economy, 2019–2024'
+			: 'Cumulative Industrial Policy Spending by Economy, 2019–2024'
+	);
 	let chartSubtitle = $derived(
 		scaleTo100 ? 'Share of total industrial policy spending' : (getUnitOption(unit)?.subtitle ?? '')
 	);
@@ -146,7 +151,12 @@
 									: formatChartValue(point.y, unit)
 							}));
 
-							return hoverPanel(cumulativeData[this.x]?.country ?? '', rows);
+							// The bar's total, as printed above it (scaled bars show no total).
+							const total = scaleTo100
+								? undefined
+								: formatChartValue(this.points?.[0]?.total ?? 0, unit);
+
+							return hoverPanel(cumulativeData[this.x]?.country ?? '', rows, { total });
 						}
 					},
 					legend: {
@@ -195,7 +205,7 @@
 </script>
 
 <ChartContainer
-	title="Chart 2: Cumulative Spending, 2019-2024"
+	title="Chart 2: Cumulative Spending, 2019–2024"
 	{chartTitle}
 	{chartSubtitle}
 	controls={frozen ? undefined : chartControls}

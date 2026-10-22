@@ -49,3 +49,8 @@ export function formatChartAxisValue(value, unit) {
 
 	return `$${formatNumber(value / 1000, 0)}B`;
 }
+
+// Possessive form of a name for chart titles: "China’s", "United States’".
+export function possessive(name) {
+	return name.endsWith('s') ? `${name}’` : `${name}’s`;
+}

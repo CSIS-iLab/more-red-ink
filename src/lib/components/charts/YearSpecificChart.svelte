@@ -40,7 +40,12 @@
 	let chartElement;
 
 	// Shown above the chart by ChartContainer.
-	let chartTitle = $derived(`Industrial Policy Spending Breakdown by Economy, ${year}`);
+	// "Composition" when the bars show spending components.
+	let chartTitle = $derived(
+		showComponents
+			? `Industrial Policy Spending Composition by Economy, ${year}`
+			: `Industrial Policy Spending by Economy, ${year}`
+	);
 	let chartSubtitle = $derived(
 		scaleTo100 ? 'Share of total industrial policy spending' : (getUnitOption(unit)?.subtitle ?? '')
 	);
@@ -166,7 +171,12 @@
 									: formatChartValue(point.y, unit)
 							}));
 
-							return hoverPanel(filteredData[this.x]?.country ?? '', rows);
+							// The bar's total, as printed above it (scaled bars show no total).
+							const total = scaleTo100
+								? undefined
+								: formatChartValue(this.points?.[0]?.total ?? 0, unit);
+
+							return hoverPanel(filteredData[this.x]?.country ?? '', rows, { total });
 						}
 					},
 
