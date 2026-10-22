@@ -70,24 +70,16 @@ function getPlotRatio(chart) {
 
 /**
  * How many columns the legend forms under the chart, or 0 when it sits
- * beside the chart. On the Visualizer, legends move below at 1067px
- * and under to prioritize horizontal x-axis labels.
+ * beside the chart (approved design): beside the chart only at 1670px and
+ * up; otherwise under it in two columns below 960px and three above. On the
+ * Share page beside the Receipt, always under the chart in three columns.
  */
 function getLegendColumns(chart) {
-  const width = window.innerWidth;
-  const isShare = Boolean(chart.userOptions.custom?.share);
+	const width = window.innerWidth;
 
-  if (width < 960) return 2;
-
-  // On the Visualizer, all legends move below at 1067px and under.
-  if (!isShare && width <= 1067) return 2;
-
-  if (isBesideReceipt(chart)) return 3;
-
-  // On Share, the Historical Spending legend stays below the chart.
-  if (isShare && chart.userOptions.custom?.historical) return 3;
-
-  return 0;
+	if (width < 960) return 2;
+	if (isBesideReceipt(chart) || width < 1670) return 3;
+	return 0;
 }
 
 /**
@@ -111,8 +103,41 @@ function fitLegendColumns(chart) {
 }
 
 /**
+ * Column charts: line the bottom of a legend beside the chart up with the
+ * x-axis (approved design). Returns true if the legend moved.
+ */
+function alignLegendWithAxis(chart) {
+	const { legend } = chart;
+
+	if (!legend.display || chart.options.chart.type !== 'column') return false;
+
+	let y = 0;
+
+	if (legend.options.layout === 'vertical') {
+		const top = chart.container.getBoundingClientRect().top;
+		const symbolBottoms = legend.allItems
+			.map((item) => item.legendItem?.symbol?.element?.getBoundingClientRect().bottom)
+			.filter((bottom) => bottom !== undefined)
+			.map((bottom) => bottom - top);
+
+		if (!symbolBottoms.length) return false;
+
+		const axisY = chart.plotTop + chart.plotHeight;
+
+		y = Math.round((legend.options.y ?? 0) + axisY - Math.max(...symbolBottoms));
+	}
+
+	if ((legend.options.y ?? 0) === y) return false;
+
+	legend.update({ y }, false);
+
+	return true;
+}
+
+/**
  * After each render, finish the responsive layout:
- * - put an under-chart legend into columns, then
+ * - put an under-chart legend into columns,
+ * - line a legend beside a column chart up with the x-axis, then
  * - resize the chart's height so the plot area keeps the approved ratio,
  *   whatever space the title and legend take, growing it further if a
  *   legend beside the chart would otherwise overlap the title.
@@ -121,7 +146,7 @@ function fitLegendColumns(chart) {
 export function finishLayout() {
 	bindLegendFocus(this);
 
-	if (fitLegendColumns(this)) {
+	if (fitLegendColumns(this) || alignLegendWithAxis(this)) {
 		this.redraw(false);
 		return;
 	}
@@ -134,7 +159,9 @@ export function finishLayout() {
 	// doesn't, make the chart taller rather than overlap them.
 	const { legend } = this;
 	const besideChart = legend.display && legend.options.layout === 'vertical';
-	const legendHeight = besideChart ? this.plotTop + (legend.legendHeight ?? 0) : 0;
+	const legendHeight = besideChart
+		? this.plotTop + (legend.legendHeight ?? 0) - (legend.options.y ?? 0)
+		: 0;
 
 	const height = Math.max(ratioHeight, legendHeight);
 
@@ -146,13 +173,16 @@ export function finishLayout() {
 /**
  * Align Y-axis labels and gridlines with the approved chart design.
  *
- * Position each label 2px above its gridline and extend the gridline
- * leftward beneath the label. Called after Highcharts renders so the
- * final tick positions and label dimensions are available.
+ * Left-align the labels at the chart's left edge, position each one 2px
+ * above its gridline, and extend the gridline leftward beneath it. Called
+ * after Highcharts renders so the final tick positions and label sizes
+ * are available.
  */
 export function alignYAxisLabels(chart) {
 	const axis = chart.yAxis[0];
 	if (!axis) return;
+
+	const left = chart.spacingBox.x;
 
 	for (const tick of Object.values(axis.ticks)) {
 		const label = tick.label;
@@ -161,42 +191,56 @@ export function alignYAxisLabels(chart) {
 		const box = label.element.getBBox();
 		const tickY = axis.toPixels(tick.pos);
 
-		// Position the bottom of the label 2px above the gridline.
 		label.attr({
+			// Labels are right-anchored: move each so its left edge is at `left`.
+			x: Number(label.attr('x')) + left - box.x,
+			// Position the bottom of the label 2px above the gridline.
 			y: tickY - 2 - box.y - box.height + Number(label.attr('y'))
 		});
 
 		// Extend the gridline leftward beneath the label.
 		if (tick.gridLine) {
-			const labelBox = label.getBBox();
-			const leftEdge = labelBox.x;
-
 			tick.gridLine.attr({
-				d: ['M', leftEdge, tickY, 'L', chart.plotLeft + chart.plotWidth, tickY]
+				d: ['M', left, tickY, 'L', chart.plotLeft + chart.plotWidth, tickY]
 			});
 		}
 	}
 }
 
 /**
- * Keep a consistent gap between columns across viewport sizes.
- * Use 12px below 640px and 16px at larger widths.
+ * Column spacing (approved design): 24px from the y-axis labels to the
+ * first column and 16px between columns, or 14px and 10px below 640px.
  */
 export function setColumnSpacing(chart) {
-	const axis = chart.xAxis[0];
-	const series = chart.series.find((s) => s.type === 'column');
+	const xAxis = chart.xAxis[0];
+	const yAxis = chart.yAxis[0];
+	const columns = chart.series.filter((s) => s.type === 'column');
 
-	if (!axis || !series || !axis.transA) return;
+	if (!xAxis || !yAxis || !columns.length || !xAxis.transA) return;
 
-	const categoryWidth = Math.abs(axis.transA);
-	const gap = window.innerWidth < 640 ? 12 : 16;
-	const pointWidth = Math.max(1, Math.floor(categoryWidth - gap));
+	const mobile = window.innerWidth < 640;
+	const gap = mobile ? 10 : 16;
+	const labelGap = mobile ? 14 : 24;
 
-	if (series.options.pointWidth !== pointWidth) {
-		chart.series.filter((s) => s.type === 'column').forEach((s) => s.update({ pointWidth }, false));
+	// Each column is centered in its category, so the first one starts half
+	// a gap in from the plot's left edge.
+	const distance = labelGap - gap / 2;
+	const pointWidth = Math.max(1, Math.floor(Math.abs(xAxis.transA) - gap));
 
-		chart.redraw(false);
+	const changes = [];
+
+	if (yAxis.options.labels.distance !== distance) {
+		changes.push(() => yAxis.update({ labels: { distance } }, false));
 	}
+
+	if (columns[0].options.pointWidth !== pointWidth) {
+		changes.push(() => columns.forEach((s) => s.update({ pointWidth }, false)));
+	}
+
+	if (!changes.length) return;
+
+	changes.forEach((change) => change());
+	chart.redraw(false);
 }
 
 /**
@@ -279,10 +323,14 @@ export function createChartOptions(...optionSets) {
 		subtitle: { text: null },
 
 		xAxis: {
-			lineColor: gridline,
+			// No axis line: the zero gridline, extended under the y-axis labels,
+			// is the x-axis (see alignYAxisLabels).
+			lineWidth: 0,
 			tickLength: 0,
 			title: { text: null },
 			labels: {
+				// 8px between the x-axis and its labels.
+				distance: 8,
 				style: {
 					fontSize: readFontSize('--font-size-xxx-small'),
 					fontWeight: '500',
@@ -390,7 +438,9 @@ export function createChartOptions(...optionSets) {
 							itemWidth: undefined,
 							alignColumns: true,
 							itemDistance: 24,
-							margin: 24
+							margin: 24,
+							// Undo alignLegendWithAxis()'s offset from beside the chart.
+							y: 0
 						}
 					}
 				}

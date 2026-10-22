@@ -109,7 +109,6 @@
 
 					xAxis: {
 						categories: cumulativeData.map((row) => row.country),
-						lineWidth: 0,
 						title: {
 							text: null
 						}

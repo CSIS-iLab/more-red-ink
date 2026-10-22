@@ -87,6 +87,17 @@
 		}
 	}
 
+	// With the legend under the chart, keep room at the right for the last
+	// year's hover dots and label (with the legend beside it, the legend
+	// leaves room).
+	function fitLineEnds(chart) {
+		const marginRight = chart.legend.options.layout === 'horizontal' ? 20 : null;
+
+		if ((chart.options.chart.marginRight ?? null) === marginRight) return;
+
+		chart.update({ chart: { marginRight } });
+	}
+
 	$effect(() => {
 		if (!chartElement) {
 			return;
@@ -100,12 +111,12 @@
 						// Straight segments between data points (approved design).
 						type: 'line',
 						spacingTop: 18,
-						...(frozen ? { marginRight: 20 } : {}),
 						events: {
 							render() {
 								finishLayout.call(this);
 								alignYAxisLabels(this);
 								extendGridLines(this);
+								fitLineEnds(this);
 							}
 						}
 					},
@@ -117,7 +128,6 @@
 						maxPadding: 0,
 						min: 0,
 						max: CHART_YEARS.length - 1,
-						lineWidth: 0,
 						labels: {
 							align: 'center'
 						},
@@ -184,12 +194,7 @@
 
 					series
 				},
-				frozen
-					? {
-							...shareChartOptions,
-							custom: { share: true, historical: true }
-						}
-					: {}
+				frozen ? shareChartOptions : {}
 			)
 		);
 
