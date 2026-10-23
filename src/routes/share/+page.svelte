@@ -1,6 +1,5 @@
 <script>
 	import { getContext, onMount } from 'svelte';
-	import { goto } from '$app/navigation';
 	import { resolve } from '$app/paths';
 	import { page } from '$app/state';
 
@@ -15,8 +14,7 @@
 	import { buildShareUrl } from '$lib/sharing/buildShareUrl.js';
 	import { parseShareUrl } from '$lib/sharing/parseShareUrl.js';
 	import { getEstimateState } from '$lib/sharing/sharePayload.js';
-	import { calculatorState } from '$lib/stores/calculatorState.js';
-	import { REPORT_URL } from '$lib/utils/links.js';
+	import { getNewEstimateHref, REPORT_URL } from '$lib/utils/links.js';
 	import { receiptContent } from '$lib/utils/receiptContent.js';
 
 	let payload = $state(null);
@@ -110,11 +108,6 @@
 			copyStatus = null;
 		}, 3000);
 	};
-
-	const handleNewEstimate = async () => {
-		await goto(resolve('/'));
-		calculatorState.reset();
-	};
 </script>
 
 <svelte:head>
@@ -200,7 +193,11 @@
 				{copyStatus === 'copied' ? 'Link copied' : 'Copy link'}
 			</Button>
 
-			<Button variant="ghost" onclick={handleNewEstimate}>Create a new estimate</Button>
+			<!-- Opens a fresh estimate in a new tab, leaving this tab's session alone. -->
+			<Button variant="ghost" href={getNewEstimateHref()} target="_blank" rel="noopener">
+				Create a new estimate
+				<span class="visually-hidden">(opens in a new tab)</span>
+			</Button>
 
 			<Button variant="ghost" href={REPORT_URL} target="_blank" rel="noreferrer">
 				Read the report

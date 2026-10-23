@@ -14,6 +14,7 @@
 	import { loadData } from '$lib/data/loadData.js';
 	import { buildShareUrl } from '$lib/sharing/buildShareUrl.js';
 	import { calculatorState } from '$lib/stores/calculatorState.js';
+	import { getNewEstimateHref } from '$lib/utils/links.js';
 
 	let resolvedData = $state([]);
 	let loading = $state(true);
@@ -78,18 +79,6 @@
 				? '/user-driven'
 				: '/'
 	);
-
-	// A new estimate starts at Home's "Using the Calculator" section: people
-	// coming from here have already read the introduction.
-	const newEstimateHref = `${resolve('/')}#using-the-calculator`;
-
-	const handleNewEstimate = async (event) => {
-		event.preventDefault();
-		// Built from resolve('/'); the lint rule doesn't allow for the hash.
-		// eslint-disable-next-line svelte/no-navigation-without-resolve
-		await goto(newEstimateHref);
-		calculatorState.reset();
-	};
 </script>
 
 <svelte:head>
@@ -102,9 +91,8 @@
 			<nav class="visualizer__nav" aria-label="Estimate">
 				<BackLink href={backHref} />
 
-				<TextLink href={newEstimateHref} onclick={handleNewEstimate}>
-					Create a new estimate
-				</TextLink>
+				<!-- Opens a fresh estimate in a new tab; this one keeps its estimate. -->
+				<TextLink href={getNewEstimateHref()} newTab>Create a new estimate</TextLink>
 			</nav>
 
 			<Receipt
