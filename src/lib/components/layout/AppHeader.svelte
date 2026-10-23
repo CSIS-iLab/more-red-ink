@@ -1,14 +1,29 @@
 <script>
+	import { goto } from '$app/navigation';
 	import { resolve } from '$app/paths';
+	import { calculatorState } from '$lib/stores/calculatorState.js';
 	import { CSIS_URL } from '$lib/utils/links.js';
 
 	let { pageName = '' } = $props();
+
+	// The calculator name starts over: it goes Home and clears the estimate
+	// in progress. Clicks that open a new tab or window are left alone.
+	const handleHomeClick = async (event) => {
+		if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) {
+			return;
+		}
+
+		event.preventDefault();
+		// Navigate first, so the page being left doesn't redraw without an estimate.
+		await goto(resolve('/'));
+		calculatorState.reset();
+	};
 </script>
 
 <header class="app-header">
 	<div class="app-header__inner">
 		<div class="app-header__titles">
-			<a href={resolve('/')} class="app-header__app-name">
+			<a href={resolve('/')} class="app-header__app-name" onclick={handleHomeClick}>
 				Industrial Policy Spending Calculator
 			</a>
 
