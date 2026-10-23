@@ -310,8 +310,9 @@ export function createChartOptions(...optionSets) {
 	const theme = {
 		chart: {
 			backgroundColor: 'transparent',
-			// Room at the top for the highest axis label and bar totals.
-			spacing: [8, 0, 0, 0],
+			// The same gap below the chart title for every chart type, with room
+			// for the highest axis label and bar totals.
+			spacing: [28, 0, 0, 0],
 			style: { fontFamily: fontLabel },
 			events: { render: finishLayout }
 		},

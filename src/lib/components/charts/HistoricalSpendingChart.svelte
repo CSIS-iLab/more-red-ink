@@ -110,7 +110,6 @@
 					chart: {
 						// Straight segments between data points (approved design).
 						type: 'line',
-						spacingTop: 18,
 						events: {
 							render() {
 								finishLayout.call(this);

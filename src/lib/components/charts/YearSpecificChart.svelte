@@ -117,7 +117,6 @@
 				{
 					chart: {
 						type: 'column',
-						spacingTop: 28,
 						events: {
 							render() {
 								finishLayout.call(this);
