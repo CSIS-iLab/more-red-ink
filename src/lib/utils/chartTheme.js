@@ -69,35 +69,27 @@ function getPlotRatio(chart) {
 }
 
 /**
- * How many columns the legend forms under the chart, or 0 when it sits
- * beside the chart (approved design): beside the chart only at 1670px and
- * up; otherwise under it in two columns below 960px and three above. On the
- * Share page beside the Receipt, always under the chart in three columns.
+ * True when the legend sits under the chart (approved design): below 1670px,
+ * and always on the Share page beside the Receipt. Otherwise it sits beside
+ * the chart.
  */
-function getLegendColumns(chart) {
-	const width = window.innerWidth;
-
-	if (width < 960) return 2;
-	if (isBesideReceipt(chart) || width < 1670) return 3;
-	return 0;
+function isLegendBelow(chart) {
+	return window.innerWidth < 1670 || isBesideReceipt(chart);
 }
 
 /**
- * When the legend sits under the chart, size its items so they form
- * columns (approved designs). Returns true if the legend changed.
+ * Under the chart, the legend's rows are 4px apart for line charts and 8px
+ * apart for bar charts (approved design; the responsive rule below sets the
+ * bar spacing). Returns true if the legend changed.
  */
-function fitLegendColumns(chart) {
+function fitLegendRows(chart) {
 	const { legend } = chart;
 
-	if (!legend.display) return false;
+	if (!legend.display || legend.options.layout !== 'horizontal') return false;
+	// Highcharts items are 17px tall to Figma's 18px keys, so add 1px.
+	if (chart.options.chart.type !== 'line' || legend.options.itemMarginBottom === 5) return false;
 
-	const columns = getLegendColumns(chart);
-	const padding = legend.options.padding ?? 0;
-	const itemWidth = columns ? Math.floor((chart.chartWidth - padding * 2) / columns) : undefined;
-
-	if (legend.options.itemWidth === itemWidth) return false;
-
-	legend.update({ itemWidth }, false);
+	legend.update({ itemMarginBottom: 5 }, false);
 
 	return true;
 }
@@ -136,7 +128,7 @@ function alignLegendWithAxis(chart) {
 
 /**
  * After each render, finish the responsive layout:
- * - put an under-chart legend into columns,
+ * - space the rows of an under-chart legend,
  * - line a legend beside a column chart up with the x-axis, then
  * - resize the chart's height so the plot area keeps the approved ratio,
  *   whatever space the title and legend take, growing it further if a
@@ -146,7 +138,7 @@ function alignLegendWithAxis(chart) {
 export function finishLayout() {
 	bindLegendFocus(this);
 
-	if (fitLegendColumns(this) || alignLegendWithAxis(this)) {
+	if (fitLegendRows(this) || alignLegendWithAxis(this)) {
 		this.redraw(false);
 		return;
 	}
@@ -424,10 +416,11 @@ export function createChartOptions(...optionSets) {
 		responsive: {
 			rules: [
 				{
-					// The legend moves under the chart, in columns (see getLegendColumns).
+					// The legend moves under the chart (see isLegendBelow): keys flow
+					// in rows across the chart's width and wrap as needed.
 					condition: {
 						callback() {
-							return getLegendColumns(this) > 0;
+							return isLegendBelow(this);
 						}
 					},
 					chartOptions: {
@@ -436,10 +429,20 @@ export function createChartOptions(...optionSets) {
 							align: 'left',
 							verticalAlign: 'bottom',
 							width: '100%',
-							itemWidth: undefined,
-							alignColumns: true,
-							itemDistance: 24,
-							margin: 24,
+							alignColumns: false,
+							padding: 0,
+							// 28px below the axis labels, 16px between keys, 8px from each
+							// swatch to its label, and rows 8px apart. (Highcharts measures
+							// from its label area and its items are 1px shorter than Figma's
+							// keys, so margin and row spacing are 3px and 1px larger.)
+							margin: 31,
+							itemDistance: 16,
+							symbolPadding: 8,
+							itemMarginTop: 0,
+							itemMarginBottom: 9,
+							// Bar charts list components from the bottom of the stack up,
+							// starting with Direct Subsidies.
+							reversed: false,
 							// Undo alignLegendWithAxis()'s offset from beside the chart.
 							y: 0
 						}
