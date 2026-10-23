@@ -235,6 +235,72 @@ export function setColumnSpacing(chart) {
 	chart.redraw(false);
 }
 
+// Short economy names for x-axis labels that would otherwise tilt.
+const ECONOMY_ABBREVIATIONS = {
+	'United States': 'U.S.',
+	'South Korea': 'S. Korea'
+};
+
+// Full-name label widths, measured once per axis and set of categories.
+const fullLabelWidths = new WeakMap();
+
+function widestFullLabel(axis) {
+	const key = axis.categories.join('|');
+	const cached = fullLabelWidths.get(axis);
+
+	if (cached?.key === key) return cached.width;
+
+	const { renderer } = axis.chart;
+	const style = axis.options.labels.style;
+	const width = Math.max(
+		...axis.categories.map((name) => {
+			const text = renderer.text(String(name), -9999, -9999).css(style).add();
+			const textWidth = text.getBBox().width;
+
+			text.destroy();
+
+			return textWidth;
+		})
+	);
+
+	fullLabelWidths.set(axis, { key, width });
+
+	return width;
+}
+
+/**
+ * x-axis labels for charts with an economy per column: abbreviated
+ * ("U.S.", "S. Korea") whenever the full names wouldn't fit flat, so they
+ * stay flat longer and read better when tilted (see fitEconomyLabels).
+ */
+export const economyAxisLabels = {
+	formatter() {
+		const name = String(this.value);
+
+		return this.axis.options.custom?.abbreviateLabels
+			? (ECONOMY_ABBREVIATIONS[name] ?? name)
+			: name;
+	}
+};
+
+/**
+ * Call after each render with economyAxisLabels: switch between full and
+ * abbreviated names as the space per column changes. Highcharts tilts
+ * labels that are wider than their slot.
+ */
+export function fitEconomyLabels(chart) {
+	const axis = chart.xAxis[0];
+
+	if (!axis?.categories?.length || !axis.transA) return;
+
+	const fullNamesTilt = widestFullLabel(axis) > axis.getSlotWidth();
+
+	if (Boolean(axis.options.custom?.abbreviateLabels) === fullNamesTilt) return;
+
+	axis.update({ custom: { abbreviateLabels: fullNamesTilt } }, false);
+	chart.redraw(false);
+}
+
 /**
  * Options for charts on the Share page. Beside the Receipt (1200px and up)
  * the chart is 16:9 with its legend underneath in three columns
@@ -245,16 +311,46 @@ export const shareChartOptions = {
 };
 
 /**
- * Y-axis ticks at whole percentages for values stored as fractions of GDP
- * (0.01 = 1%), using 1/2/5-style steps so there are at most six intervals.
+ * Y-axis tick positions (approved design), for use as yAxis.tickPositioner:
+ * from 0 up to the first tick at or above the tallest value, on the smallest
+ * 1/2/5 step that gives at most six intervals (so at least three, never
+ * just a top and bottom tick). % of GDP axes (fractions: 0.01 = 1%) keep
+ * whole-percent steps whenever those still give two or more intervals.
  */
-export function wholePercentTicks() {
-	const max = Math.max(this.dataMax ?? 0, 0);
-	const steps = [0.01, 0.02, 0.05, 0.1, 0.2, 0.5, 1];
-	const step = steps.find((candidate) => max / candidate <= 6) ?? 1;
-	const count = Math.max(1, Math.ceil(max / step - 1e-9));
+export function axisTicks(unit) {
+	return function () {
+		const max = Math.max(this.dataMax ?? 0, 0);
+		const wholePercent = unit === 'pct_gdp' && max > 0.01;
+		const step = niceStep(max, wholePercent ? 0.01 : 0) || (unit === 'pct_gdp' ? 0.01 : 1000);
+		const count = Math.max(1, Math.ceil(max / step - 1e-9));
+		// Round away floating-point noise (e.g. 3 * 0.002).
+		const precision = 10 ** Math.max(0, -Math.floor(Math.log10(step)) + 2);
 
-	return Array.from({ length: count + 1 }, (_, index) => Math.round(index * step * 100) / 100);
+		return Array.from(
+			{ length: count + 1 },
+			(_, index) => Math.round(index * step * precision) / precision
+		);
+	};
+}
+
+/**
+ * The smallest 1/2/5-style step of at least `minimum` that covers `max` in
+ * at most six intervals (0 if `max` is 0).
+ */
+function niceStep(max, minimum) {
+	if (max <= 0) return 0;
+
+	let magnitude = 10 ** Math.floor(Math.log10(max / 6));
+
+	for (;;) {
+		for (const multiple of [1, 2, 5]) {
+			const step = multiple * magnitude;
+
+			if (step >= minimum && max / step <= 6 + 1e-9) return step;
+		}
+
+		magnitude *= 10;
+	}
 }
 
 /**

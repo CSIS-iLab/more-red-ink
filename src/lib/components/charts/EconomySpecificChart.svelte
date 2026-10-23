@@ -7,13 +7,13 @@
 	import Select from '$lib/components/controls/Select.svelte';
 	import { CHART_YEARS, UNIT_OPTIONS, getUnitOption } from '$lib/utils/chartOptions.js';
 	import { formatChartAxisValue, formatChartValue, possessive } from '$lib/utils/formatters.js';
-	import { hoverPanel, stackedBarHover } from '$lib/utils/chartHover.js';
+	import { componentRows, hoverPanel, stackedBarHover } from '$lib/utils/chartHover.js';
 	import {
 		createChartOptions,
 		getComponentColor,
 		shareChartOptions,
 		getTotalColor,
-		wholePercentTicks,
+		axisTicks,
 		finishLayout,
 		alignYAxisLabels,
 		setColumnSpacing,
@@ -75,7 +75,7 @@
 		componentEntries.map(([key, metadata]) => ({
 			name: metadata.label,
 			color: getComponentColor(key),
-			custom: { defocusColor: getComponentColor(key, 'defocus') },
+			custom: { defocusColor: getComponentColor(key, 'defocus'), chinaOnly: metadata.chinaOnly },
 			data: CHART_YEARS.map((year) => {
 				const row = filteredData.find((row) => row.year === year);
 
@@ -136,7 +136,7 @@
 
 					yAxis: {
 						max: scaleTo100 ? 100 : undefined,
-						tickPositioner: unit === 'pct_gdp' && !scaleTo100 ? wholePercentTicks : undefined,
+						tickPositioner: scaleTo100 ? undefined : axisTicks(unit),
 						// Stack the first component (Direct Subsidies) at the bottom.
 						reversedStacks: false,
 						stackLabels: {
@@ -162,14 +162,11 @@
 						enabled: showComponents,
 						shared: true,
 						formatter() {
-							// Components listed top to bottom, in the same order as the stack.
-							const rows = [...(this.points ?? [])].reverse().map((point) => ({
-								color: point.color,
-								name: point.series.name,
-								value: scaleTo100
-									? `${Highcharts.numberFormat(point.y, 1)}%`
-									: formatChartValue(point.y, unit)
-							}));
+							const rows = componentRows(this.points, {
+								economy: economy,
+								unit,
+								scaleTo100
+							});
 
 							// The bar's total, as printed above it (scaled bars show no total).
 							const total = scaleTo100

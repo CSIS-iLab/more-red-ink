@@ -17,6 +17,7 @@
  */
 
 import { readToken } from './designTokens.js';
+import { formatChartValue } from './formatters.js';
 
 const colors = () => ({
 	primary: readToken('--color-text-primary'),
@@ -39,14 +40,15 @@ const escapeHtml = (text) =>
 /**
  * HTML for the hover data panel (use with tooltip.useHTML).
  *
- * rows: [{ color, name, value }].
+ * rows: [{ color, name, value, muted }]; muted values (e.g. "Not included")
+ * use the helper text color.
  * Options:
  * - swatch: 'square' for bar charts (default), 'line' for line charts.
  * - total: formatted total shown beside the title, after a divider
  *   (stacked bar charts).
  */
 export function hoverPanel(title, rows, { swatch = 'square', total } = {}) {
-	const { primary, secondary } = colors();
+	const { primary, secondary, helper } = colors();
 
 	const swatchStyle =
 		swatch === 'line'
@@ -58,7 +60,7 @@ export function hoverPanel(title, rows, { swatch = 'square', total } = {}) {
 			(row) => `
 				<div style="display: flex; align-items: center; gap: 4px;">
 					<span style="${swatchStyle} flex-shrink: 0; background: ${row.color};"></span>
-					<span>${escapeHtml(row.name)}: <span style="font-weight: 500;">${escapeHtml(row.value)}</span></span>
+					<span>${escapeHtml(row.name)}: <span style="font-weight: 500;${row.muted ? ` color: ${helper};` : ''}">${escapeHtml(row.value)}</span></span>
 				</div>`
 		)
 		.join('');
@@ -80,6 +82,29 @@ export function hoverPanel(title, rows, { swatch = 'square', total } = {}) {
 			${header}
 			<div style="display: flex; flex-direction: column; gap: 2px;">${items}</div>
 		</div>`;
+}
+
+/**
+ * Hover panel rows for a stacked bar: its components top to bottom (stack
+ * order) with their values. China-specific components (series with
+ * custom.chinaOnly) say "Not included" for other economies, which they
+ * aren't estimated for.
+ */
+export function componentRows(points, { economy, unit, scaleTo100 }) {
+	return [...(points ?? [])].reverse().map((point) => {
+		const notIncluded = point.series.options.custom?.chinaOnly && economy !== 'China';
+
+		return {
+			color: point.color,
+			name: point.series.name,
+			value: notIncluded
+				? 'Not included'
+				: scaleTo100
+					? `${point.y.toFixed(1)}%`
+					: formatChartValue(point.y, unit),
+			muted: notIncluded
+		};
+	});
 }
 
 /**
