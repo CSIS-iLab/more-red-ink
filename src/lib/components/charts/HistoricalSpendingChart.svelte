@@ -11,7 +11,7 @@
 		createChartOptions,
 		getCountryColor,
 		shareChartOptions,
-		wholePercentTicks,
+		axisTicks,
 		finishLayout,
 		alignYAxisLabels
 	} from '$lib/utils/chartTheme.js';
@@ -110,7 +110,6 @@
 					chart: {
 						// Straight segments between data points (approved design).
 						type: 'line',
-						spacingTop: 18,
 						events: {
 							render() {
 								finishLayout.call(this);
@@ -137,7 +136,7 @@
 					},
 
 					yAxis: {
-						tickPositioner: unit === 'pct_gdp' ? wholePercentTicks : undefined,
+						tickPositioner: axisTicks(unit),
 						labels: {
 							formatter() {
 								return formatChartAxisValue(this.value, unit);

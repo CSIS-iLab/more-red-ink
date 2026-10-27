@@ -69,35 +69,27 @@ function getPlotRatio(chart) {
 }
 
 /**
- * How many columns the legend forms under the chart, or 0 when it sits
- * beside the chart (approved design): beside the chart only at 1670px and
- * up; otherwise under it in two columns below 960px and three above. On the
- * Share page beside the Receipt, always under the chart in three columns.
+ * True when the legend sits under the chart (approved design): below 1670px,
+ * and always on the Share page beside the Receipt. Otherwise it sits beside
+ * the chart.
  */
-function getLegendColumns(chart) {
-	const width = window.innerWidth;
-
-	if (width < 960) return 2;
-	if (isBesideReceipt(chart) || width < 1670) return 3;
-	return 0;
+function isLegendBelow(chart) {
+	return window.innerWidth < 1670 || isBesideReceipt(chart);
 }
 
 /**
- * When the legend sits under the chart, size its items so they form
- * columns (approved designs). Returns true if the legend changed.
+ * Under the chart, the legend's rows are 4px apart for line charts and 8px
+ * apart for bar charts (approved design; the responsive rule below sets the
+ * bar spacing). Returns true if the legend changed.
  */
-function fitLegendColumns(chart) {
+function fitLegendRows(chart) {
 	const { legend } = chart;
 
-	if (!legend.display) return false;
+	if (!legend.display || legend.options.layout !== 'horizontal') return false;
+	// Highcharts items are 17px tall to Figma's 18px keys, so add 1px.
+	if (chart.options.chart.type !== 'line' || legend.options.itemMarginBottom === 5) return false;
 
-	const columns = getLegendColumns(chart);
-	const padding = legend.options.padding ?? 0;
-	const itemWidth = columns ? Math.floor((chart.chartWidth - padding * 2) / columns) : undefined;
-
-	if (legend.options.itemWidth === itemWidth) return false;
-
-	legend.update({ itemWidth }, false);
+	legend.update({ itemMarginBottom: 5 }, false);
 
 	return true;
 }
@@ -135,18 +127,101 @@ function alignLegendWithAxis(chart) {
 }
 
 /**
+ * How far labels may overhang the chart on each side: into the padding of
+ * the nearest wrapper with padding or a border on that side (the chart's
+ * box on the Visualizer, its column or card on the Share page), stopping
+ * inside that border. Charts' overflow is visible (see ChartContainer).
+ */
+function overflowRoom(chart) {
+	const box = chart.container.getBoundingClientRect();
+	const room = { left: 0, right: 0 };
+
+	for (const side of ['left', 'right']) {
+		const Side = side === 'left' ? 'Left' : 'Right';
+
+		for (let element = chart.renderTo.parentElement; element; element = element.parentElement) {
+			const style = getComputedStyle(element);
+			const border = parseFloat(style[`border${Side}Width`]) || 0;
+
+			if (!border && !(parseFloat(style[`padding${Side}`]) || 0)) continue;
+
+			const rect = element.getBoundingClientRect();
+
+			room[side] = Math.max(
+				0,
+				side === 'right' ? rect.right - border - box.right : box.left - rect.left - border
+			);
+			break;
+		}
+	}
+
+	return room;
+}
+
+/**
+ * Bar total labels (stack totals, or data labels when components are
+ * hidden) can be wider than their column, like "$1,506.74B" on the last bar.
+ * They may overhang the chart into the padding around it; one that would
+ * run past that padding (on phones) moves in just far enough to fit.
+ *
+ * Uses each label's final position (alignAttr, relative to the plot area)
+ * rather than its on-screen position, which can still be animating.
+ */
+function keepTotalLabelsInside(chart) {
+	const labels = [];
+
+	for (const stacks of Object.values(chart.yAxis[0]?.stacking?.stacks ?? {})) {
+		for (const stack of Object.values(stacks)) {
+			if (stack.label) labels.push(stack.label);
+		}
+	}
+
+	for (const series of chart.series) {
+		for (const point of series.points ?? []) {
+			if (point.dataLabel) labels.push(point.dataLabel);
+		}
+	}
+
+	if (!labels.length) return;
+
+	const room = overflowRoom(chart);
+	const minLeft = -room.left;
+	const maxRight = chart.chartWidth + room.right;
+
+	for (const label of labels) {
+		const x = label.alignAttr?.x;
+
+		if (x === undefined || !label.width) continue;
+
+		// The text's edges in chart coordinates (the label box adds padding).
+		const padding = label.padding ?? 0;
+		const textLeft = chart.plotLeft + x + padding;
+		const textRight = chart.plotLeft + x + label.width - padding;
+
+		const shift =
+			textRight > maxRight ? maxRight - textRight : textLeft < minLeft ? minLeft - textLeft : 0;
+
+		if (shift) {
+			label.alignAttr.x = x + shift;
+			label.attr({ x: x + shift });
+		}
+	}
+}
+
+/**
  * After each render, finish the responsive layout:
- * - put an under-chart legend into columns,
+ * - space the rows of an under-chart legend,
  * - line a legend beside a column chart up with the x-axis, then
  * - resize the chart's height so the plot area keeps the approved ratio,
  *   whatever space the title and legend take, growing it further if a
  *   legend beside the chart would otherwise overlap the title.
  * Each change triggers one more render, which then finds nothing to change.
+ * Finally, keep bar total labels within the padding around the chart.
  */
 export function finishLayout() {
 	bindLegendFocus(this);
 
-	if (fitLegendColumns(this) || alignLegendWithAxis(this)) {
+	if (fitLegendRows(this) || alignLegendWithAxis(this)) {
 		this.redraw(false);
 		return;
 	}
@@ -167,7 +242,10 @@ export function finishLayout() {
 
 	if (Math.abs(height - this.chartHeight) > 1) {
 		this.setSize(undefined, height, false);
+		return;
 	}
+
+	keepTotalLabelsInside(this);
 }
 
 /**
@@ -243,6 +321,72 @@ export function setColumnSpacing(chart) {
 	chart.redraw(false);
 }
 
+// Short economy names for x-axis labels that would otherwise tilt.
+const ECONOMY_ABBREVIATIONS = {
+	'United States': 'U.S.',
+	'South Korea': 'S. Korea'
+};
+
+// Full-name label widths, measured once per axis and set of categories.
+const fullLabelWidths = new WeakMap();
+
+function widestFullLabel(axis) {
+	const key = axis.categories.join('|');
+	const cached = fullLabelWidths.get(axis);
+
+	if (cached?.key === key) return cached.width;
+
+	const { renderer } = axis.chart;
+	const style = axis.options.labels.style;
+	const width = Math.max(
+		...axis.categories.map((name) => {
+			const text = renderer.text(String(name), -9999, -9999).css(style).add();
+			const textWidth = text.getBBox().width;
+
+			text.destroy();
+
+			return textWidth;
+		})
+	);
+
+	fullLabelWidths.set(axis, { key, width });
+
+	return width;
+}
+
+/**
+ * x-axis labels for charts with an economy per column: abbreviated
+ * ("U.S.", "S. Korea") whenever the full names wouldn't fit flat, so they
+ * stay flat longer and read better when tilted (see fitEconomyLabels).
+ */
+export const economyAxisLabels = {
+	formatter() {
+		const name = String(this.value);
+
+		return this.axis.options.custom?.abbreviateLabels
+			? (ECONOMY_ABBREVIATIONS[name] ?? name)
+			: name;
+	}
+};
+
+/**
+ * Call after each render with economyAxisLabels: switch between full and
+ * abbreviated names as the space per column changes. Highcharts tilts
+ * labels that are wider than their slot.
+ */
+export function fitEconomyLabels(chart) {
+	const axis = chart.xAxis[0];
+
+	if (!axis?.categories?.length || !axis.transA) return;
+
+	const fullNamesTilt = widestFullLabel(axis) > axis.getSlotWidth();
+
+	if (Boolean(axis.options.custom?.abbreviateLabels) === fullNamesTilt) return;
+
+	axis.update({ custom: { abbreviateLabels: fullNamesTilt } }, false);
+	chart.redraw(false);
+}
+
 /**
  * Options for charts on the Share page. Beside the Receipt (1200px and up)
  * the chart is 16:9 with its legend underneath in three columns
@@ -253,16 +397,46 @@ export const shareChartOptions = {
 };
 
 /**
- * Y-axis ticks at whole percentages for values stored as fractions of GDP
- * (0.01 = 1%), using 1/2/5-style steps so there are at most six intervals.
+ * Y-axis tick positions (approved design), for use as yAxis.tickPositioner:
+ * from 0 up to the first tick at or above the tallest value, on the smallest
+ * 1/2/5 step that gives at most six intervals (so at least three, never
+ * just a top and bottom tick). % of GDP axes (fractions: 0.01 = 1%) keep
+ * whole-percent steps whenever those still give two or more intervals.
  */
-export function wholePercentTicks() {
-	const max = Math.max(this.dataMax ?? 0, 0);
-	const steps = [0.01, 0.02, 0.05, 0.1, 0.2, 0.5, 1];
-	const step = steps.find((candidate) => max / candidate <= 6) ?? 1;
-	const count = Math.max(1, Math.ceil(max / step - 1e-9));
+export function axisTicks(unit) {
+	return function () {
+		const max = Math.max(this.dataMax ?? 0, 0);
+		const wholePercent = unit === 'pct_gdp' && max > 0.01;
+		const step = niceStep(max, wholePercent ? 0.01 : 0) || (unit === 'pct_gdp' ? 0.01 : 1000);
+		const count = Math.max(1, Math.ceil(max / step - 1e-9));
+		// Round away floating-point noise (e.g. 3 * 0.002).
+		const precision = 10 ** Math.max(0, -Math.floor(Math.log10(step)) + 2);
 
-	return Array.from({ length: count + 1 }, (_, index) => Math.round(index * step * 100) / 100);
+		return Array.from(
+			{ length: count + 1 },
+			(_, index) => Math.round(index * step * precision) / precision
+		);
+	};
+}
+
+/**
+ * The smallest 1/2/5-style step of at least `minimum` that covers `max` in
+ * at most six intervals (0 if `max` is 0).
+ */
+function niceStep(max, minimum) {
+	if (max <= 0) return 0;
+
+	let magnitude = 10 ** Math.floor(Math.log10(max / 6));
+
+	for (;;) {
+		for (const multiple of [1, 2, 5]) {
+			const step = multiple * magnitude;
+
+			if (step >= minimum && max / step <= 6 + 1e-9) return step;
+		}
+
+		magnitude *= 10;
+	}
 }
 
 /**
@@ -310,8 +484,9 @@ export function createChartOptions(...optionSets) {
 	const theme = {
 		chart: {
 			backgroundColor: 'transparent',
-			// Room at the top for the highest axis label and bar totals.
-			spacing: [8, 0, 0, 0],
+			// The same gap below the chart title for every chart type, with room
+			// for the highest axis label and bar totals.
+			spacing: [28, 0, 0, 0],
 			style: { fontFamily: fontLabel },
 			events: { render: finishLayout }
 		},
@@ -423,10 +598,11 @@ export function createChartOptions(...optionSets) {
 		responsive: {
 			rules: [
 				{
-					// The legend moves under the chart, in columns (see getLegendColumns).
+					// The legend moves under the chart (see isLegendBelow): keys flow
+					// in rows across the chart's width and wrap as needed.
 					condition: {
 						callback() {
-							return getLegendColumns(this) > 0;
+							return isLegendBelow(this);
 						}
 					},
 					chartOptions: {
@@ -435,10 +611,20 @@ export function createChartOptions(...optionSets) {
 							align: 'left',
 							verticalAlign: 'bottom',
 							width: '100%',
-							itemWidth: undefined,
-							alignColumns: true,
-							itemDistance: 24,
-							margin: 24,
+							alignColumns: false,
+							padding: 0,
+							// 28px below the axis labels, 16px between keys, 8px from each
+							// swatch to its label, and rows 8px apart. (Highcharts measures
+							// from its label area and its items are 1px shorter than Figma's
+							// keys, so margin and row spacing are 3px and 1px larger.)
+							margin: 31,
+							itemDistance: 16,
+							symbolPadding: 8,
+							itemMarginTop: 0,
+							itemMarginBottom: 9,
+							// Bar charts list components from the bottom of the stack up,
+							// starting with Direct Subsidies.
+							reversed: false,
 							// Undo alignLegendWithAxis()'s offset from beside the chart.
 							y: 0
 						}
