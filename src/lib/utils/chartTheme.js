@@ -127,6 +127,88 @@ function alignLegendWithAxis(chart) {
 }
 
 /**
+ * How far labels may overhang the chart on each side: into the padding of
+ * the nearest wrapper with padding or a border on that side (the chart's
+ * box on the Visualizer, its column or card on the Share page), stopping
+ * inside that border. Charts' overflow is visible (see ChartContainer).
+ */
+function overflowRoom(chart) {
+	const box = chart.container.getBoundingClientRect();
+	const room = { left: 0, right: 0 };
+
+	for (const side of ['left', 'right']) {
+		const Side = side === 'left' ? 'Left' : 'Right';
+
+		for (let element = chart.renderTo.parentElement; element; element = element.parentElement) {
+			const style = getComputedStyle(element);
+			const border = parseFloat(style[`border${Side}Width`]) || 0;
+
+			if (!border && !(parseFloat(style[`padding${Side}`]) || 0)) continue;
+
+			const rect = element.getBoundingClientRect();
+
+			room[side] = Math.max(
+				0,
+				side === 'right' ? rect.right - border - box.right : box.left - rect.left - border
+			);
+			break;
+		}
+	}
+
+	return room;
+}
+
+/**
+ * Bar total labels (stack totals, or data labels when components are
+ * hidden) can be wider than their column, like "$1,506.74B" on the last bar.
+ * They may overhang the chart into the padding around it; one that would
+ * run past that padding (on phones) moves in just far enough to fit.
+ *
+ * Uses each label's final position (alignAttr, relative to the plot area)
+ * rather than its on-screen position, which can still be animating.
+ */
+function keepTotalLabelsInside(chart) {
+	const labels = [];
+
+	for (const stacks of Object.values(chart.yAxis[0]?.stacking?.stacks ?? {})) {
+		for (const stack of Object.values(stacks)) {
+			if (stack.label) labels.push(stack.label);
+		}
+	}
+
+	for (const series of chart.series) {
+		for (const point of series.points ?? []) {
+			if (point.dataLabel) labels.push(point.dataLabel);
+		}
+	}
+
+	if (!labels.length) return;
+
+	const room = overflowRoom(chart);
+	const minLeft = -room.left;
+	const maxRight = chart.chartWidth + room.right;
+
+	for (const label of labels) {
+		const x = label.alignAttr?.x;
+
+		if (x === undefined || !label.width) continue;
+
+		// The text's edges in chart coordinates (the label box adds padding).
+		const padding = label.padding ?? 0;
+		const textLeft = chart.plotLeft + x + padding;
+		const textRight = chart.plotLeft + x + label.width - padding;
+
+		const shift =
+			textRight > maxRight ? maxRight - textRight : textLeft < minLeft ? minLeft - textLeft : 0;
+
+		if (shift) {
+			label.alignAttr.x = x + shift;
+			label.attr({ x: x + shift });
+		}
+	}
+}
+
+/**
  * After each render, finish the responsive layout:
  * - space the rows of an under-chart legend,
  * - line a legend beside a column chart up with the x-axis, then
@@ -134,6 +216,7 @@ function alignLegendWithAxis(chart) {
  *   whatever space the title and legend take, growing it further if a
  *   legend beside the chart would otherwise overlap the title.
  * Each change triggers one more render, which then finds nothing to change.
+ * Finally, keep bar total labels within the padding around the chart.
  */
 export function finishLayout() {
 	bindLegendFocus(this);
@@ -159,7 +242,10 @@ export function finishLayout() {
 
 	if (Math.abs(height - this.chartHeight) > 1) {
 		this.setSize(undefined, height, false);
+		return;
 	}
+
+	keepTotalLabelsInside(this);
 }
 
 /**

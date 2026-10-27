@@ -97,6 +97,16 @@
 		background: var(--color-surface-primary);
 	}
 
+	/* Labels that overhang the chart's edges (e.g. a wide total above the
+	   last bar) show in the padding around the chart instead of being cut
+	   off (see keepTotalLabelsInside in chartTheme.js). Highcharts sets
+	   overflow: hidden inline, hence !important. */
+	.chart-container__content :global([data-highcharts-chart]),
+	.chart-container__content :global(.highcharts-container),
+	.chart-container__content :global(.highcharts-root) {
+		overflow: visible !important;
+	}
+
 	/* Chart title and subtitle, above the Highcharts chart. */
 	.chart-container__heading {
 		display: flex;
