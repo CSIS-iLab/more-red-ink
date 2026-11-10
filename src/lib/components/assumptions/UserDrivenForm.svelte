@@ -121,6 +121,16 @@
 		gap: 3rem;
 	}
 
+	/* Reduce spacing below option cards on User Driven only. */
+	.user-driven-form :global(.choice-group__options) {
+		margin-bottom: 1.25rem; /* 20px */
+	}
+
+	/* Remove bottom margin when validation error follows */
+	.user-driven-form :global(.choice-group__options:has(+ .choice-group__error)) {
+		margin-bottom: 0;
+	}
+
 	.user-driven-form h1,
 	.user-driven-form h2,
 	.user-driven-form p {
@@ -158,7 +168,7 @@
 		display: flex;
 		flex-direction: column;
 		gap: 1.25rem;
-    margin-top: 3rem;
+		margin-top: 3rem;
 	}
 
 	.user-driven-form__always-included {
@@ -178,7 +188,7 @@
 		gap: 0.75rem;
 	}
 
-  #chinaOnly-heading {
-    margin-bottom: 18px;
-  }
+	#chinaOnly-heading {
+		margin-bottom: 18px;
+	}
 </style>
