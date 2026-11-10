@@ -20,6 +20,17 @@
 	let loading = $state(true);
 	let error = $state(null);
 
+	let historicalSettings = $derived($calculatorState.historical);
+	let cumulativeSettings = $derived($calculatorState.cumulative);
+	let yearSpecificSettings = $derived($calculatorState.yearSpecific);
+	let economySpecificSettings = $derived($calculatorState.economySpecific);
+
+	let mode = $derived($calculatorState.mode);
+
+	let assumptions = $derived(
+		mode === 'fastTrack' ? $calculatorState.fastTrackChoice : $calculatorState.userDrivenChoices
+	);
+
 	beforeNavigate(({ to }) => {
 		if (to?.route?.id === '/fast-track' || to?.route?.id === '/user-driven') {
 			calculatorState.resetChartSettings();
@@ -112,7 +123,7 @@
 		{:else}
 			<HistoricalSpendingChart
 				data={resolvedData}
-				unit={$calculatorState.historical.unit}
+				unit={historicalSettings.unit}
 				onUnitChange={(value) => {
 					calculatorState.updateChartSettings('historical', { unit: value });
 				}}
@@ -121,9 +132,9 @@
 
 			<CumulativeSpendingChart
 				data={resolvedData}
-				unit={$calculatorState.cumulative.unit}
-				showComponents={$calculatorState.cumulative.showComponents}
-				scaleTo100={$calculatorState.cumulative.scaleTo100}
+				unit={cumulativeSettings.unit}
+				showComponents={cumulativeSettings.showComponents}
+				scaleTo100={cumulativeSettings.scaleTo100}
 				onScaleTo100Change={(value) => {
 					calculatorState.updateChartSettings('cumulative', { scaleTo100: value });
 				}}
@@ -134,18 +145,16 @@
 					calculatorState.updateChartSettings('cumulative', { showComponents: value });
 				}}
 				share={shareUrl('cumulative')}
-				mode={$calculatorState.mode}
-				assumptions={$calculatorState.mode === 'fastTrack'
-					? $calculatorState.fastTrackChoice
-					: $calculatorState.userDrivenChoices}
+				{mode}
+				{assumptions}
 			/>
 
 			<YearSpecificChart
 				data={resolvedData}
-				year={$calculatorState.yearSpecific.year}
-				unit={$calculatorState.yearSpecific.unit}
-				showComponents={$calculatorState.yearSpecific.showComponents}
-				scaleTo100={$calculatorState.yearSpecific.scaleTo100}
+				year={yearSpecificSettings.year}
+				unit={yearSpecificSettings.unit}
+				showComponents={yearSpecificSettings.showComponents}
+				scaleTo100={yearSpecificSettings.scaleTo100}
 				onYearChange={(value) => {
 					calculatorState.updateChartSettings('yearSpecific', { year: value });
 				}}
@@ -159,18 +168,16 @@
 					calculatorState.updateChartSettings('yearSpecific', { scaleTo100: value });
 				}}
 				share={shareUrl('yearSpecific')}
-				mode={$calculatorState.mode}
-				assumptions={$calculatorState.mode === 'fastTrack'
-					? $calculatorState.fastTrackChoice
-					: $calculatorState.userDrivenChoices}
+				{mode}
+				{assumptions}
 			/>
 
 			<EconomySpecificChart
 				data={resolvedData}
-				economy={$calculatorState.economySpecific.economy}
-				unit={$calculatorState.economySpecific.unit}
-				showComponents={$calculatorState.economySpecific.showComponents}
-				scaleTo100={$calculatorState.economySpecific.scaleTo100}
+				economy={economySpecificSettings.economy}
+				unit={economySpecificSettings.unit}
+				showComponents={economySpecificSettings.showComponents}
+				scaleTo100={economySpecificSettings.scaleTo100}
 				onScaleTo100Change={(value) => {
 					calculatorState.updateChartSettings('economySpecific', { scaleTo100: value });
 				}}
@@ -184,10 +191,8 @@
 					calculatorState.updateChartSettings('economySpecific', { showComponents: value });
 				}}
 				share={shareUrl('economySpecific')}
-				mode={$calculatorState.mode}
-				assumptions={$calculatorState.mode === 'fastTrack'
-					? $calculatorState.fastTrackChoice
-					: $calculatorState.userDrivenChoices}
+				{mode}
+				{assumptions}
 			/>
 		{/if}
 	</div>
