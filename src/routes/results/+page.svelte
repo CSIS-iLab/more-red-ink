@@ -271,6 +271,11 @@
 		display: none;
 	}
 
+	.visualizer__new-estimate-button :global(.action) {
+		min-height: 46px;
+		font-size: 18px;
+	}
+
 	@media (max-width: 639px) {
 		.visualizer__new-estimate-button {
 			display: none;
