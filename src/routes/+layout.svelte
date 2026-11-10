@@ -16,7 +16,7 @@
 		'/': 'Home',
 		'/fast-track': 'Fast Track',
 		'/user-driven': 'User Driven',
-		'/visualizer': 'Visualizer',
+		'/results': 'Results',
 		'/share': 'Share'
 	};
 
@@ -37,7 +37,7 @@
 
 	let pageName = $derived(
 		pageNameOverride.value ??
-			(page.url.pathname === '/visualizer' ? resultsPageName : (pageNames[page.url.pathname] ?? ''))
+			(page.url.pathname === '/results' ? resultsPageName : (pageNames[page.url.pathname] ?? ''))
 	);
 
 	onMount(() => {
