@@ -38,6 +38,7 @@
 		{/if}
 
 		{@render children?.()}
+		<p class="chart-container__source text-label-small">Source: CSIS Industrial Policy Spending Calculator</p>
 	</div>
 
 	{#if !frozen}
@@ -164,6 +165,13 @@
 	.chart-container--frozen .chart-container__content {
 		padding: 0;
 		border: 0;
+	}
+
+  /*28px to chart, less the 11px from the chart spacing*/
+	.chart-container__source {
+		margin: 1.063rem 0 0;
+		color: var(--color-text-helper);
+		line-height: 1.2;
 	}
 
 	@media (max-width: 1439px) {
