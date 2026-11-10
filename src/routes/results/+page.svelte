@@ -2,7 +2,7 @@
 	import { onMount } from 'svelte';
 	import { goto, beforeNavigate } from '$app/navigation';
 	import { resolve } from '$app/paths';
-
+	import Button from '$lib/components/controls/Button.svelte';
 	import HistoricalSpendingChart from '$lib/components/charts/HistoricalSpendingChart.svelte';
 	import CumulativeSpendingChart from '$lib/components/charts/CumulativeSpendingChart.svelte';
 	import YearSpecificChart from '$lib/components/charts/YearSpecificChart.svelte';
@@ -113,7 +113,16 @@
 				<BackLink href={backHref} />
 
 				<!-- Opens a fresh estimate in a new tab; this one keeps its estimate. -->
-				<TextLink href={getNewEstimateHref()} newTab>Create a new estimate</TextLink>
+				<div class="visualizer__new-estimate-button">
+					<Button variant="ghost" href={getNewEstimateHref()} target="_blank" rel="noopener">
+						Create a new estimate
+						<span class="visually-hidden">(opens in a new tab)</span>
+					</Button>
+				</div>
+
+				<div class="visualizer__new-estimate-link">
+					<TextLink href={getNewEstimateHref()} newTab>Create a new estimate</TextLink>
+				</div>
 			</nav>
 
 			<h1 class="mobile-page-title">{resultsPageName}</h1>
@@ -252,6 +261,38 @@
 		align-items: center;
 		justify-content: space-between;
 		gap: 1rem;
+	}
+
+	.visualizer__new-estimate-button {
+		display: block;
+	}
+
+	.visualizer__new-estimate-link {
+		display: none;
+	}
+
+	.visualizer__new-estimate-button :global(.action) {
+		min-height: 46px;
+		font-size: 18px;
+	}
+
+	@media (max-width: 639px) {
+		.visualizer__new-estimate-button {
+			display: none;
+		}
+
+		.visualizer__new-estimate-link {
+			display: block;
+		}
+	}
+
+	.visually-hidden {
+		position: absolute;
+		width: 1px;
+		height: 1px;
+		overflow: hidden;
+		clip-path: inset(50%);
+		white-space: nowrap;
 	}
 
 	.visualizer__summary-inner :global(.receipt) {
