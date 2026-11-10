@@ -1,6 +1,7 @@
 <script>
 	import { onMount, setContext } from 'svelte';
 	import '../app.css';
+	import { calculatorState } from '$lib/stores/calculatorState';
 	import { page } from '$app/state';
 	import { loadData } from '$lib/data/loadData.js';
 	import favicon from '$lib/assets/favicon.svg';
@@ -15,7 +16,7 @@
 		'/': 'Home',
 		'/fast-track': 'Fast Track',
 		'/user-driven': 'User Driven',
-		'/visualizer': 'Visualizer',
+		'/results': 'Results',
 		'/share': 'Share'
 	};
 
@@ -24,7 +25,20 @@
 	const pageNameOverride = $state({ value: null });
 	setContext('pageNameOverride', pageNameOverride);
 
-	let pageName = $derived(pageNameOverride.value ?? pageNames[page.url.pathname] ?? '');
+	let resultsPageName = $derived(
+		$calculatorState.mode === 'userDriven'
+			? 'The Results (User Driven)'
+			: $calculatorState.mode === 'fastTrack'
+				? $calculatorState.fastTrackChoice === 'minimum'
+					? 'The Results (Minimum)'
+					: 'The Results (Maximum)'
+				: 'The Results'
+	);
+
+	let pageName = $derived(
+		pageNameOverride.value ??
+			(page.url.pathname === '/results' ? resultsPageName : (pageNames[page.url.pathname] ?? ''))
+	);
 
 	onMount(() => {
 		loadData().catch((error) => {

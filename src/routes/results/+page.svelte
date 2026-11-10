@@ -93,7 +93,7 @@
 </script>
 
 <svelte:head>
-	<title>Visualizer | More Red Ink Calculator</title>
+	<title>The Results | More Red Ink Calculator</title>
 </svelte:head>
 
 <div class="visualizer">

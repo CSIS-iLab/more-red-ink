@@ -41,7 +41,7 @@
 			return;
 		}
 
-		goto(resolve('/visualizer'));
+		goto(resolve('/results'));
 	}
 </script>
 
@@ -67,10 +67,10 @@
 
 	<div class="fast-track-form__actions">
 		<!-- aria-disabled (not disabled) keeps the button clickable so it can explain what's missing. -->
-		<Button aria-disabled={!isComplete || undefined} onclick={handleNext}>Next: Visualizer</Button>
+		<Button aria-disabled={!isComplete || undefined} onclick={handleNext}>Next: the results</Button>
 
 		{#if showError}
-			<ErrorMessage>Complete your assumptions to view the Visualizer.</ErrorMessage>
+			<ErrorMessage>Complete your assumptions to view the the results.</ErrorMessage>
 		{/if}
 	</div>
 </div>

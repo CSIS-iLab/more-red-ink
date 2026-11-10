@@ -60,7 +60,7 @@
 			return;
 		}
 
-		goto(resolve('/visualizer'));
+		goto(resolve('/results'));
 	}
 </script>
 
@@ -106,10 +106,10 @@
 
 	<div class="user-driven-form__actions">
 		<!-- aria-disabled (not disabled) keeps the button clickable so it can explain what's missing. -->
-		<Button aria-disabled={!isComplete || undefined} onclick={handleNext}>Next: Visualizer</Button>
+		<Button aria-disabled={!isComplete || undefined} onclick={handleNext}>Next: the results</Button>
 
 		{#if showErrors}
-			<ErrorMessage>Complete your assumptions to view the Visualizer.</ErrorMessage>
+			<ErrorMessage>Complete your assumptions to view the the results.</ErrorMessage>
 		{/if}
 	</div>
 </div>
