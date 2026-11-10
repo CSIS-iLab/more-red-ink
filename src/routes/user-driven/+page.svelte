@@ -36,6 +36,8 @@
 		<BackLink href="/" />
 	</div>
 
+	<h2 class="mobile-page-title">User Driven</h2>
+
 	<UserDrivenForm {showIncompleteMessage} />
 </div>
 
@@ -50,9 +52,28 @@
 		margin-bottom: 4.5rem; /* 72px */
 	}
 
+	.mobile-page-title {
+		display: none;
+		margin: 0;
+		color: var(--color-navbar-text);
+		font-family: var(--font-label);
+		font-size: 26px;
+		font-weight: var(--font-weight-medium);
+		line-height: 1.2;
+	}
+
 	@media (max-width: 640px) {
 		.user-driven {
 			padding: 2rem 0 4rem;
+		}
+
+		.back-link-wrapper {
+			margin-bottom: 0;
+		}
+
+		.mobile-page-title {
+			display: block;
+			margin: 36px 0;
 		}
 	}
 </style>

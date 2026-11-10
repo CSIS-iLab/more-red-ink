@@ -27,6 +27,16 @@
 
 	let mode = $derived($calculatorState.mode);
 
+	let resultsPageName = $derived(
+		$calculatorState.mode === 'userDriven'
+			? 'The Results (User Driven)'
+			: $calculatorState.mode === 'fastTrack'
+				? $calculatorState.fastTrackChoice === 'minimum'
+					? 'The Results (Minimum)'
+					: 'The Results (Maximum)'
+				: 'The Results'
+	);
+
 	let assumptions = $derived(
 		mode === 'fastTrack' ? $calculatorState.fastTrackChoice : $calculatorState.userDrivenChoices
 	);
@@ -105,6 +115,8 @@
 				<!-- Opens a fresh estimate in a new tab; this one keeps its estimate. -->
 				<TextLink href={getNewEstimateHref()} newTab>Create a new estimate</TextLink>
 			</nav>
+
+			<h1 class="mobile-page-title">{resultsPageName}</h1>
 
 			<Receipt
 				mode={$calculatorState.mode}
@@ -340,6 +352,16 @@
 		}
 	}
 
+	.mobile-page-title {
+		display: none;
+		margin: 0;
+		color: var(--color-navbar-text);
+		font-family: var(--font-label);
+		font-size: 26px;
+		font-weight: var(--font-weight-medium);
+		line-height: 1.2;
+	}
+
 	@media (max-width: 959px) {
 		.visualizer__summary-inner {
 			--grid-columns: 8;
@@ -355,8 +377,14 @@
 		.visualizer__summary-inner {
 			--text-width: 100%;
 
+			gap: 0;
 			padding-top: 2rem;
 			padding-bottom: 2rem;
+		}
+
+		.mobile-page-title {
+			display: block;
+			margin: 36px 0;
 		}
 
 		.visualizer__charts {
