@@ -22,19 +22,6 @@
 
 <header class="app-header">
 	<div class="app-header__inner">
-		<div class="app-header__titles">
-			<a href={resolve('/')} class="app-header__app-name" onclick={handleHomeClick}>
-				Industrial Policy Spending Calculator
-			</a>
-
-			{#if pageName}
-				<div class="app-header__divider" aria-hidden="true"></div>
-				<span class="app-header__page-name" aria-current="page">
-					{pageName}
-				</span>
-			{/if}
-		</div>
-
 		<!-- External link, so resolve() doesn't apply. -->
 		<!-- eslint-disable svelte/no-navigation-without-resolve -->
 		<a
@@ -63,7 +50,34 @@
 				/>
 			</svg>
 		</a>
+		<div class="app-header__divider" aria-hidden="true"></div>
+
 		<!-- eslint-enable svelte/no-navigation-without-resolve -->
+		<div class="app-header__titles">
+			<a href={resolve('/')} class="app-header__app-name" onclick={handleHomeClick}>
+				Industrial Policy Spending Calculator
+			</a>
+
+			{#if pageName}
+				<span class="app-header__page-name" aria-current="page">
+					{pageName}
+				</span>
+			{/if}
+		</div>
+		<nav class="app-header__nav" aria-label="Main navigation">
+			<a href={resolve('/')} class="text-label-x-small" onclick={handleHomeClick}> Home </a>
+
+			<a
+				href="https://www.csis.org/programs/chinese-business-and-economics"
+				class="text-label-x-small"
+				target="_blank"
+				rel="noopener noreferrer"
+			>
+				More Red Ink
+			</a>
+
+			<a href={resolve('/about')} class="text-label-x-small"> About </a>
+		</nav>
 	</div>
 </header>
 
@@ -85,19 +99,19 @@
 		height: 100%;
 		display: flex;
 		align-items: center;
-		gap: 12px;
-		padding: 0 20px;
+		gap: 0;
+		padding: 16px 20px 12px;
+		justify-content: space-between;
 	}
 
 	.app-header__titles {
-		height: 52px;
 		display: flex;
 		align-items: center;
 		gap: 24px;
 		min-width: 0;
 		flex: 1;
+		padding-left: 24px;
 	}
-
 	.app-header__titles {
 		> a {
 			color: var(--color-navbar-text);
@@ -115,9 +129,9 @@
 			font-weight: var(--font-weight-medium);
 			line-height: 120%;
 
-      @media (width >= 960px) {
-        font-size: 29px;
-      }
+			@media (width >= 960px) {
+				font-size: 29px;
+			}
 		}
 	}
 
@@ -143,9 +157,11 @@
 	}
 
 	.app-header__divider {
-		align-self: stretch;
+		align-self: center;
 		flex: 0 0 1px;
 		width: 1px;
+		height: 35px;
+		margin-left: 24px;
 		background-color: var(--color-border-subtle);
 	}
 
@@ -158,7 +174,6 @@
 		flex: 0 0 auto;
 		display: flex;
 		align-items: center;
-		margin-left: auto;
 		color: var(--color-text-primary);
 		transition: color 0.3s ease;
 	}
@@ -169,12 +184,42 @@
 		height: auto;
 	}
 
+	.app-header__nav {
+		display: flex;
+		align-items: flex-end;
+		align-self: stretch;
+		gap: 24px;
+		margin-left: auto;
+	}
+
+	.app-header__nav a {
+		color: var(--color-navbar-text);
+		text-decoration: none;
+		white-space: nowrap;
+		transition: color 0.3s ease;
+	}
+
+	.app-header__nav a:hover,
+	.app-header__nav a:focus-visible {
+		color: var(--color-blue-800);
+	}
+
+	.app-header__nav a:focus-visible {
+		outline: 2px solid var(--color-text-primary);
+		outline-offset: 2px;
+	}
+
+	@media (max-width: 900px) {
+		.app-header__nav {
+			display: none;
+		}
+	}
+
 	@media (max-width: 470px) {
 		.app-header__titles {
 			flex: 0 0 auto;
 		}
 
-		.app-header__divider,
 		.app-header__page-name {
 			display: none;
 		}
