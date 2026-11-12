@@ -88,7 +88,7 @@
 				Industrial Policy Spending Calculator
 			</a>
 
-			{#if pageName}
+			{#if pageName && page.url.pathname !== resolve('/')}
 				<span class="app-header__page-name" aria-current="page">
 					{pageName}
 				</span>
@@ -349,6 +349,7 @@
 			display: flex;
 			flex-direction: column;
 			width: 298px;
+			max-width: 100%;
 			background: var(--color-menu-enabled);
 			box-shadow: 0 4px 12px rgb(0 0 0 / 0.12);
 		}
