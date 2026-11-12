@@ -1,10 +1,13 @@
 <script>
 	import { goto } from '$app/navigation';
+	import { page } from '$app/state';
 	import { resolve } from '$app/paths';
 	import { calculatorState } from '$lib/stores/calculatorState.js';
 	import { CSIS_URL } from '$lib/utils/links.js';
 
 	let { pageName = '' } = $props();
+
+	let menuOpen = $state(false);
 
 	// The calculator name starts over: it goes Home and clears the estimate
 	// in progress. Clicks that open a new tab or window are left alone.
@@ -12,6 +15,8 @@
 		if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) {
 			return;
 		}
+
+		menuOpen = false;
 
 		event.preventDefault();
 		// Navigate first, so the page being left doesn't redraw without an estimate.
@@ -78,7 +83,55 @@
 
 			<a href={resolve('/about')} class="text-label-x-small"> About </a>
 		</nav>
+		<button
+			class="app-header__menu-toggle"
+			type="button"
+			aria-label={menuOpen ? 'Close navigation menu' : 'Open navigation menu'}
+			aria-expanded={menuOpen}
+			aria-controls="mobile-navigation"
+			onclick={() => (menuOpen = !menuOpen)}
+		>
+			<span class="app-header__hamburger" aria-hidden="true">
+				<span></span>
+				<span></span>
+				<span></span>
+			</span>
+		</button>
 	</div>
+	<nav
+		id="mobile-navigation"
+		class="app-header__mobile-nav"
+		aria-label="Mobile navigation"
+		hidden={!menuOpen}
+	>
+		<a
+			href={resolve('/')}
+			class="text-label-x-small"
+			aria-current={page.url.pathname === resolve('/') ? 'page' : undefined}
+			onclick={handleHomeClick}
+		>
+			Home
+		</a>
+
+		<a
+			href="https://www.csis.org/programs/chinese-business-and-economics"
+			class="text-label-x-small"
+			target="_blank"
+			rel="noopener noreferrer"
+			onclick={() => (menuOpen = false)}
+		>
+			More Red Ink
+		</a>
+
+		<a
+			href={resolve('/about')}
+			class="text-label-x-small"
+			aria-current={page.url.pathname === resolve('/about') ? 'page' : undefined}
+			onclick={() => (menuOpen = false)}
+		>
+			About
+		</a>
+	</nav>
 </header>
 
 <style>
@@ -212,9 +265,93 @@
 		outline-offset: 2px;
 	}
 
+	/* Hamburger button */
+
+	.app-header__menu-toggle {
+		display: none;
+		align-items: center;
+		justify-content: center;
+		flex: 0 0 auto;
+		width: 44px;
+		height: 44px;
+		margin-left: auto;
+		padding: 0;
+		border: 0;
+		background: transparent;
+		color: var(--color-text-primary);
+		cursor: pointer;
+	}
+
+	.app-header__hamburger {
+		display: flex;
+		flex-direction: column;
+		justify-content: space-between;
+		width: 18px;
+		height: 14px;
+	}
+
+	.app-header__hamburger span {
+		display: block;
+		width: 100%;
+		height: 2px;
+		background: currentColor;
+	}
+
+	.app-header__menu-toggle:focus-visible {
+		outline: 2px solid var(--color-blue-800);
+		outline-offset: 2px;
+	}
+
+	/* Mobile navigation */
+
+	.app-header__mobile-nav {
+		display: none;
+	}
+
 	@media (max-width: 900px) {
 		.app-header__nav {
 			display: none;
+		}
+
+		.app-header__menu-toggle {
+			display: flex;
+		}
+
+		.app-header__mobile-nav:not([hidden]) {
+			position: absolute;
+			top: 100%;
+			right: 0;
+			display: flex;
+			flex-direction: column;
+			width: 200px;
+			background: var(--color-menu-enabled);
+			box-shadow: 0 4px 12px rgb(0 0 0 / 0.12);
+		}
+
+		.app-header__mobile-nav a {
+			display: flex;
+			align-items: center;
+			min-height: 2.75rem;
+			padding: 0.5rem 1rem;
+			border-bottom: 1px solid var(--color-menu-divider);
+			background: var(--color-menu-enabled);
+			color: var(--color-text-primary);
+			text-decoration: none;
+			line-height: 1.2;
+		}
+
+		.app-header__mobile-nav a:last-child {
+			border-bottom: 0;
+		}
+
+		.app-header__mobile-nav a:hover,
+		.app-header__mobile-nav a:focus-visible {
+			background: var(--color-menu-hover);
+			outline: none;
+		}
+
+		.app-header__mobile-nav :global(a[aria-current='page']) {
+			background: var(--color-sky-50);
 		}
 	}
 
