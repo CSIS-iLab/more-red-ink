@@ -1,8 +1,5 @@
 <script>
-  import { resolve } from '$app/paths';
-
-  let { data } = $props();
-  let homeContent = $derived(data.homeContent);
+	import { resolve } from '$app/paths';
 </script>
 
 <svelte:head>
@@ -10,47 +7,48 @@
 </svelte:head>
 
 <div class="home-page">
-	{#if homeContent}
-		{#each homeContent as content (content.id)}
-			<header>
-				<div class="text-header-block">
-					<h1 class="title">{content.title}</h1>
-				</div>
-				<figure class="img-header">
-					<img src={content.img_url} alt={content.img_alt} width="1024" height="1024" />
-				</figure>
-			</header>
-			<div class="home__content">
-				<!-- The Visualizer's "Create a new estimate" link scrolls here. -->
-				<section id="using-the-calculator" class="instructions">
-					{#each content.how_to as paragraph, i (i)}
-						<p>
-							{paragraph}
-						</p>
-					{/each}
-				</section>
+	<header class="home-hero">
+		<img src="/images/hero.jpg" alt="" width="1440" height="480" fetchpriority="high" />
+	</header>
+	<div class="home__content">
+		<!-- The Visualizer's "Create a new estimate" link scrolls here. -->
+		<section id="using-the-calculator" class="instructions">
+			<p>
+				The Industrial Policy Spending Calculator lets you create industrial policy spending
+				estimates for China and seven other economies —Brazil, France, Germany, Japan, South Korea,
+				Taiwan, and the United States— for the years 2019-2024 through the building of a "stack"
+				based on the cumulative total of multiple industrial policy spending tools, including fiscal
+				subsidies, tax breaks, below-market credit, government investment funds, government
+				procurement, and other measures.
+			</p>
+			<p>
+				Reasonable alternative assumptions can be made about several of the tools in the stack.
+				Based on assumptions you select, the calculator will present results through multiple charts
+				that let you compare industrial policy spending across the eight economies as well as
+				explore each individual economy.
+			</p>
+			<p>Select a mode to start.</p>
+		</section>
 
-				<div class="options">
-					<div class="mode-options">
-						<a class="mode-option" href={resolve('/fast-track')}>
-							<span class="mode-option__title">Fast Track</span>
-							<span class="mode-option__desc">
-								Select this mode to see either the lowest or highest estimates.
-							</span>
-						</a>
+		<div class="options">
+			<div class="mode-options">
+				<a class="mode-option" href={resolve('/fast-track')}>
+					<span class="mode-option__title">Fast Track</span>
+					<span class="mode-option__desc">
+						Select this mode to see either the lowest or highest estimates.
+					</span>
+				</a>
 
-						<a class="mode-option" href={resolve('/user-driven')}>
-							<span class="mode-option__title">User Driven</span>
-							<span class="mode-option__desc">
-								Select this mode to have more granular control over the assumptions about the
-								various tools that produce the estimate.
-							</span>
-						</a>
-					</div>
-				</div>
+				<a class="mode-option" href={resolve('/user-driven')}>
+					<span class="mode-option__title">User Driven</span>
+					<span class="mode-option__desc">
+						Select this mode to have more granular control over the assumptions about the various
+						tools that produce the estimate.
+					</span>
+				</a>
 			</div>
-		{/each}
-	{/if}
+		</div>
+	</div>
 </div>
 
 <style>
@@ -59,137 +57,22 @@
 	}
 	.home-page {
 		min-width: 320px;
-		padding-inline: var(--layout-guide-specs-xs-320-margin-5-vw, 16px);
 		padding-block-end: var(--global-spacing-section-vertical-padding-small, 36px);
-
-		@media (width >= 640px) {
-			padding-inline: var(--layout-guide-specs-s-640-margin-5-vw, 32px);
-		}
-
-		@media (width >= 960px) {
-			padding-inline: var(--layout-guide-specs-m-960-margin-5-vw, 48px);
-		}
-
-		@media (width >= 1280px) {
-			padding-inline: var(--layout-guide-specs-l-1280-margin-5-vw, 64px);
-		}
-
-		@media (width >= 1440px) {
-			padding-inline: var(--layout-guide-specs-l-1280-margin-5-vw, 80px);
-		}
 	}
 
 	/* -------------------------------------------------------------------------- */
-	/*                                   HEADER                                   */
+	/*                                   HERO                                     */
 	/* -------------------------------------------------------------------------- */
-	header {
-		display: flex;
-		flex-direction: column;
-		justify-content: center;
-		align-items: center;
-		min-height: calc(100vh - 64px); /* fallback for older browsers */
-		min-height: calc(100dvh - var(--navbar-height, 64px));
-		padding-block: var(--global-spacing-section-vertical-padding-small, 36px);
-		@media (width >= 640px) {
-			max-width: 480px;
-			margin-inline: auto;
-		}
 
-		@media (width >= 960px) {
-			max-width: 480px;
-		}
+	.home-hero {
+		width: 100%;
+		margin: 0;
+	}
 
-		@media (width >= 1280px) {
-			padding-block: var(--global-spacing-section-vertical-padding-small, 40px);
-			align-items: flex-start;
-			width: 564px;
-			max-width: none;
-		}
-
-		@media (width >= 1440px) {
-			flex-direction: row;
-			align-items: center;
-			min-width: 100%;
-			padding-block: var(--global-spacing-section-vertical-padding-medium, 80px);
-		}
-    @media (width >= 1920px) {
-				max-width: 1759px;
-		}
-		.text-header-block {
-			display: flex;
-			padding: var(--text-components-report-title-block-top-padding, 36px) 0
-				var(--text-components-report-title-block-bottom-padding, 36px) 0;
-			flex-direction: column;
-			align-items: flex-start;
-			justify-content: center;
-			gap: var(--text-components-report-title-block-gap, 36px);
-
-			h1 {
-				margin: 0;
-			}
-
-			@media (width >= 640px) {
-				padding: 0 0 var(--text-components-report-title-block-bottom-padding, 36px) 0;
-			}
-
-      @media (width >= 960px) {
-        padding-block: 36px;
-
-			}
-			@media (width >= 1280px) {
-				max-width: 480px;
-				padding-block: var(--text-components-report-title-block-top-padding, 40px);
-			}
-			@media (width>= 1440px) {
-				min-width: 640px;
-				width: 50vw;
-				gap: var(--text-components-report-title-block-gap, 40px);
-				align-self: stretch;
-				padding-inline: 80px;
-
-				.title {
-					max-width: 480px;
-				}
-
-				h1 {
-					margin: 0;
-				}
-			}
-		}
-
-		.title {
-			color: var(--text-page-title, #0c173d);
-			font-family: var(--font-hero, 'EB Garamond');
-			font-size: var(--text-style-specs-hero-1-size, 45px);
-			font-style: normal;
-			font-weight: 600;
-			line-height: 110%;
-
-			@media (width >= 1280px) {
-				font-size: var(--text-style-specs-hero-1-size, 50px);
-			}
-		}
-
-		.img-header {
-			margin: 0;
-
-			@media (width >= 1440px) {
-				padding: 0 40px;
-				max-width: 50vw;
-			}
-
-			img {
-				display: block;
-				width: 100%;
-				height: auto;
-			}
-
-			@media (width >= 1920px) {
-        img {
-          max-width: 879px;
-        }
-			}
-		}
+	.home-hero img {
+		display: block;
+		width: 100%;
+		height: auto;
 	}
 
 	/* -------------------------------------------------------------------------- */
@@ -197,24 +80,33 @@
 	/* -------------------------------------------------------------------------- */
 	.home__content {
 		margin-block: var(--global-spacing-section-vertical-padding-small, 36px);
+		padding-inline: 16px;
 
-		@media (width>= 640px) {
-			max-width: 480px;
+		@media (width >= 640px) {
+			max-width: 544px;
+			padding-inline: 32px;
 			margin-inline: auto;
 		}
-		@media (width>= 1280px) {
-			margin-block: var(--global-spacing-section-vertical-padding-small, 40px);
+
+		@media (width >= 960px) {
+			max-width: 576px;
+			padding-inline: 48px;
+		}
+
+		@media (width >= 1280px) {
+			margin-block: 40px;
 			width: 564px;
 			max-width: none;
+			padding-inline: 0;
 		}
-		@media (width>= 1440px) {
-			margin-block: var(--global-spacing-section-vertical-padding-small, 40px);
+
+		@media (width >= 1440px) {
 			width: 636px;
 		}
+
 		p {
 			margin: 0;
 			margin-bottom: var(--text-style-specs-body-long-regular-size, 18px);
-
 			color: var(--text-secondary, #1d293d);
 			font-family: var(--font-body, 'IBM Plex Sans');
 			font-size: var(--text-style-specs-body-long-regular-size, 18px);
@@ -225,20 +117,20 @@
 			@media (width >= 1280px) {
 				font-size: var(--text-style-specs-body-long-regular-size, 20px);
 			}
+
 			&:last-of-type {
 				margin-block-end: 0;
 			}
 		}
 
 		.instructions {
-			/* When scrolled to, sit 40px below the sticky header. (The heading's
-			   top margin collapses outside the section, so it doesn't add space.) */
 			scroll-margin-top: calc(var(--navbar-height) + 2.5rem);
 		}
 
 		.options {
 			margin-block: var(--global-spacing-section-vertical-padding-small, 36px);
 		}
+
 		.mode-options {
 			display: grid;
 			gap: 24px;
@@ -271,6 +163,7 @@
 					font-size: var(--text-style-specs-label-large-size, 20px);
 				}
 			}
+
 			.mode-option__desc {
 				color: var(--CTA-button-text-secondary, #f8fafc);
 				font-family: var(--font-label, 'IBM Plex Sans');
@@ -278,11 +171,13 @@
 				font-style: normal;
 				font-weight: 400;
 				line-height: 120%;
+
 				@media (width >= 1280px) {
 					font-size: var(--text-style-specs-label-small-size, 16px);
 				}
 			}
 		}
+
 		.mode-option:hover {
 			background: var(--color-cta-hover);
 		}
