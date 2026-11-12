@@ -1,10 +1,38 @@
 <script>
 	import { goto } from '$app/navigation';
+	import { page } from '$app/state';
 	import { resolve } from '$app/paths';
 	import { calculatorState } from '$lib/stores/calculatorState.js';
 	import { CSIS_URL } from '$lib/utils/links.js';
 
 	let { pageName = '' } = $props();
+
+	let menuOpen = $state(false);
+
+	function closeMenuOnOutsideClick(node) {
+		function handlePointerDown(event) {
+			if (menuOpen && !node.contains(event.target)) {
+				menuOpen = false;
+			}
+		}
+
+		function handleKeydown(event) {
+			if (event.key === 'Escape' && menuOpen) {
+				menuOpen = false;
+				node.querySelector('.app-header__menu-toggle')?.focus();
+			}
+		}
+
+		document.addEventListener('pointerdown', handlePointerDown);
+		document.addEventListener('keydown', handleKeydown);
+
+		return {
+			destroy() {
+				document.removeEventListener('pointerdown', handlePointerDown);
+				document.removeEventListener('keydown', handleKeydown);
+			}
+		};
+	}
 
 	// The calculator name starts over: it goes Home and clears the estimate
 	// in progress. Clicks that open a new tab or window are left alone.
@@ -13,6 +41,8 @@
 			return;
 		}
 
+		menuOpen = false;
+
 		event.preventDefault();
 		// Navigate first, so the page being left doesn't redraw without an estimate.
 		await goto(resolve('/'));
@@ -20,21 +50,8 @@
 	};
 </script>
 
-<header class="app-header">
+<header class="app-header" use:closeMenuOnOutsideClick>
 	<div class="app-header__inner">
-		<div class="app-header__titles">
-			<a href={resolve('/')} class="app-header__app-name" onclick={handleHomeClick}>
-				Industrial Policy Spending Calculator
-			</a>
-
-			{#if pageName}
-				<div class="app-header__divider" aria-hidden="true"></div>
-				<span class="app-header__page-name" aria-current="page">
-					{pageName}
-				</span>
-			{/if}
-		</div>
-
 		<!-- External link, so resolve() doesn't apply. -->
 		<!-- eslint-disable svelte/no-navigation-without-resolve -->
 		<a
@@ -63,8 +80,83 @@
 				/>
 			</svg>
 		</a>
+		<div class="app-header__divider" aria-hidden="true"></div>
+
 		<!-- eslint-enable svelte/no-navigation-without-resolve -->
+		<div class="app-header__titles">
+			<a href={resolve('/')} class="app-header__app-name" onclick={handleHomeClick}>
+				Industrial Policy Spending Calculator
+			</a>
+
+			{#if pageName && page.url.pathname !== resolve('/')}
+				<span class="app-header__page-name" aria-current="page">
+					{pageName}
+				</span>
+			{/if}
+		</div>
+		<nav class="app-header__nav" aria-label="Main navigation">
+			<a href={resolve('/')} class="text-label-x-small" onclick={handleHomeClick}> Home </a>
+
+			<a
+				href="https://www.csis.org/programs/chinese-business-and-economics"
+				class="text-label-x-small"
+				target="_blank"
+				rel="noopener noreferrer"
+			>
+				More Red Ink
+			</a>
+
+			<a href={resolve('/about')} class="text-label-x-small"> About </a>
+		</nav>
+		<button
+			class="app-header__menu-toggle"
+			type="button"
+			aria-label={menuOpen ? 'Close navigation menu' : 'Open navigation menu'}
+			aria-expanded={menuOpen}
+			aria-controls="mobile-navigation"
+			onclick={() => (menuOpen = !menuOpen)}
+		>
+			<span class="app-header__hamburger" aria-hidden="true">
+				<span></span>
+				<span></span>
+				<span></span>
+			</span>
+		</button>
 	</div>
+	<nav
+		id="mobile-navigation"
+		class="app-header__mobile-nav"
+		aria-label="Mobile navigation"
+		hidden={!menuOpen}
+	>
+		<a
+			href={resolve('/')}
+			class="text-label-x-small"
+			aria-current={page.url.pathname === resolve('/') ? 'page' : undefined}
+			onclick={handleHomeClick}
+		>
+			Home
+		</a>
+
+		<a
+			href="https://www.csis.org/programs/chinese-business-and-economics"
+			class="text-label-x-small"
+			target="_blank"
+			rel="noopener noreferrer"
+			onclick={() => (menuOpen = false)}
+		>
+			More Red Ink
+		</a>
+
+		<a
+			href={resolve('/about')}
+			class="text-label-x-small"
+			aria-current={page.url.pathname === resolve('/about') ? 'page' : undefined}
+			onclick={() => (menuOpen = false)}
+		>
+			About
+		</a>
+	</nav>
 </header>
 
 <style>
@@ -85,19 +177,19 @@
 		height: 100%;
 		display: flex;
 		align-items: center;
-		gap: 12px;
-		padding: 0 20px;
+		gap: 0;
+		padding: 16px 20px 12px;
+		justify-content: space-between;
 	}
 
 	.app-header__titles {
-		height: 52px;
 		display: flex;
 		align-items: center;
 		gap: 24px;
 		min-width: 0;
 		flex: 1;
+		padding-left: 24px;
 	}
-
 	.app-header__titles {
 		> a {
 			color: var(--color-navbar-text);
@@ -115,9 +207,9 @@
 			font-weight: var(--font-weight-medium);
 			line-height: 120%;
 
-      @media (width >= 960px) {
-        font-size: 29px;
-      }
+			@media (width >= 960px) {
+				font-size: 29px;
+			}
 		}
 	}
 
@@ -143,9 +235,11 @@
 	}
 
 	.app-header__divider {
-		align-self: stretch;
+		align-self: center;
 		flex: 0 0 1px;
 		width: 1px;
+		height: 35px;
+		margin-left: 24px;
 		background-color: var(--color-border-subtle);
 	}
 
@@ -158,7 +252,6 @@
 		flex: 0 0 auto;
 		display: flex;
 		align-items: center;
-		margin-left: auto;
 		color: var(--color-text-primary);
 		transition: color 0.3s ease;
 	}
@@ -169,12 +262,130 @@
 		height: auto;
 	}
 
+	.app-header__nav {
+		display: flex;
+		align-items: flex-end;
+		align-self: stretch;
+		gap: 24px;
+		margin-left: auto;
+	}
+
+	.app-header__nav a {
+		color: var(--color-text-secondary);
+		text-decoration: none;
+		border-bottom: 1px solid transparent;
+		transition:
+			color 0.3s ease,
+			border-color 0.3s ease;
+	}
+
+	.app-header__nav a:hover,
+	.app-header__nav a:focus-visible {
+		color: var(--color-blue-800);
+		border-bottom-color: currentColor;
+	}
+
+	.app-header__nav a:focus-visible {
+		outline: 2px solid var(--color-blue-800);
+		outline-offset: 2px;
+	}
+
+	/* Hamburger button */
+
+	.app-header__menu-toggle {
+		display: none;
+		align-items: center;
+		justify-content: center;
+		flex: 0 0 auto;
+		width: 44px;
+		height: 44px;
+		margin-left: auto;
+		padding: 0;
+		border: 0;
+		background: transparent;
+		color: var(--color-text-primary);
+		cursor: pointer;
+	}
+
+	.app-header__hamburger {
+		display: flex;
+		flex-direction: column;
+		justify-content: space-between;
+		width: 18px;
+		height: 14px;
+	}
+
+	.app-header__hamburger span {
+		display: block;
+		width: 100%;
+		height: 2px;
+		background: currentColor;
+	}
+
+	.app-header__menu-toggle:focus-visible {
+		outline: 2px solid var(--color-blue-800);
+		outline-offset: 2px;
+	}
+
+	/* Mobile navigation */
+
+	.app-header__mobile-nav {
+		display: none;
+	}
+
+	@media (max-width: 900px) {
+		.app-header__nav {
+			display: none;
+		}
+
+		.app-header__menu-toggle {
+			display: flex;
+		}
+
+		.app-header__mobile-nav:not([hidden]) {
+			position: absolute;
+			top: 100%;
+			right: 0;
+			display: flex;
+			flex-direction: column;
+			width: 298px;
+			max-width: 100%;
+			background: var(--color-menu-enabled);
+			box-shadow: 0 4px 12px rgb(0 0 0 / 0.12);
+		}
+
+		.app-header__mobile-nav a {
+			display: flex;
+			align-items: center;
+			min-height: 2.75rem;
+			padding: 0.5rem 1rem;
+			border-bottom: 1px solid var(--color-menu-divider);
+			background: var(--color-menu-enabled);
+			color: var(--color-text-primary);
+			text-decoration: none;
+			line-height: 1.2;
+		}
+
+		.app-header__mobile-nav a:last-child {
+			border-bottom: 0;
+		}
+
+		.app-header__mobile-nav a:hover,
+		.app-header__mobile-nav a:focus-visible {
+			background: var(--color-menu-hover);
+			outline: none;
+		}
+
+		.app-header__mobile-nav :global(a[aria-current='page']) {
+			background: var(--color-sky-50);
+		}
+	}
+
 	@media (max-width: 470px) {
 		.app-header__titles {
 			flex: 0 0 auto;
 		}
 
-		.app-header__divider,
 		.app-header__page-name {
 			display: none;
 		}

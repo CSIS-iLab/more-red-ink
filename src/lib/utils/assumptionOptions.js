@@ -66,7 +66,7 @@ export const assumptionOptions = {
 	chinaEstimationApproach: {
 		label: 'Estimation Approach',
 		description: [
-			'Unlike the other economies, the most accurate data for two kinds of Chinese industrial policy spending—direct subsidies and other tax incentives—comes from reporting disclosures provided by listed firms. These figures are then used as a basis for creating estimates for unlisted Chinese firms, which account for a large share of the country’s economy.',
+			'Unlike for the other economies, the most accurate data for two kinds of Chinese industrial policy spending—direct subsidies and other tax incentives—comes from reporting disclosures provided by listed firms. These figures are then used as a basis for creating estimates for unlisted Chinese firms, which account for a large share of the country’s economy.',
 			'When analyzing the data, there are two reasonable alternative approaches to creating estimates, one based on company ownership, the other on industries.',
 			'Pick the approach you believe better captures industrial policy dynamics.'
 		],
@@ -159,7 +159,7 @@ export const assumptionOptions = {
 	procurementCoverage: {
 		label: 'Government Procurement',
 		description: [
-			'Government procurement is the most opaque of all industrial policy tools. Government procurement refers to purchases of goods, services, and construction work by public sector organizations. Governments can utilize their influence as large purchasers within an economy to provide benefits to firms through favorable terms. For our estimates, the calculator automatically only counts 10 percent of each economy’s actual reported total procurement as being in service of industrial policy.',
+			'Government procurement is the most opaque of all industrial policy tools. Government procurement refers to purchases of goods, services, and construction work by public sector organizations. Governments can utilize their influence as large purchasers within an economy to provide benefits to priority firms through favorable terms. Since procurement may fulfill many purposes, the calculator conservatively only counts 10 percent of each economy’s actual reported total procurement as being in service of industrial policy.',
 			'Select what government procurement you consider to be most relevant for industrial policy:'
 		],
 		chinaOnly: false,
