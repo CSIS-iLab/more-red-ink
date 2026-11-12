@@ -9,6 +9,31 @@
 
 	let menuOpen = $state(false);
 
+	function closeMenuOnOutsideClick(node) {
+		function handlePointerDown(event) {
+			if (menuOpen && !node.contains(event.target)) {
+				menuOpen = false;
+			}
+		}
+
+		function handleKeydown(event) {
+			if (event.key === 'Escape' && menuOpen) {
+				menuOpen = false;
+				node.querySelector('.app-header__menu-toggle')?.focus();
+			}
+		}
+
+		document.addEventListener('pointerdown', handlePointerDown);
+		document.addEventListener('keydown', handleKeydown);
+
+		return {
+			destroy() {
+				document.removeEventListener('pointerdown', handlePointerDown);
+				document.removeEventListener('keydown', handleKeydown);
+			}
+		};
+	}
+
 	// The calculator name starts over: it goes Home and clears the estimate
 	// in progress. Clicks that open a new tab or window are left alone.
 	const handleHomeClick = async (event) => {
@@ -25,7 +50,7 @@
 	};
 </script>
 
-<header class="app-header">
+<header class="app-header" use:closeMenuOnOutsideClick>
 	<div class="app-header__inner">
 		<!-- External link, so resolve() doesn't apply. -->
 		<!-- eslint-disable svelte/no-navigation-without-resolve -->
@@ -323,7 +348,7 @@
 			right: 0;
 			display: flex;
 			flex-direction: column;
-			width: 200px;
+			width: 298px;
 			background: var(--color-menu-enabled);
 			box-shadow: 0 4px 12px rgb(0 0 0 / 0.12);
 		}
