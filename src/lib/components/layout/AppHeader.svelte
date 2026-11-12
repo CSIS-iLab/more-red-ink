@@ -193,19 +193,22 @@
 	}
 
 	.app-header__nav a {
-		color: var(--color-navbar-text);
+		color: var(--color-text-secondary);
 		text-decoration: none;
-		white-space: nowrap;
-		transition: color 0.3s ease;
+		border-bottom: 1px solid transparent;
+		transition:
+			color 0.3s ease,
+			border-color 0.3s ease;
 	}
 
 	.app-header__nav a:hover,
 	.app-header__nav a:focus-visible {
 		color: var(--color-blue-800);
+		border-bottom-color: currentColor;
 	}
 
 	.app-header__nav a:focus-visible {
-		outline: 2px solid var(--color-text-primary);
+		outline: 2px solid var(--color-blue-800);
 		outline-offset: 2px;
 	}
 
