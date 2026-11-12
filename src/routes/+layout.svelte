@@ -6,7 +6,6 @@
 	import { loadData } from '$lib/data/loadData.js';
 	import favicon from '$lib/assets/favicon.svg';
 	import AppHeader from '$lib/components/layout/AppHeader.svelte';
-	import Credits from '$lib/components/layout/Credits.svelte';
 	import Footer from '$lib/components/layout/Footer.svelte';
 	import PageShell from '$lib/components/layout/PageShell.svelte';
 
@@ -65,10 +64,6 @@
 	<PageShell>
 		{@render children()}
 	</PageShell>
-
-	{#if page.url.pathname === '/'}
-		<Credits />
-	{/if}
 	<Footer />
 </div>
 
