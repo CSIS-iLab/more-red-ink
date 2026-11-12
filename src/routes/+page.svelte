@@ -15,33 +15,14 @@
 			<header>
 				<div class="text-header-block">
 					<h1 class="title">{content.title}</h1>
-					<div class="header-footer">
-						<p class="byline">
-							By {content.authors
-								.join(', ')
-								.replace(/, ([^,]*)$/, content.authors.length === 2 ? ' and $1' : ', and $1')}
-						</p>
-						<time datetime={content.published_date.iso}>{content.published_date.label}</time>
-					</div>
 				</div>
 				<figure class="img-header">
 					<img src={content.img_url} alt={content.img_alt} width="1024" height="1024" />
 				</figure>
 			</header>
 			<div class="home__content">
-				{#each content.intro as paragraph, i (i)}
-					<p>{paragraph}</p>
-				{/each}
-
-				<!-- TODO: Replace with final More Red Ink report URL when provided. -->
-				<!-- <Button href={resolve('/')} variant="secondary" target="_blank" rel="noreferrer">
-					Read the report
-					<img src="/icons/external-link.svg" alt="" />
-				</Button> -->
-
 				<!-- The Visualizer's "Create a new estimate" link scrolls here. -->
 				<section id="using-the-calculator" class="instructions">
-					<h2>Using the Calculator</h2>
 					{#each content.how_to as paragraph, i (i)}
 						<p>
 							{paragraph}
@@ -173,23 +154,9 @@
 				h1 {
 					margin: 0;
 				}
-
-				.header-footer {
-					max-width: 480px;
-				}
 			}
-
-			/* @media (width >= 1920px) {
-				min-width: 50vw;
-				max-width: 50vw;
-				align-content: center;
-				flex-wrap: wrap;
-			} */
 		}
 
-		.header-footer p {
-			margin: 0;
-		}
 		.title {
 			color: var(--text-page-title, #0c173d);
 			font-family: var(--font-hero, 'EB Garamond');
@@ -200,35 +167,6 @@
 
 			@media (width >= 1280px) {
 				font-size: var(--text-style-specs-hero-1-size, 50px);
-			}
-		}
-
-		.byline {
-			color: var(--text-secondary, #1d293d);
-			font-family: var(--font-label, 'IBM Plex Sans');
-			font-size: var(--text-style-specs-label-medium-size, 16px);
-			font-style: normal;
-			font-weight: 500;
-			line-height: 120%;
-
-			@media (width >= 1280px) {
-				font-size: var(--text-style-specs-label-medium-size, 18px);
-				line-height: 120%;
-			}
-		}
-
-		.header-footer {
-			time {
-				color: var(--text-helper, #62748e);
-				font-family: var(--font-label, 'IBM Plex Sans');
-				font-size: var(--text-style-specs-label-small-size, 15px);
-				font-style: normal;
-				font-weight: 400;
-				line-height: 120%;
-
-				@media (width >= 1280px) {
-					font-size: var(--text-style-specs-label-small-size, 16px);
-				}
 			}
 		}
 
@@ -296,23 +234,6 @@
 			/* When scrolled to, sit 40px below the sticky header. (The heading's
 			   top margin collapses outside the section, so it doesn't add space.) */
 			scroll-margin-top: calc(var(--navbar-height) + 2.5rem);
-
-			h2 {
-				margin: 0;
-				margin-block-start: var(--text-components-heading-2-top-padding, 65px);
-				margin-block-end: var(--heading-2-bottom-padding, 18px);
-
-				color: var(--text-primary, #020618);
-				font-family: var(--font-heading, 'EB Garamond');
-				font-size: var(--text-style-specs-heading-2-size, 37px);
-				font-style: normal;
-				font-weight: 500;
-				line-height: 110%;
-
-				@media (width >= 1280px) {
-					margin-block-start: var(--text-components-heading-2-top-padding, 72px);
-				}
-			}
 		}
 
 		.options {
