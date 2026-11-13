@@ -2,7 +2,7 @@
 	import { getContext, onMount } from 'svelte';
 	import { resolve } from '$app/paths';
 	import { page } from '$app/state';
-
+	import { trackEvent } from '$lib/utils/analytics';
 	import HistoricalSpendingChart from '$lib/components/charts/HistoricalSpendingChart.svelte';
 	import { calculateEstimate } from '$lib/data/calculateEstimate.js';
 	import { loadData } from '$lib/data/loadData.js';
@@ -99,6 +99,11 @@
 		try {
 			await navigator.clipboard.writeText(url);
 			copyStatus = 'copied';
+
+			trackEvent('estimate_shared', {
+				calculator_mode: payload.mode,
+				chart: payload.chartType
+			});
 		} catch (err) {
 			console.error(err);
 			copyStatus = 'failed';
@@ -108,6 +113,12 @@
 			copyStatus = null;
 		}, 3000);
 	};
+
+	function handleNewEstimate() {
+		trackEvent('estimate_restarted', {
+			calculator_mode: payload.mode
+		});
+	}
 </script>
 
 <svelte:head>
@@ -194,7 +205,13 @@
 			</Button>
 
 			<!-- Opens a fresh estimate in a new tab, leaving this tab's session alone. -->
-			<Button variant="ghost" href={getNewEstimateHref()} target="_blank" rel="noopener">
+			<Button
+				variant="ghost"
+				href={getNewEstimateHref()}
+				target="_blank"
+				rel="noopener"
+				onclick={handleNewEstimate}
+			>
 				Create a new estimate
 				<span class="visually-hidden">(opens in a new tab)</span>
 			</Button>

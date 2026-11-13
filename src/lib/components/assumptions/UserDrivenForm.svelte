@@ -19,6 +19,7 @@
 <script>
 	import { goto } from '$app/navigation';
 	import { resolve } from '$app/paths';
+	import { trackEvent, trackFinalAssumptions } from '$lib/utils/analytics';
 	import ChoiceGroup from '$lib/components/assumptions/ChoiceGroup.svelte';
 	import Button from '$lib/components/controls/Button.svelte';
 	import ErrorMessage from '$lib/components/controls/ErrorMessage.svelte';
@@ -59,6 +60,12 @@
 			attemptedNext = true;
 			return;
 		}
+
+		trackEvent('estimate_completed', {
+			calculator_mode: 'userDriven'
+		});
+
+		trackFinalAssumptions('userDriven', $calculatorState.userDrivenChoices);
 
 		goto(resolve('/results'));
 	}

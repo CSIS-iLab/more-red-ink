@@ -16,7 +16,7 @@
  *   "state has not been restored yet" and "there is no active estimate."
  * - Keep chart display settings independent from one another.
  */
-
+import { trackEvent } from '$lib/utils/analytics.js';
 import { writable } from 'svelte/store';
 import { assumptionOptions, fastTrackOptions } from '$lib/utils/assumptionOptions.js';
 
@@ -181,6 +181,10 @@ const createCalculatorState = () => {
 		update((state) => {
 			if (state.mode === mode) return state;
 
+			trackEvent('calculator_started', {
+				calculator_mode: mode
+			});
+
 			return {
 				...state,
 				mode,
@@ -194,23 +198,45 @@ const createCalculatorState = () => {
 	 * Update a top-level calculator state value.
 	 */
 	const updateValue = (key, value) => {
-		update((state) => ({
-			...state,
-			[key]: value
-		}));
+		update((state) => {
+			if (key === 'fastTrackChoice' && state[key] !== value && value !== null) {
+				trackEvent('assumption_selected', {
+					calculator_mode: 'fastTrack',
+					assumption: 'fastTrackChoice',
+					selection: value
+				});
+			}
+
+			return {
+				...state,
+				[key]: value
+			};
+		});
 	};
 
 	/**
 	 * Update one or more User Driven assumption choices.
 	 */
 	const updateUserDrivenChoices = (choices) => {
-		update((state) => ({
-			...state,
-			userDrivenChoices: {
-				...state.userDrivenChoices,
-				...choices
-			}
-		}));
+		update((state) => {
+			Object.entries(choices).forEach(([key, value]) => {
+				if (state.userDrivenChoices[key] !== value && value !== null) {
+					trackEvent('assumption_selected', {
+						calculator_mode: 'userDriven',
+						assumption: key,
+						selection: value
+					});
+				}
+			});
+
+			return {
+				...state,
+				userDrivenChoices: {
+					...state.userDrivenChoices,
+					...choices
+				}
+			};
+		});
 	};
 
 	/**
@@ -228,6 +254,17 @@ const createCalculatorState = () => {
 					nextSettings.scaleTo100 = false;
 				}
 			}
+
+			Object.entries(settings).forEach(([key]) => {
+				if (state[chart][key] !== nextSettings[key]) {
+					trackEvent('chart_control_changed', {
+						calculator_mode: state.mode,
+						chart,
+						control: key,
+						selection: String(nextSettings[key])
+					});
+				}
+			});
 
 			return {
 				...state,
@@ -275,7 +312,7 @@ const createCalculatorState = () => {
 		reset,
 		isChoiceValid,
 		isEstimateComplete,
-    resetChartSettings,
+		resetChartSettings,
 
 		get initialized() {
 			return initialized;

@@ -16,7 +16,14 @@
 		alignYAxisLabels
 	} from '$lib/utils/chartTheme.js';
 
-	let { data = [], unit = 'pct_gdp', onUnitChange = () => {}, share, frozen = false } = $props();
+	let {
+		data = [],
+		unit = 'pct_gdp',
+		onUnitChange = () => {},
+		share,
+		frozen = false,
+		mode
+	} = $props();
 
 	let chartElement;
 
@@ -209,6 +216,8 @@
 	{chartSubtitle}
 	controls={frozen ? undefined : chartControls}
 	share={frozen ? undefined : share}
+  chartType="historical"
+  {mode}
 	{frozen}
 >
 	{#snippet chartControls()}

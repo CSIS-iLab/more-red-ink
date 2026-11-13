@@ -17,6 +17,7 @@
 <script>
 	import { goto } from '$app/navigation';
 	import { resolve } from '$app/paths';
+	import { trackEvent, trackFinalAssumptions } from '$lib/utils/analytics';
 	import ChoiceGroup from '$lib/components/assumptions/ChoiceGroup.svelte';
 	import Button from '$lib/components/controls/Button.svelte';
 	import ErrorMessage from '$lib/components/controls/ErrorMessage.svelte';
@@ -40,6 +41,14 @@
 			attemptedNext = true;
 			return;
 		}
+
+		trackEvent('estimate_completed', {
+			calculator_mode: 'fastTrack'
+		});
+
+		trackFinalAssumptions('fastTrack', {
+			fastTrackChoice: $calculatorState.fastTrackChoice
+		});
 
 		goto(resolve('/results'));
 	}
@@ -102,7 +111,7 @@
 	}
 
 	.fast-track-form__actions {
-    padding: 2.5rem 0 2.5rem 0;
+		padding: 2.5rem 0 2.5rem 0;
 		display: flex;
 		flex-direction: column;
 		align-items: center;

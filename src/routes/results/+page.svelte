@@ -1,4 +1,5 @@
 <script>
+	import { trackEvent } from '$lib/utils/analytics';
 	import { onMount } from 'svelte';
 	import { goto, beforeNavigate } from '$app/navigation';
 	import { resolve } from '$app/paths';
@@ -61,6 +62,12 @@
 		});
 	};
 
+	function handleNewEstimate() {
+		trackEvent('estimate_restarted', {
+			calculator_mode: mode
+		});
+	}
+
 	onMount(async () => {
 		calculatorState.initialize();
 
@@ -114,14 +121,22 @@
 
 				<!-- Opens a fresh estimate in a new tab; this one keeps its estimate. -->
 				<div class="visualizer__new-estimate-button">
-					<Button variant="ghost" href={getNewEstimateHref()} target="_blank" rel="noopener">
+					<Button
+						variant="ghost"
+						href={getNewEstimateHref()}
+						target="_blank"
+						rel="noopener"
+						onclick={handleNewEstimate}
+					>
 						Create a new estimate
 						<span class="visually-hidden">(opens in a new tab)</span>
 					</Button>
 				</div>
 
 				<div class="visualizer__new-estimate-link">
-					<TextLink href={getNewEstimateHref()} newTab>Create a new estimate</TextLink>
+					<TextLink href={getNewEstimateHref()} onclick={handleNewEstimate} newTab
+						>Create a new estimate</TextLink
+					>
 				</div>
 			</nav>
 

@@ -1,5 +1,6 @@
 <script>
 	import Button from '$lib/components/controls/Button.svelte';
+	import { trackEvent } from '$lib/utils/analytics';
 
 	let {
 		title,
@@ -9,6 +10,8 @@
 		children,
 		// URL of this chart's Share page (opened in a new tab).
 		share,
+		chartType,
+		mode,
 		frozen = false
 	} = $props();
 </script>
@@ -38,12 +41,24 @@
 		{/if}
 
 		{@render children?.()}
-		<p class="chart-container__source text-label-small">Source: CSIS Industrial Policy Spending Calculator</p>
+		<p class="chart-container__source text-label-small">
+			Source: CSIS Industrial Policy Spending Calculator
+		</p>
 	</div>
 
 	{#if !frozen}
 		<div class="chart-container__actions">
-			<Button variant="primary" href={share} target="_blank" rel="noopener">
+			<Button
+				variant="primary"
+				href={share}
+				target="_blank"
+				rel="noopener"
+				onclick={() =>
+					trackEvent('estimate_shared', {
+						calculator_mode: mode,
+						chart: chartType
+					})}
+			>
 				Share chart
 				<img src="/icons/external-link.svg" alt="" aria-hidden="true" />
 				<span class="visually-hidden">(opens in a new tab)</span>
@@ -167,7 +182,7 @@
 		border: 0;
 	}
 
-  /*28px to chart, less the 11px from the chart spacing*/
+	/*28px to chart, less the 11px from the chart spacing*/
 	.chart-container__source {
 		margin: 1.063rem 0 0;
 		color: var(--color-text-helper);
