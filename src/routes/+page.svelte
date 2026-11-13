@@ -7,9 +7,27 @@
 </svelte:head>
 
 <div class="home-page">
-	<header class="home-hero">
-		<img src="/images/hero.jpg" alt="" width="1440" height="480" fetchpriority="high" />
+	<header>
+		<div class="text-header-block">
+			<h1 class="title">Industrial Policy Spending Calculator</h1>
+
+			<div class="header-footer">
+				<p class="byline">By Scott Kennedy and Ryan Featherston</p>
+				<time datetime="2026-12-07">December 7, 2026</time>
+			</div>
+		</div>
+
+		<figure class="img-header">
+			<img
+				src="https://res.cloudinary.com/csisideaslab/image/upload/v1792433802/big%20data%20china/Chinese%20Business%20and%20Economics/Industrial-Policy-Spending-Calculator-thumbnail-opt.jpg"
+				alt=""
+				width="1024"
+				height="1024"
+				fetchpriority="high"
+			/>
+		</figure>
 	</header>
+
 	<div class="home__content">
 		<!-- The Visualizer's "Create a new estimate" link scrolls here. -->
 		<section id="using-the-calculator" class="instructions">
@@ -57,22 +75,180 @@
 	}
 	.home-page {
 		min-width: 320px;
+		padding-inline: var(--layout-guide-specs-xs-320-margin-5-vw, 16px);
 		padding-block-end: var(--global-spacing-section-vertical-padding-small, 36px);
+
+		@media (width >= 640px) {
+			padding-inline: var(--layout-guide-specs-s-640-margin-5-vw, 32px);
+		}
+
+		@media (width >= 960px) {
+			padding-inline: var(--layout-guide-specs-m-960-margin-5-vw, 48px);
+		}
+
+		@media (width >= 1280px) {
+			padding-inline: var(--layout-guide-specs-l-1280-margin-5-vw, 64px);
+		}
+
+		@media (width >= 1440px) {
+			padding-inline: var(--layout-guide-specs-l-1280-margin-5-vw, 80px);
+		}
 	}
+	/* 
 
+  /* -------------------------------------------------------------------------- */
+	/*                                   HEADER                                   */
 	/* -------------------------------------------------------------------------- */
-	/*                                   HERO                                     */
-	/* -------------------------------------------------------------------------- */
+	header {
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+		min-height: calc(100vh - 64px); /* fallback for older browsers */
+		min-height: calc(100dvh - var(--navbar-height, 64px));
+		padding-block: var(--global-spacing-section-vertical-padding-small, 36px);
+		@media (width >= 640px) {
+			max-width: 480px;
+			margin-inline: auto;
+		}
 
-	.home-hero {
-		width: 100%;
-		margin: 0;
-	}
+		@media (width >= 960px) {
+			max-width: 480px;
+		}
 
-	.home-hero img {
-		display: block;
-		width: 100%;
-		height: auto;
+		@media (width >= 1280px) {
+			padding-block: var(--global-spacing-section-vertical-padding-small, 40px);
+			align-items: flex-start;
+			width: 564px;
+			max-width: none;
+		}
+
+		@media (width >= 1440px) {
+			flex-direction: row;
+			align-items: center;
+			min-width: 100%;
+			padding-block: var(--global-spacing-section-vertical-padding-medium, 80px);
+		}
+		@media (width >= 1920px) {
+			max-width: 1759px;
+		}
+		.text-header-block {
+			display: flex;
+			padding: var(--text-components-report-title-block-top-padding, 36px) 0
+				var(--text-components-report-title-block-bottom-padding, 36px) 0;
+			flex-direction: column;
+			align-items: flex-start;
+			justify-content: center;
+			gap: var(--text-components-report-title-block-gap, 36px);
+
+			h1 {
+				margin: 0;
+			}
+
+			@media (width >= 640px) {
+				padding: 0 0 var(--text-components-report-title-block-bottom-padding, 36px) 0;
+			}
+
+			@media (width >= 960px) {
+				padding-block: 36px;
+			}
+			@media (width >= 1280px) {
+				max-width: 480px;
+				padding-block: var(--text-components-report-title-block-top-padding, 40px);
+			}
+			@media (width>= 1440px) {
+				min-width: 640px;
+				width: 50vw;
+				gap: var(--text-components-report-title-block-gap, 40px);
+				align-self: stretch;
+				padding-inline: 80px;
+
+				.title {
+					max-width: 480px;
+				}
+
+				h1 {
+					margin: 0;
+				}
+
+				.header-footer {
+					max-width: 480px;
+				}
+			}
+
+			/* @media (width >= 1920px) {
+				min-width: 50vw;
+				max-width: 50vw;
+				align-content: center;
+				flex-wrap: wrap;
+			} */
+		}
+
+		.header-footer p {
+			margin: 0;
+		}
+		.title {
+			color: var(--text-page-title, #0c173d);
+			font-family: var(--font-hero, 'EB Garamond');
+			font-size: var(--text-style-specs-hero-1-size, 45px);
+			font-style: normal;
+			font-weight: 600;
+			line-height: 110%;
+
+			@media (width >= 1280px) {
+				font-size: var(--text-style-specs-hero-1-size, 50px);
+			}
+		}
+
+		.byline {
+			color: var(--text-secondary, #1d293d);
+			font-family: var(--font-label, 'IBM Plex Sans');
+			font-size: var(--text-style-specs-label-medium-size, 16px);
+			font-style: normal;
+			font-weight: 500;
+			line-height: 120%;
+
+			@media (width >= 1280px) {
+				font-size: var(--text-style-specs-label-medium-size, 18px);
+				line-height: 120%;
+			}
+		}
+
+		.header-footer {
+			time {
+				color: var(--text-helper, #62748e);
+				font-family: var(--font-label, 'IBM Plex Sans');
+				font-size: var(--text-style-specs-label-small-size, 15px);
+				font-style: normal;
+				font-weight: 400;
+				line-height: 120%;
+
+				@media (width >= 1280px) {
+					font-size: var(--text-style-specs-label-small-size, 16px);
+				}
+			}
+		}
+
+		.img-header {
+			margin: 0;
+
+			@media (width >= 1440px) {
+				padding: 0 40px;
+				max-width: 50vw;
+			}
+
+			img {
+				display: block;
+				width: 100%;
+				height: auto;
+			}
+
+			@media (width >= 1920px) {
+				img {
+					max-width: 879px;
+				}
+			}
+		}
 	}
 
 	/* -------------------------------------------------------------------------- */
@@ -80,24 +256,20 @@
 	/* -------------------------------------------------------------------------- */
 	.home__content {
 		margin-block: var(--global-spacing-section-vertical-padding-small, 36px);
-		padding-inline: 16px;
 
 		@media (width >= 640px) {
 			max-width: 544px;
-			padding-inline: 32px;
 			margin-inline: auto;
 		}
 
 		@media (width >= 960px) {
 			max-width: 576px;
-			padding-inline: 48px;
 		}
 
 		@media (width >= 1280px) {
-			margin-block: 40px;
+			margin-block: 0px 40px;
 			width: 564px;
 			max-width: none;
-			padding-inline: 0;
 		}
 
 		@media (width >= 1440px) {
