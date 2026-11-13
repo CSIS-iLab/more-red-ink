@@ -235,6 +235,8 @@
 	controls={frozen ? undefined : chartControls}
 	share={frozen ? undefined : share}
 	{frozen}
+  chartType="economySpecific"
+  {mode}
 >
 	{#snippet chartControls()}
 		<ControlRow label="Economy">

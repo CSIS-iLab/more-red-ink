@@ -1,6 +1,5 @@
 <script>
 	import Highcharts from 'highcharts';
-
 	import ChartContainer from './ChartContainer.svelte';
 	import Checkbox from '$lib/components/controls/Checkbox.svelte';
 	import ControlRow from '$lib/components/controls/ControlRow.svelte';
@@ -34,7 +33,7 @@
 		share,
 		frozen = false,
 		mode = null,
-		assumptions = null
+		assumptions = null,
 	} = $props();
 
 	let chartElement;
@@ -210,6 +209,8 @@
 	controls={frozen ? undefined : chartControls}
 	share={frozen ? undefined : share}
 	{frozen}
+  chartType="cumulative"
+  {mode}
 >
 	{#snippet chartControls()}
 		<ControlRow label="Unit">

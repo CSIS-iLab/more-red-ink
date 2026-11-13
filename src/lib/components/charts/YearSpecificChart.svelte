@@ -234,6 +234,8 @@
 	controls={frozen ? undefined : chartControls}
 	share={frozen ? undefined : share}
 	{frozen}
+  chartType="yearSpecific"
+  {mode}
 >
 	{#snippet chartControls()}
 		<ControlRow label="Year">
