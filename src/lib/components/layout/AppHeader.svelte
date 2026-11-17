@@ -349,7 +349,7 @@
 
 		.app-header__mobile-nav:not([hidden]) {
 			position: absolute;
-			top: 100%;
+			top: calc(100% + 1px);
 			right: 0;
 			display: flex;
 			flex-direction: column;
