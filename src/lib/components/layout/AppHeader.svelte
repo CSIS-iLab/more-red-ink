@@ -334,6 +334,10 @@
 	}
 
 	@media (max-width: 900px) {
+		.app-header__page-name {
+			display: none;
+		}
+
 		.app-header__nav {
 			display: none;
 		}
@@ -384,10 +388,6 @@
 	@media (max-width: 470px) {
 		.app-header__titles {
 			flex: 0 0 auto;
-		}
-
-		.app-header__page-name {
-			display: none;
 		}
 	}
 </style>

@@ -126,10 +126,13 @@
 </svelte:head>
 
 <div class="share-page" class:share-page--error={!loading && !payload}>
+	<h1 class="mobile-page-title">
+		{error === 'link' ? 'Invalid URL' : 'Share'}
+	</h1>
 	{#if loading}
 		<p class="share-page__status text-body-2-regular" role="status">Loading shared chart…</p>
 	{:else if payload}
-		<h1 class="visually-hidden">Shared chart</h1>
+		<h2 class="visually-hidden">Shared chart</h2>
 
 		<article class="share-page__card">
 			<div class="share-page__chart">
@@ -437,6 +440,17 @@
 		text-align: center;
 	}
 
+	.mobile-page-title {
+		display: none;
+		align-self: flex-start;
+		margin: 0;
+		color: var(--color-navbar-text);
+		font-family: var(--font-label);
+		font-size: 26px;
+		font-weight: var(--font-weight-medium);
+		line-height: 1.2;
+	}
+
 	@media (max-width: 1439px) {
 		.share-page {
 			--share-padding-x: 4rem;
@@ -508,6 +522,16 @@
 			display: grid;
 			grid-auto-rows: auto;
 			gap: 1rem;
+		}
+	}
+
+	@media (max-width: 900px) {
+		.mobile-page-title {
+			display: block;
+		}
+
+		.share-page--error .mobile-page-title {
+			display: none;
 		}
 	}
 
