@@ -11,7 +11,7 @@
 </script>
 
 <svelte:head>
-	<title>Fast Track | More Red Ink Calculator</title>
+	<title>Fast-Track Mode | More Red Ink Calculator</title>
 </svelte:head>
 
 <div class="fast-track">
@@ -19,7 +19,7 @@
 		<BackLink href="/" />
 	</div>
 
-	<h2 class="mobile-page-title">Fast Track</h2>
+	<h2 class="mobile-page-title">Fast-Track Mode</h2>
 
 	<FastTrackForm {showIncompleteMessage} />
 </div>

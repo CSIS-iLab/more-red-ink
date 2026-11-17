@@ -14,18 +14,13 @@
 					<p class="text-body-2-regular">
 						<CreditsLink href="https://www.csis.org/people/scott-kennedy">Scott Kennedy</CreditsLink
 						>
-						is senior adviser and trustee chair in Chinese Business and Economics at the Center for Strategic
-						and International Studies (CSIS). A leading authority on Chinese economic policy and U.S.-China
-						commercial relations, Kennedy has been traveling to China for 38 years. His ongoing areas
-						of focus include China’s innovation drive, Chinese industrial policy, U.S.-China relations,
-						and global economic governance. His articles have appeared in a wide array of policy, popular,
-						and academic venues, including the New York Times, the Wall Street Journal, Foreign Affairs,
-						Foreign Policy, and China Quarterly. His recent major publications include The Power of Innovation:
-						The Strategic Value of China’s High-Tech Drive (CSIS, March 2026); Managing U.S.-China Tensions
-						over the Global Economic Order: Tentative Proposals (CSIS, November 2024); (with Wang Jisi)
-						Breaking the Ice: The Role of Scholarly Exchange in Stabilizing U.S.-China Relations (CSIS,
-						2023); and China’s Uneven High-Tech Drive: Implications for the United States (CSIS, 2020).
-						Kennedy hosts the China Field Notes podcast, which features voices from on the ground in China.
+						is senior adviser and trustee chair in Chinese Business and Economics at the Center for Strategic and International Studies (CSIS). A leading authority on Chinese economic policy and U.S.-China commercial relations, Kennedy has been traveling to China for 38 years. His ongoing areas of focus include China’s innovation drive, Chinese industrial policy, U.S.-China relations, and global economic governance. His articles have appeared in a wide array of policy, popular, and academic venues, including the <i>New York Times</i>, the <i>Wall Street Journal</i>, <i>Foreign Affairs</i>,
+						<i>Foreign Policy</i>, and <i>China Quarterly</i>. His recent major publications include <i>The Power of Innovation:
+						The Strategic Value of China’s High-Tech Drive</i> (CSIS, March 2026); <i>Managing U.S.-China Tensions
+						over the Global Economic Order: Tentative Proposals</i> (CSIS, November 2024); (with Wang Jisi)
+						<i>Breaking the Ice: The Role of Scholarly Exchange in Stabilizing U.S.-China Relations</i> (CSIS,
+						2023); and <i>China’s Uneven High-Tech Drive: Implications for the United States</i> (CSIS, 2020).
+						Kennedy hosts the <i>China Field Notes</i> podcast, which features voices from on the ground in China.
 						From 2000 to 2014, Kennedy was a professor at Indiana University (IU), where he established
 						the Research Center for Chinese Politics and Business and was the founding academic director
 						of IU’s China Office. Kennedy received a PhD in political science from George Washington University,
@@ -40,9 +35,9 @@
 						is an associate fellow with the Trustee Chair in Chinese Business and Economics at the Center
 						for Strategic and International Studies (CSIS). His research interests include industrial
 						policy, China’s global trade, and the impact of the Chinese domestic economy on the rest of
-						the world. His recent publications include The Global EV Shift: The Role of China and Industrial
-						Policy in Emerging Economies, Wins and Losses: Chinese Industrial Policy’s Uneven Success,
-						and Is Your Refrigerator Running? China’s Trade-In Programs and Plans to Boost Consumption.
+						the world. His recent publications include <i>The Global EV Shift: The Role of China and Industrial
+						Policy in Emerging Economies</i>, <i>Wins and Losses: Chinese Industrial Policy’s Uneven Success</i>,
+						and <i>Is Your Refrigerator Running? China’s Trade-In Programs and Plans to Boost Consumption</i>.
 						Prior to joining CSIS, he was a research analyst at Rhodium Group, a private research firm,
 						where he researched China’s macroeconomy, industrial subsidies, and green tech trade. Featherston
 						received an MA in China studies with an emphasis in economics and management from the Yenching
@@ -57,15 +52,7 @@
 				<h2 class="text-heading-3">Special Thanks</h2>
 
 				<p class="text-body-2-regular">
-					We are grateful to Trustee Chair Deputy Director Ilaria Mazzocco and former CSIS
-					colleagues Gerard DiPippo and Matthew P. Goodman, as well as a cohort of research interns,
-					for the pathbreaking work they did for the 2022 report which contributed to the
-					calculator. The research behind the calculator was supported by three research interns –
-					Andy Yang, Antonio Tintoré Vicent, and Eleanor Randoph – who helped find and assemble data
-					about industrial policy spending from a diverse array of sources. Finally, the calculator
-					would not have been possible without the support of the Dracopoulos iDeas Lab. Special
-					thanks goes to iDeas Lab staff - Shannon Yeung, Mariel de la Garza, Emma Cantlay, and
-					Lindsay Allison – for their attention to detail, professionalism, and patience.
+					We are grateful to Trustee Chair Deputy Director Ilaria Mazzocco and former CSIS colleagues Gerard DiPippo and Matthew P. Goodman, as well as a cohort of research interns, for the pathbreaking work they did for the 2022 report which contributed to the calculator. The research behind the calculator was supported by three research interns – Andy Yang, Antonio Tintoré Vicent, and Eleanor Randoph – who helped find and assemble data about industrial policy spending from a diverse array of sources. Finally, the calculator would not have been possible without the support of the Dracopoulos iDeas Lab. Special thanks goes to iDeas Lab staff -  Shannon Yeung, Mariel de la Garza, Emma Cantlay, and Lindsay Allison – for their attention to detail, professionalism, and patience.
 				</p>
 			</div>
 		</div>

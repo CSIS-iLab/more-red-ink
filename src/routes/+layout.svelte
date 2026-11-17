@@ -13,8 +13,8 @@
 
 	const pageNames = {
 		'/': 'Home',
-		'/fast-track': 'Fast Track',
-		'/user-driven': 'User Driven',
+		'/fast-track': 'Fast-Track Mode',
+		'/user-driven': 'User-Driven Mode',
 		'/results': 'Results',
 		'/share': 'Share'
 	};
@@ -26,7 +26,7 @@
 
 	let resultsPageName = $derived(
 		$calculatorState.mode === 'userDriven'
-			? 'The Results (User Driven)'
+			? 'The Results (User-Driven Mode)'
 			: $calculatorState.mode === 'fastTrack'
 				? $calculatorState.fastTrackChoice === 'minimum'
 					? 'The Results (Minimum)'

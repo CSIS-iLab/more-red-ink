@@ -20,12 +20,12 @@
  * and listed as paragraphs.
  */
 export const assumptionsIntro = {
-	label: 'Select Assumptions',
+	label: 'Select Your Assumptions',
 	// TODO: Replace with final program copy.
 	descriptions: {
 		fastTrack: [
-			'This “Fast Track” option lets you look at the two extremes in the data: the upper-bound and lower-bound estimates.',
-			'Select between lower- and upper-bound estimates for all the economies based on which assumptions would yield the lowest or highest estimates for China. The “minimum” option is the most conservative; it excludes several China-specific factors and applies conservative assumptions on the potential scale of spending throughout. The “maximum” option includes all of the potential tools using broader assumptions.'
+			'Fast-Track Mode lets you look at the two extremes in the data: the upper-bound and lower-bound estimates.',
+			'Select between the lowest and highest estimates for all the economies based on which assumptions would yield the lowest or highest estimates for China. The “minimum” option is the most conservative; it excludes several China-specific factors and applies conservative assumptions on the potential scale of spending throughout. The “maximum” option includes all of the potential tools using broader assumptions.'
 		],
 		userDriven: [
 			'Select the underlying assumptions of the various industrial policy spending tools that together produce overall estimates for China and the seven other economies.'
@@ -144,13 +144,13 @@ export const assumptionOptions = {
 		options: [
 			{
 				value: 'tenPercent',
-				label: '10% of funding',
+				label: '10 Percent of Funding',
 				description:
-					'“10% of funding” uses 10 percent as a proxy for the relative benefit of receiving state-backed funding as opposed to relying on market-based funding sources.'
+					'“10% of funding” uses 10 percent as a proxy for the relative benefit of receiving state-backed funding as opposed to relying on market-based funding sources. '
 			},
 			{
 				value: 'oneHundredPercent',
-				label: '100% of funding',
+				label: '100 Percent of Funding',
 				description:
 					'“100% of funding” treats the entire equity investment as valuable and tied to recipients’ basic access into a sector.'
 			}

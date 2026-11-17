@@ -32,12 +32,11 @@
 		<!-- The Visualizer's "Create a new estimate" link scrolls here. -->
 		<section id="using-the-calculator" class="instructions">
 			<p>
-				The Industrial Policy Spending Calculator lets you create industrial policy spending
-				estimates for China and seven other economies —Brazil, France, Germany, Japan, South Korea,
-				Taiwan, and the United States— for the years 2019-2024 through the building of a "stack"
-				based on the cumulative total of multiple industrial policy spending tools, including fiscal
-				subsidies, tax breaks, below-market credit, government investment funds, government
-				procurement, and other measures.
+				The calculator lets you create industrial policy spending estimates for China and seven
+				other economies—Brazil, France, Germany, Japan, South Korea, Taiwan, and the United
+				States—for the years 2019-2024 through the building of a “stack” of multiple industrial
+				policy spending tools, including fiscal subsidies, tax breaks, below-market credit,
+				government investment funds, government procurement, and other measures.
 			</p>
 			<p>
 				Reasonable alternative assumptions can be made about several of the tools in the stack.
@@ -51,17 +50,16 @@
 		<div class="options">
 			<div class="mode-options">
 				<a class="mode-option" href={resolve('/fast-track')}>
-					<span class="mode-option__title">Fast Track</span>
+					<span class="mode-option__title">Fast-Track Mode</span>
 					<span class="mode-option__desc">
 						Select this mode to see either the lowest or highest estimates.
 					</span>
 				</a>
 
 				<a class="mode-option" href={resolve('/user-driven')}>
-					<span class="mode-option__title">User Driven</span>
+					<span class="mode-option__title">User-Driven Mode</span>
 					<span class="mode-option__desc">
-						Select this mode to have more granular control over the assumptions about the various
-						tools that produce the estimate.
+						Select this mode to have more granular control over the assumptions about the various tools that produce the estimate.
 					</span>
 				</a>
 			</div>

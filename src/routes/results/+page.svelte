@@ -30,7 +30,7 @@
 
 	let resultsPageName = $derived(
 		$calculatorState.mode === 'userDriven'
-			? 'The Results (User Driven)'
+			? 'The Results (User-Driven Mode)'
 			: $calculatorState.mode === 'fastTrack'
 				? $calculatorState.fastTrackChoice === 'minimum'
 					? 'The Results (Minimum)'

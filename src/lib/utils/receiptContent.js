@@ -64,18 +64,18 @@ export const receiptContent = {
 						by: 'chinaEstimationApproach',
 						text: {
 							industryBased:
-								'Industry-Based: Listed-firm subsidy data, scaled up to all industrial firms based on average subsidies received by industry.',
+								'Industry-Based: Listed-firm subsidy data, scaled up based on average subsidies received by industry',
 							soeAdvantage:
-								'SOE Advantage: Listed-firm subsidy data scaled up to all industrial firms based on state ownership.'
+								'SOE Advantage: Listed-firm subsidy data scaled up based on state ownership.'
 						}
 					},
 					fastTrack: {
 						by: 'fastTrackChoice',
 						text: {
 							minimum:
-								'SOE Advantage: Listed-firm subsidy data scaled up to all industrial firms based on state ownership.',
+								'SOE Advantage: Listed-firm subsidy data scaled up based on state ownership.',
 							maximum:
-								'Industry-Based: Listed-firm subsidy data, scaled up to all industrial firms based on average subsidies received by industry.'
+								'Industry-Based: Listed-firm subsidy data, scaled up based on average subsidies received by industry.'
 						}
 					}
 				}
@@ -91,18 +91,18 @@ export const receiptContent = {
 						by: 'chinaEstimationApproach',
 						text: {
 							industryBased:
-								'Industry-Based: Listed-firm subsidy data scaled up to all industrial firms based on average tax incentives by industry.',
+								'Industry-Based: Listed-firm subsidy data scaled up based on average tax incentives by industry.',
 							soeAdvantage:
-								'SOE Advantage: Listed-firm subsidy data scaled up to all industrial firms based on average tax incentives by ownership category; assumes unlisted private firms are subsidized at half the rate as their listed peers.'
+								'SOE Advantage: Listed-firm subsidy data scaled up based on average tax incentives by ownership category.'
 						}
 					},
 					fastTrack: {
 						by: 'fastTrackChoice',
 						text: {
 							minimum:
-								'SOE Advantage: Listed-firm subsidy data scaled up to all industrial firms based on average tax incentives by ownership category; assumes unlisted private firms are subsidized at half the rate as their listed peers.',
+								'SOE Advantage: Listed-firm subsidy data scaled up based on average tax incentives by ownership category.',
 							maximum:
-								'Industry-Based: Listed-firm subsidy data scaled up to all industrial firms based on average tax incentives by industry.'
+								'Industry-Based: Listed-firm subsidy data scaled up based on average tax incentives by industry.'
 						}
 					}
 				}
@@ -128,7 +128,7 @@ export const receiptContent = {
 					userDriven: {
 						by: 'chinaEstimationApproach',
 						text: {
-							industryBased: 'Industry-Based: Total loans issued below loan prime rate.',
+							industryBased: 'Industry-Based: Total savings for loans issued below the loan prime rate.',
 							soeAdvantage:
 								'SOE Advantage: Estimate based on outstanding credit to SOEs, including loans and bonds.'
 						}
@@ -138,13 +138,13 @@ export const receiptContent = {
 						text: {
 							minimum:
 								'SOE Advantage: Estimate based on outstanding credit to SOEs, including loans and bonds.',
-							maximum: 'Industry-Based: Total loans issued below loan prime rate.'
+							maximum: 'Industry-Based: Total savings for loans issued below the loan prime rate.'
 						}
 					}
 				}
 			},
 			otherEconomies:
-				'Outstanding Credit: Interest savings on all outstanding state-backed credit, measured as the spread between state and market rates.'
+				'Outstanding Credit: Interest savings on all outstanding state-backed credit.'
 		},
 
 		stateInvestmentFunds: {
@@ -198,16 +198,16 @@ export const receiptContent = {
 							allItems:
 								'Total: Includes all procurement reported to the WTO (or national sources where unavailable) including goods, services, and construction.',
 							totalGoods:
-								'Total Goods: Includes all goods procurement reported to the WTO (or national sources where unavailable).',
+								'Total Goods: Includes all goods procurement reported to the WTO (or national sources where unavailable ',
 							centralGoods:
 								'Central Goods: Includes all goods procurement at the central government level reported to the WTO (or national sources where unavailable).',
-							excludeAll: 'Excluded: procurement not counted.'
+							excludeAll: 'Excluded: Procurement not counted.'
 						}
 					},
 					fastTrack: {
 						by: 'fastTrackChoice',
 						text: {
-							minimum: 'Excluded: procurement not counted.',
+							minimum: 'Excluded: Procurement not counted.',
 							maximum:
 								'Total: Includes all procurement reported to the WTO (or national sources where unavailable) including goods, services, and construction.'
 						}
@@ -223,16 +223,16 @@ export const receiptContent = {
 							allItems:
 								'Total: Includes all procurement reported to the WTO (or national sources where unavailable) including goods, services, and construction.',
 							totalGoods:
-								'Total Goods: Includes all goods procurement reported to the WTO (or national sources where unavailable).',
+								'Total Goods: Includes all goods procurement reported to the WTO (or national sources where unavailable.',
 							centralGoods:
 								'Central Goods: Includes all goods procurement at the central government level reported to the WTO (or national sources where unavailable).',
-							excludeAll: 'Excluded: procurement not counted.'
+							excludeAll: 'Excluded: Procurement not counted.'
 						}
 					},
 					fastTrack: {
 						by: 'fastTrackChoice',
 						text: {
-							minimum: 'Excluded: procurement not counted.',
+							minimum: 'Excluded: Procurement not counted.',
 							maximum:
 								'Total: Includes all procurement reported to the WTO (or national sources where unavailable) including goods, services, and construction.'
 						}
@@ -248,7 +248,7 @@ export const receiptContent = {
 					userDriven: {
 						by: 'soeNetPayables',
 						text: {
-							include: 'Measures the benefit to SOEs from delayed repayment to suppliers.',
+							include: 'Benefit to SOEs from delayed repayment to suppliers',
 							exclude: EXCLUDED
 						}
 					},
@@ -256,7 +256,7 @@ export const receiptContent = {
 						by: 'fastTrackChoice',
 						text: {
 							minimum: EXCLUDED,
-							maximum: 'Measures the benefit to SOEs from delayed repayment to suppliers.'
+							maximum: 'Benefit to SOEs from delayed repayment to suppliers'
 						}
 					}
 				}
@@ -271,7 +271,7 @@ export const receiptContent = {
 					userDriven: {
 						by: 'land',
 						text: {
-							include: 'Measures the implied subsidy from below-market industrial land sales.',
+							include: 'Implied subsidy from below-market land sales.',
 							exclude: EXCLUDED
 						}
 					},
@@ -279,7 +279,7 @@ export const receiptContent = {
 						by: 'fastTrackChoice',
 						text: {
 							minimum: EXCLUDED,
-							maximum: 'Measures the implied subsidy from below-market industrial land sales.'
+							maximum: 'Implied subsidy from below-market land sales.'
 						}
 					}
 				}
@@ -295,7 +295,7 @@ export const receiptContent = {
 						by: 'debtEquitySwaps',
 						text: {
 							include:
-								'Measures the benefit of debt converted to equity as the savings on the original loans.',
+								'Benefit of debt converted to equity based on the savings on the original loans.',
 							exclude: EXCLUDED
 						}
 					},
@@ -304,7 +304,7 @@ export const receiptContent = {
 						text: {
 							minimum: EXCLUDED,
 							maximum:
-								'Measures the benefit of debt converted to equity as the savings on the original loans.'
+								'Benefit of debt converted to equity based on the savings on the original loans.'
 						}
 					}
 				}
