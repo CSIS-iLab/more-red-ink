@@ -111,7 +111,7 @@
 	}
 
 	.fast-track-form__actions {
-		padding: 2.5rem 0 2.5rem 0;
+		padding: 0 0 2.5rem 0;
 		display: flex;
 		flex-direction: column;
 		align-items: center;
