@@ -133,11 +133,6 @@
 		margin-bottom: 1.25rem; /* 20px */
 	}
 
-	/* Remove bottom margin when validation error follows */
-	.user-driven-form :global(.choice-group__options:has(+ .choice-group__error)) {
-		margin-bottom: 0;
-	}
-
 	.user-driven-form h1,
 	.user-driven-form h2,
 	.user-driven-form p {

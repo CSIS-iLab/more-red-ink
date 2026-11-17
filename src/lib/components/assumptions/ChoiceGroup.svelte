@@ -126,4 +126,8 @@
 		color: var(--color-card-button-text-secondary);
 		overflow-wrap: break-word;
 	}
+
+	.choice-group__options:has(+ .choice-group__error) {
+		margin-bottom: 0 !important;
+	}
 </style>
