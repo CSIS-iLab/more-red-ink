@@ -2,6 +2,8 @@
 	import Credits from '$lib/components/layout/Credits.svelte';
 	let { data } = $props();
 	let homeContent = $derived(data.homeContent);
+
+	const splitItalics = (text) => text.split('*');
 </script>
 
 <svelte:head>
@@ -15,7 +17,15 @@
 		{#if homeContent}
 			{#each homeContent as content (content.id)}
 				{#each content.intro as paragraph, i (i)}
-					<p>{paragraph}</p>
+					<p>
+						{#each splitItalics(paragraph) as part, j (j)}
+							{#if j % 2 === 1}
+								<em>{part}</em>
+							{:else}
+								{part}
+							{/if}
+						{/each}
+					</p>
 				{/each}
 
 				{#if content.published_date}

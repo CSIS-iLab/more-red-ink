@@ -28,7 +28,7 @@
 </script>
 
 <svelte:head>
-	<title>User Driven | More Red Ink Calculator</title>
+	<title>User-Driven Mode | More Red Ink Calculator</title>
 </svelte:head>
 
 <div class="user-driven">
@@ -36,7 +36,7 @@
 		<BackLink href="/" />
 	</div>
 
-	<h2 class="mobile-page-title">User Driven</h2>
+	<h2 class="mobile-page-title">User-Driven Mode</h2>
 
 	<UserDrivenForm {showIncompleteMessage} />
 </div>
