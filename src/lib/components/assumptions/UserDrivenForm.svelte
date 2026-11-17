@@ -113,7 +113,7 @@
 
 	<div class="user-driven-form__actions">
 		<!-- aria-disabled (not disabled) keeps the button clickable so it can explain what's missing. -->
-		<Button aria-disabled={!isComplete || undefined} onclick={handleNext}>Next: the results</Button>
+		<Button aria-disabled={!isComplete || undefined} onclick={handleNext}>Next: The Results</Button>
 
 		{#if showErrors}
 			<ErrorMessage>Complete your assumptions to view the the results.</ErrorMessage>

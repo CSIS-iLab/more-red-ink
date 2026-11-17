@@ -76,7 +76,7 @@
 
 	<div class="fast-track-form__actions">
 		<!-- aria-disabled (not disabled) keeps the button clickable so it can explain what's missing. -->
-		<Button aria-disabled={!isComplete || undefined} onclick={handleNext}>Next: the results</Button>
+		<Button aria-disabled={!isComplete || undefined} onclick={handleNext}>Next: The Results</Button>
 
 		{#if showError}
 			<ErrorMessage>Complete your assumptions to view the the results.</ErrorMessage>
