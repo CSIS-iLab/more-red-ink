@@ -187,7 +187,7 @@
 		}
 		.title {
 			color: var(--text-page-title, #0c173d);
-			font-family: var(--font-hero, 'EB Garamond');
+			font-family: var(--font-hero);
 			font-size: var(--text-style-specs-hero-1-size, 45px);
 			font-style: normal;
 			font-weight: 600;

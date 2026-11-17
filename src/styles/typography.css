@@ -1,8 +1,8 @@
 :root {
 	/* -------------------- font families ------------------- */
 
-	--font-hero: 'EB Garamond', serif;
-	--font-heading: 'EB Garamond', serif;
+	--font-hero: "avenir-next-lt-pro-condensed", sans-serif;
+	--font-heading: "avenir-next-lt-pro-condensed", sans-serif;
 	--font-body: 'IBM Plex Sans', sans-serif;
 	--font-metadata: 'IBM Plex Mono', monospace;
 	--font-label: 'IBM Plex Sans', sans-serif;
