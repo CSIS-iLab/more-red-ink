@@ -188,7 +188,7 @@
 		gap: 24px;
 		min-width: 0;
 		flex: 1;
-		padding-left: 24px;
+		padding-left: 16px;
 	}
 	.app-header__titles {
 		> a {
@@ -239,7 +239,7 @@
 		flex: 0 0 1px;
 		width: 1px;
 		height: 35px;
-		margin-left: 24px;
+		margin-left: 16px;
 		background-color: var(--color-border-subtle);
 	}
 
