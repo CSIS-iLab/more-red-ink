@@ -87,16 +87,12 @@
 	.home-hero__image {
 		display: block;
 		width: 100%;
-		height: 240px;
-		overflow: hidden;
 	}
 
 	.home-hero__image img {
 		display: block;
 		width: 100%;
-		height: 100%;
-		object-fit: cover;
-		object-position: center;
+		height: auto;
 	}
 
 	.home-hero__title {
