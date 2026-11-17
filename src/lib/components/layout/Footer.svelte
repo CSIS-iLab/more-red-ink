@@ -495,10 +495,6 @@
 			grid-template-columns: 1fr;
 		}
 
-		.container {
-			max-width: 320px;
-		}
-
 		.footer__col.footer__address {
 			margin-top: 1rem;
 			margin-bottom: 0;
