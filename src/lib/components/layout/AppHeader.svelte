@@ -42,11 +42,30 @@
 		}
 
 		menuOpen = false;
-
 		event.preventDefault();
+
+		if (page.url.pathname === resolve('/')) {
+			calculatorState.reset();
+			window.location.reload();
+			return;
+		}
+
 		// Navigate first, so the page being left doesn't redraw without an estimate.
 		await goto(resolve('/'));
 		calculatorState.reset();
+	};
+
+	const handleAboutClick = (event) => {
+		menuOpen = false;
+
+		if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) {
+			return;
+		}
+
+		if (page.url.pathname === resolve('/about')) {
+			event.preventDefault();
+			window.location.reload();
+		}
 	};
 </script>
 
@@ -106,7 +125,7 @@
 				More Red Ink
 			</a>
 
-			<a href={resolve('/about')} class="text-label-x-small"> About </a>
+			<a href={resolve('/about')} class="text-label-x-small" onclick={handleAboutClick}> About </a>
 		</nav>
 		<button
 			class="app-header__menu-toggle"
@@ -152,7 +171,7 @@
 			href={resolve('/about')}
 			class="text-label-x-small"
 			aria-current={page.url.pathname === resolve('/about') ? 'page' : undefined}
-			onclick={() => (menuOpen = false)}
+			onclick={handleAboutClick}
 		>
 			About
 		</a>
@@ -379,10 +398,6 @@
 		.app-header__mobile-nav a:focus-visible {
 			background: var(--color-menu-hover);
 			outline: none;
-		}
-
-		.app-header__mobile-nav :global(a[aria-current='page']) {
-			background: var(--color-sky-50);
 		}
 	}
 
