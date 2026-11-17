@@ -45,6 +45,13 @@
 		line-height: 1.2;
 	}
 
+	@media (max-width: 900px) {
+		.mobile-page-title {
+			display: block;
+			margin: 36px 0;
+		}
+	}
+
 	@media (max-width: 640px) {
 		.fast-track {
 			padding: 2rem 0 4rem;
@@ -52,11 +59,6 @@
 
 		.back-link-wrapper {
 			margin-bottom: 0;
-		}
-
-		.mobile-page-title {
-			display: block;
-			margin: 36px 0;
 		}
 	}
 </style>

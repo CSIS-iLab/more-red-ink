@@ -429,6 +429,13 @@
 		}
 	}
 
+	@media (max-width: 900px) {
+		.mobile-page-title {
+			display: block;
+			margin: 36px 0;
+		}
+	}
+
 	@media (max-width: 639px) {
 		.visualizer__summary-inner {
 			--text-width: 100%;
@@ -436,11 +443,6 @@
 			gap: 0;
 			padding-top: 2rem;
 			padding-bottom: 2rem;
-		}
-
-		.mobile-page-title {
-			display: block;
-			margin: 36px 0;
 		}
 
 		.visualizer__charts {
