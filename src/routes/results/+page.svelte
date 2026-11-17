@@ -278,6 +278,10 @@
 		gap: 1rem;
 	}
 
+	.visualizer__nav :global(.text-link) {
+		align-self: center;
+	}
+
 	.visualizer__new-estimate-button {
 		display: block;
 	}
