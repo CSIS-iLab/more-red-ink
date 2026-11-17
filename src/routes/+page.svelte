@@ -143,10 +143,23 @@
 
 		.home-hero__title h1 {
 			width: 100%;
-			max-width: 480px;
-			margin-left: 15%;
+			max-width: 342px;
+			margin-left: calc(10vw + 24px);
 			color: #fff;
+			font-size: 45px;
+		}
+	}
+
+	@media (width >= 1440px) {
+		.home-hero__title h1 {
+			max-width: 380px;
 			font-size: 50px;
+		}
+	}
+
+	@media (width >= 1920px) {
+		.home-hero__title h1 {
+			margin-left: calc((100vw - 1920px) / 2 + 422px);
 		}
 	}
 
