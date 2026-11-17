@@ -98,10 +98,14 @@
 
 	h1 {
 		margin: 0;
-		padding-block-start: var(--text-components-heading-2-top-padding, 72px);
+		padding-block-start: 0;
 		padding-block-end: var(--heading-2-bottom-padding, 18px);
 		color: var(--text-primary, #020618);
 		line-height: 110%;
+
+		@media (width >= 960px) {
+			padding-block-start: var(--text-components-heading-2-top-padding, 72px);
+		}
 	}
 
 	.published-date {
