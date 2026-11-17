@@ -295,7 +295,7 @@
 	.app-header__menu-toggle {
 		display: none;
 		align-items: center;
-		justify-content: center;
+		justify-content: flex-end;
 		flex: 0 0 auto;
 		width: 44px;
 		height: 44px;
@@ -311,8 +311,9 @@
 		display: flex;
 		flex-direction: column;
 		justify-content: space-between;
-		width: 18px;
-		height: 14px;
+		width: 24px;
+		height: 24px;
+		padding: 5px 3px;
 	}
 
 	.app-header__hamburger span {
