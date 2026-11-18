@@ -7,32 +7,29 @@
 </svelte:head>
 
 <div class="home-page">
-	<header>
-		<div class="text-header-block">
-			<h1 class="title">Industrial Policy Spending Calculator</h1>
-
-			<div class="header-footer">
-				<p class="byline">By Scott Kennedy and Ryan Featherston</p>
-				<time datetime="2026-12-07">December 7, 2026</time>
-			</div>
-		</div>
-
-		<figure class="img-header">
+	<header class="home-hero">
+		<picture class="home-hero__image">
+			<source media="(max-width: 639px)" srcset="/images/320-hero.jpg" />
+			<source media="(max-width: 959px)" srcset="/images/640-hero.jpg" />
 			<img
-				src="https://res.cloudinary.com/csisideaslab/image/upload/v1792433802/big%20data%20china/Chinese%20Business%20and%20Economics/Industrial-Policy-Spending-Calculator-thumbnail-opt.jpg"
+				src="/images/full-height-hero.jpg"
 				alt=""
-				width="1024"
-				height="1024"
+				width="1920"
+				height="640"
 				fetchpriority="high"
 			/>
-		</figure>
+		</picture>
+
+		<div class="home-hero__title">
+			<h1>Industrial Policy Spending Calculator</h1>
+		</div>
 	</header>
 
 	<div class="home__content">
 		<!-- The Visualizer's "Create a new estimate" link scrolls here. -->
 		<section id="using-the-calculator" class="instructions">
 			<p>
-				The calculator lets you create industrial policy spending estimates for China and seven
+				The Calculator lets you create industrial policy spending estimates for China and seven
 				other economies—Brazil, France, Germany, Japan, South Korea, Taiwan, and the United
 				States—for the years 2019-2024 through the building of a “stack” of multiple industrial
 				policy spending tools, including fiscal subsidies, tax breaks, below-market credit,
@@ -59,7 +56,8 @@
 				<a class="mode-option" href={resolve('/user-driven')}>
 					<span class="mode-option__title">User-Driven Mode</span>
 					<span class="mode-option__desc">
-						Select this mode to have more granular control over the assumptions about the various tools that produce the estimate.
+						Select this mode to have more granular control over the assumptions about the various
+						tools that produce the estimate.
 					</span>
 				</a>
 			</div>
@@ -71,201 +69,123 @@
 	:root {
 		--navbar-height: 64px;
 	}
+
 	.home-page {
 		min-width: 320px;
-		padding-inline: var(--layout-guide-specs-xs-320-margin-5-vw, 16px);
 		padding-block-end: var(--global-spacing-section-vertical-padding-small, 36px);
-
-		@media (width >= 640px) {
-			padding-inline: var(--layout-guide-specs-s-640-margin-5-vw, 32px);
-		}
-
-		@media (width >= 960px) {
-			padding-inline: var(--layout-guide-specs-m-960-margin-5-vw, 48px);
-		}
-
-		@media (width >= 1280px) {
-			padding-inline: var(--layout-guide-specs-l-1280-margin-5-vw, 64px);
-		}
-
-		@media (width >= 1440px) {
-			padding-inline: var(--layout-guide-specs-l-1280-margin-5-vw, 80px);
-		}
 	}
-	/* 
 
-  /* -------------------------------------------------------------------------- */
-	/*                                   HEADER                                   */
 	/* -------------------------------------------------------------------------- */
-	header {
-		display: flex;
-		flex-direction: column;
-		justify-content: center;
-		align-items: center;
-		min-height: calc(100vh - 64px); /* fallback for older browsers */
-		min-height: calc(100dvh - var(--navbar-height, 64px));
-		padding-block: var(--global-spacing-section-vertical-padding-small, 36px);
-		@media (width >= 640px) {
-			max-width: 480px;
+	/*                                HOME HERO                                   */
+	/* -------------------------------------------------------------------------- */
+
+	.home-hero {
+		position: relative;
+		width: 100%;
+	}
+
+	.home-hero__image {
+		display: block;
+		width: 100%;
+	}
+
+	.home-hero__image img {
+		display: block;
+		width: 100%;
+		height: auto;
+	}
+
+	.home-hero__title {
+		padding: 36px 16px;
+		background: var(--color-sky-50);
+	}
+
+	.home-hero__title h1 {
+		margin: 0;
+		color: var(--text-page-title, #0c173d);
+		font-family: var(--font-hero);
+		font-size: 45px;
+		font-weight: 600;
+		line-height: 110%;
+	}
+
+	/* 640–959px: title below the image */
+	@media (width >= 640px) {
+		.home-hero__title {
+			padding: 36px 0;
+		}
+
+		.home-hero__title h1 {
+			max-width: 544px;
 			margin-inline: auto;
 		}
+	}
 
-		@media (width >= 960px) {
-			max-width: 480px;
-		}
-
-		@media (width >= 1280px) {
-			padding-block: var(--global-spacing-section-vertical-padding-small, 40px);
-			align-items: flex-start;
-			width: 564px;
-			max-width: none;
+	/* 960px+: title overlaid on the image */
+	@media (width >= 960px) {
+		.home-hero__image {
+			height: auto;
+			aspect-ratio: 3 / 1;
 		}
 
-		@media (width >= 1440px) {
-			flex-direction: row;
-			align-items: center;
-			min-width: 100%;
-			padding-block: var(--global-spacing-section-vertical-padding-medium, 80px);
-		}
-		@media (width >= 1920px) {
-			max-width: 1759px;
-		}
-		.text-header-block {
+		.home-hero__title {
+			position: absolute;
+			inset: 0;
 			display: flex;
-			padding: var(--text-components-report-title-block-top-padding, 36px) 0
-				var(--text-components-report-title-block-bottom-padding, 36px) 0;
-			flex-direction: column;
-			align-items: flex-start;
-			justify-content: center;
-			gap: var(--text-components-report-title-block-gap, 36px);
-
-			h1 {
-				margin: 0;
-			}
-
-			@media (width >= 640px) {
-				padding: 0 0 var(--text-components-report-title-block-bottom-padding, 36px) 0;
-			}
-
-			@media (width >= 960px) {
-				padding-block: 36px;
-			}
-			@media (width >= 1280px) {
-				max-width: 480px;
-				padding-block: var(--text-components-report-title-block-top-padding, 40px);
-			}
-			@media (width>= 1440px) {
-				min-width: 640px;
-				width: 50vw;
-				gap: var(--text-components-report-title-block-gap, 40px);
-				align-self: stretch;
-				padding-inline: 80px;
-
-				.title {
-					max-width: 480px;
-				}
-
-				h1 {
-					margin: 0;
-				}
-
-				.header-footer {
-					max-width: 480px;
-				}
-			}
-
-			/* @media (width >= 1920px) {
-				min-width: 50vw;
-				max-width: 50vw;
-				align-content: center;
-				flex-wrap: wrap;
-			} */
+			align-items: center;
+			padding: 0;
+			background: transparent;
 		}
 
-		.header-footer p {
-			margin: 0;
+		.home-hero__title h1 {
+			width: 100%;
+			max-width: 342px;
+			margin-left: calc(10vw + 24px);
+			color: #fff;
+			font-size: 45px;
 		}
-		.title {
-			color: var(--text-page-title, #0c173d);
-			font-family: var(--font-hero);
-			font-size: var(--text-style-specs-hero-1-size, 45px);
-			font-style: normal;
-			font-weight: 600;
-			line-height: 110%;
+	}
 
-			@media (width >= 1280px) {
-				font-size: var(--text-style-specs-hero-1-size, 50px);
-			}
+	@media (width >= 1440px) {
+		.home-hero__title h1 {
+			max-width: 380px;
+			font-size: 50px;
 		}
+	}
 
-		.byline {
-			color: var(--text-secondary, #1d293d);
-			font-family: var(--font-label, 'IBM Plex Sans');
-			font-size: var(--text-style-specs-label-medium-size, 16px);
-			font-style: normal;
-			font-weight: 500;
-			line-height: 120%;
-
-			@media (width >= 1280px) {
-				font-size: var(--text-style-specs-label-medium-size, 18px);
-				line-height: 120%;
-			}
-		}
-
-		.header-footer {
-			time {
-				color: var(--text-helper, #62748e);
-				font-family: var(--font-label, 'IBM Plex Sans');
-				font-size: var(--text-style-specs-label-small-size, 15px);
-				font-style: normal;
-				font-weight: 400;
-				line-height: 120%;
-
-				@media (width >= 1280px) {
-					font-size: var(--text-style-specs-label-small-size, 16px);
-				}
-			}
-		}
-
-		.img-header {
-			margin: 0;
-
-			@media (width >= 1440px) {
-				padding: 0 40px;
-				max-width: 50vw;
-			}
-
-			img {
-				display: block;
-				width: 100%;
-				height: auto;
-			}
-
-			@media (width >= 1920px) {
-				img {
-					max-width: 879px;
-				}
-			}
+	@media (width >= 1920px) {
+		.home-hero__title h1 {
+			margin-left: calc((100vw - 1920px) / 2 + 422px);
 		}
 	}
 
 	/* -------------------------------------------------------------------------- */
 	/*                                HOME CONTENT                                */
 	/* -------------------------------------------------------------------------- */
+
 	.home__content {
-		margin-block: var(--global-spacing-section-vertical-padding-small, 36px);
+		margin-block: 0 36px;
+		width: 100%;
+		box-sizing: border-box;
+		padding-inline: 16px;
 
 		@media (width >= 640px) {
 			max-width: 544px;
 			margin-inline: auto;
+			padding-inline: 0;
 		}
 
 		@media (width >= 960px) {
 			max-width: 576px;
+			margin-block-start: 72px;
+		}
+
+		@media (width >= 1100px) {
+			margin-block-start: 80px;
 		}
 
 		@media (width >= 1280px) {
-			margin-block: 0px 40px;
+			margin-block-end: 40px;
 			width: 564px;
 			max-width: none;
 		}
