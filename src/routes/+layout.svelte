@@ -15,8 +15,7 @@
 		'/': 'Home',
 		'/fast-track': 'Fast-Track Mode',
 		'/user-driven': 'User-Driven Mode',
-		'/results': 'Results',
-		'/share': 'Share'
+		'/results': 'Results'
 	};
 
 	// A page can replace its header name, e.g. the Share page's error state
