@@ -122,7 +122,7 @@
 <style>
 	.credits {
 		color: var(--color-text-secondary);
-		padding: 72px 0 0 0;
+		padding: 48px 0 0 0;
 	}
 
 	.credits-grid {

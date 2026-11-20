@@ -29,7 +29,7 @@
 		<!-- The Visualizer's "Create a new estimate" link scrolls here. -->
 		<section id="using-the-calculator" class="instructions">
 			<p>
-				The Calculator lets you create industrial policy spending estimates for China and seven
+				The Industrial Policy Spending Calculator lets you create industrial policy spending estimates for China and seven
 				other economies—Brazil, France, Germany, Japan, South Korea, Taiwan, and the United
 				States—for the years 2019-2024 through the building of a “stack” of multiple industrial
 				policy spending tools, including fiscal subsidies, tax breaks, below-market credit,
