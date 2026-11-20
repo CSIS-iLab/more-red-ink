@@ -115,7 +115,14 @@
 		</div>
 		<nav class="app-header__nav" aria-label="Main navigation">
 			<a href={resolve('/')} class="text-label-x-small" onclick={handleHomeClick}> Home </a>
-
+			<a
+				href="https://www.csis.org/programs/chinese-business-and-economics"
+				class="text-label-x-small"
+				target="_blank"
+				rel="noopener noreferrer"
+			>
+				Trustee Chair
+			</a>
 			<a
 				href="https://www.csis.org/programs/chinese-business-and-economics"
 				class="text-label-x-small"
@@ -155,6 +162,16 @@
 			onclick={handleHomeClick}
 		>
 			Home
+		</a>
+
+		<a
+			href="https://www.csis.org/programs/chinese-business-and-economics"
+			class="text-label-x-small"
+			target="_blank"
+			rel="noopener noreferrer"
+      onclick={() => (menuOpen = false)}
+		>
+			Trustee Chair
 		</a>
 
 		<a
