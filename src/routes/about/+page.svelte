@@ -1,5 +1,6 @@
 <script>
 	import Credits from '$lib/components/layout/Credits.svelte';
+  import CreditsLink from '$lib/components/layout/CreditsLink.svelte';
 </script>
 
 <svelte:head>
@@ -17,7 +18,7 @@
 			fairness, legality, and value of industrial policy tend to be frustrating and inconclusive.
 		</p>
 		<p>
-			The Industrial Policy Spending Calculator seeks to break this impasse by providing extensive
+			The Industrial Policy Spending Calculator, developed by CSIS's <CreditsLink href="https://www.csis.org/programs/chinese-business-and-economics">Trustee Chair in Chinese Business and Economics</CreditsLink> and the <CreditsLink href="https://www.csis.org/dracopoulos-ideas-lab">Andreas C. Dracopoulos iDeas Lab</CreditsLink>, seeks to break this impasse by providing extensive
 			data on industrial policy spending by China and seven other economies—Brazil, France, Germany,
 			Japan, South Korea, Taiwan, and the United States—for the years 2019–2024. The calculator’s
 			underlying data is composed of multiple industrial policy spending tools from each economy,
@@ -32,7 +33,7 @@
 			>. <i>More Red Ink</i> itself is a follow-up study to the CSIS report
 			<i>Red Ink: Estimating Chinese Industrial Policy in Comparative Perspective</i> (2022).
 		</p>
-    <p>December 7, 2026</p>
+    <p>Most recent update: December 7, 2026</p>
 
 		<Credits />
 	</div>
