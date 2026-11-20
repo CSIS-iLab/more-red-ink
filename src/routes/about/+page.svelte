@@ -1,9 +1,5 @@
 <script>
 	import Credits from '$lib/components/layout/Credits.svelte';
-	let { data } = $props();
-	let homeContent = $derived(data.homeContent);
-
-	const splitItalics = (text) => text.split('*');
 </script>
 
 <svelte:head>
@@ -12,31 +8,32 @@
 
 <div class="about-page">
 	<div class="about-content">
-		<h1 class="text-heading-2">About</h1>
+		<h1 class="text-heading-2">About the Industrial Policy Spending Calculator</h1>
+		<p>
+			Everyone has an opinion about industrial policy—government spending and regulations meant to
+			strengthen the competitiveness of a country’s firms and industries to advance both economic
+			and security objectives—but few have a firm grasp of the actual scope of industrial policy in
+			different countries or its trends over time. As a result, arguments about the breadth,
+			fairness, legality, and value of industrial policy tend to be frustrating and inconclusive.
+		</p>
+		<p>
+			The Industrial Policy Spending Calculator seeks to break this impasse by providing extensive
+			data on industrial policy spending by China and seven other economies—Brazil, France, Germany,
+			Japan, South Korea, Taiwan, and the United States—for the years 2019–2024. The calculator’s
+			underlying data is composed of multiple industrial policy spending tools from each economy,
+			including fiscal subsidies, below-market credit, and government procurement. Because there are
+			reasonable alternative ways to estimate the value of the different spending tools, the
+			calculator gives you the power to make industrial policy spending estimates based on
+			assumptions you select.
+		</p>
+		<p>
+			Learn more about the data, methodology, and broader implications in the companion CSIS report, <i
+				>More Red Ink: The Industrial Policy Spending Arms Race by China and Others</i
+			>. <i>More Red Ink</i> itself is a follow-up study to the CSIS report
+			<i>Red Ink: Estimating Chinese Industrial Policy in Comparative Perspective</i> (2022).
+		</p>
+    <p>December 7, 2026</p>
 
-		{#if homeContent}
-			{#each homeContent as content (content.id)}
-				{#each content.intro as paragraph, i (i)}
-					<p>
-						{#each splitItalics(paragraph) as part, j (j)}
-							{#if j % 2 === 1}
-								<em>{part}</em>
-							{:else}
-								{part}
-							{/if}
-						{/each}
-					</p>
-				{/each}
-
-				{#if content.published_date}
-					<p class="published-date">
-						<time datetime={content.published_date.iso}>
-							{content.published_date.label}
-						</time>
-					</p>
-				{/if}
-			{/each}
-		{/if}
 		<Credits />
 	</div>
 </div>
@@ -106,9 +103,5 @@
 		@media (width >= 960px) {
 			padding-block-start: var(--text-components-heading-2-top-padding, 72px);
 		}
-	}
-
-	.published-date {
-		margin-top: 24px;
 	}
 </style>
